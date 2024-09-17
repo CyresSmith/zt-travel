@@ -1,5 +1,13 @@
-export type LocaleType = 'uk' | 'en';
+import type { ReactNode } from 'react';
+
+import type { LocaleType } from '@i18n/routing';
 
 export type WithLocale = {
-    locale: LocaleType;
+    params: {
+        locale: LocaleType;
+    };
+};
+
+export type WithChildren = {
+    children: ReactNode;
 };

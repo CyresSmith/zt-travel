@@ -1,4 +1,4 @@
-import { type ReactNode, Suspense } from 'react';
+import { type ReactNode } from 'react';
 
 import { dir } from 'i18next';
 import { NextIntlClientProvider } from 'next-intl';
@@ -11,8 +11,6 @@ import clsx from 'clsx';
 import { routing } from 'i18n/routing';
 
 import '../globals.css';
-
-import Header from '@components/header';
 
 const nunito = Nunito({ subsets: ['latin', 'cyrillic-ext', 'cyrillic'] });
 
@@ -47,12 +45,7 @@ export default async function RootLayout({ children, params: { locale } }: RootL
                     'bg-primary-dark flex min-h-screen flex-col text-white'
                 )}
             >
-                <NextIntlClientProvider messages={messages}>
-                    <Suspense>
-                        <Header params={{ locale }} />
-                    </Suspense>
-                    {children}
-                </NextIntlClientProvider>
+                <NextIntlClientProvider messages={messages}>{children}</NextIntlClientProvider>
             </body>
         </html>
     );

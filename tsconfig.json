@@ -1,11 +1,7 @@
 {
     "compilerOptions": {
         "target": "esnext",
-        "lib": [
-            "dom",
-            "dom.iterable",
-            "esnext"
-        ],
+        "lib": ["dom", "dom.iterable", "esnext"],
         "allowJs": true,
         "skipLibCheck": true,
         "strict": true,
@@ -24,66 +20,26 @@
         ],
         "baseUrl": "./",
         "paths": {
-            "@i18n/*": [
-                "i18n/*"
-            ],
-            "@api/*": [
-                "app/api/*"
-            ],
-            "@assets/*": [
-                "assets/*"
-            ],
-            "@ui/*": [
-                "components/ui/*"
-            ],
-            "@components/*": [
-                "components/*"
-            ],
-            "@lib/*": [
-                "lib/*"
-            ],
-            "@types": [
-                "lib/types"
-            ],
-            "@icon-names": [
-                "lib/types/icon-names.ts"
-            ],
-            "@enums": [
-                "lib/enums"
-            ],
-            "@hooks/*": [
-                "lib/hooks/*"
-            ],
-            "@constants": [
-                "lib/constants"
-            ],
-            "@config": [
-                "lib/config"
-            ],
-            "@locales/*": [
-                "./locales/*"
-            ],
-            "@regexp": [
-                "lib/regexps"
-            ],
-            "@data/*": [
-                "data/*"
-            ],
-            "@schemas": [
-                "lib/schemas"
-            ]
+            "@i18n/*": ["i18n/*"],
+            "@api/*": ["app/api/*"],
+            "@assets/*": ["assets/*"],
+            "@ui/*": ["components/ui/*"],
+            "@components/*": ["components/*"],
+            "@lib/*": ["lib/*"],
+            "@types": ["lib/types"],
+            "@icon-names": ["lib/types/icon-names.ts"],
+            "@enums": ["lib/enums"],
+            "@hooks/*": ["lib/hooks/*"],
+            "@constants": ["lib/constants"],
+            "@config": ["lib/config"],
+            "@locales/*": ["./locales/*"],
+            "@regexp": ["lib/regexps"],
+            "@data/*": ["data/*"],
+            "@schemas": ["lib/schemas"]
         }
     },
-    "include": [
-        "svgr.d.ts",
-        "next-env.d.ts",
-        "**/*.ts",
-        "**/*.tsx",
-        ".next/types/**/*.ts"
-    ],
-    "exclude": [
-        "node_modules"
-    ],
+    "include": ["svgr.d.ts", "next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+    "exclude": ["node_modules"],
     "ts-node": {
         "compilerOptions": {
             "module": "CommonJS"

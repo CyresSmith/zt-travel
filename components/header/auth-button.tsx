@@ -4,6 +4,8 @@ import { useState } from 'react';
 
 import { Button } from '@ui/button';
 
+import { Link } from '@i18n/routing';
+
 type Props = { label: string };
 
 const AuthButton = ({ label }: Props) => {
@@ -12,7 +14,7 @@ const AuthButton = ({ label }: Props) => {
     return (
         <>
             <Button variant={'ghost'} onClick={() => setModalOpen(true)}>
-                {label}
+                <Link href={'/sign-in'}>{label}</Link>
             </Button>
         </>
     );
