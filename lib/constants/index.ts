@@ -1,0 +1,9 @@
+export const THEME_TRANSITION = 'transition-all ease-in-out duration-300';
+
+export const NAV_KEYS = ['about', 'news', 'events', 'places', 'routes', 'guides'];
+
+export const LOCALE_COOKIE = 'ZT_TIC_LOCALE';
+
+export const EMAIL = 'ztreg.tic@gmail.com';
+
+export const PHONE = '+38 066 747 3755';

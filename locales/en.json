@@ -1,0 +1,19 @@
+{
+    "HomePage": {
+        "title": "Hello world!",
+        "about": "Go to the about page"
+    },
+
+    "Header": {
+        "title": "Hello header!",
+        "enter": "Enter",
+        "navigation": {
+            "about": "About",
+            "events": "Events",
+            "places": "Places",
+            "routes": "Routes",
+            "guides": "Guides",
+            "news": "News"
+        }
+    }
+}

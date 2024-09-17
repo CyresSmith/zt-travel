@@ -1,0 +1,292 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ============================================================ User
+
+enum UserRole {
+  USER
+  ADMIN
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String    @unique
+  emailVerified DateTime?
+  image         String?
+  password      String?
+  role          UserRole  @default(USER)
+  accounts      Account[]
+  sessions      Session[]
+
+  places       Place[]
+  events       Event[]
+  placeRewiews PlaceReview[]
+  eventRewiews EventReview[]
+  articles     Article[]
+
+  createdAt             DateTime               @default(now())
+  updatedAt             DateTime               @updatedAt
+  TwoFactorConfirmation TwoFactorConfirmation?
+
+  @@map("users")
+}
+
+// ============================================================ Account
+
+model Account {
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([provider, providerAccountId])
+  @@map("accounts")
+}
+
+// ============================================================ Session
+
+model Session {
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("sessions")
+}
+
+// ============================================================ Verification Token
+
+model VerificationToken {
+  id      String   @id @default(cuid())
+  email   String
+  token   String   @unique
+  expires DateTime
+
+  @@unique([email, token])
+}
+
+// ============================================================ Password Reset Token
+
+model PasswordResetToken {
+  id      String   @id @default(cuid())
+  email   String
+  token   String   @unique
+  expires DateTime
+
+  @@unique([email, token])
+}
+
+// ============================================================ Two Factor Token Token
+
+model TwoFactorToken {
+  id      String   @id @default(cuid())
+  email   String
+  token   String   @unique
+  expires DateTime
+
+  @@unique([email, token])
+}
+
+// ============================================================ Two Factor Confirmation Token
+
+model TwoFactorConfirmation {
+  id     String @id @default(cuid())
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId])
+}
+
+// ============================================================ PlaceCategory
+
+enum PlaceType {
+  INTERESTING_PLACE
+  RESIDENCE
+  EAT
+}
+
+model PlaceCategory {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  type PlaceType
+  name String    @unique
+  slug String
+
+  palces Place[]
+}
+
+// ============================================================ PlaceReview
+
+model PlaceReview {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  rating Int
+  text   String
+
+  place    Place  @relation(fields: [placetId], references: [id])
+  placetId String @map("place_id")
+
+  User   User?   @relation(fields: [userId], references: [id], onDelete: NoAction)
+  userId String?
+}
+
+// ============================================================ Place
+
+model Place {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  name      String
+  desc      String
+  logo      String?
+  image     String?
+  images    String[]      @default([])
+  address   String
+  phone     String
+  email     String?
+  url       String?
+  facebook  String?
+  instagram String?
+  gmapsUrl  String?
+  latLang   String[]      @default([])
+  slug      String        @unique
+  rating    Int           @default(0)
+  views     Int           @default(0)
+  rewiews   PlaceReview[]
+  events    Event[]
+  articles  Article[]
+
+  category   PlaceCategory @relation(fields: [categoryId], references: [id])
+  categoryId Int           @map("category_id")
+
+  User   User?   @relation(fields: [userId], references: [id], onDelete: NoAction)
+  userId String?
+}
+
+// ============================================================ EventCategory
+
+model EventCategory {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  name String @unique
+  slug String
+
+  events Event[]
+}
+
+// ============================================================ EventReview
+
+model EventReview {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  rating Int
+  text   String
+
+  event   Event  @relation(fields: [eventId], references: [id])
+  eventId String @map("event_id")
+
+  User   User?   @relation(fields: [userId], references: [id], onDelete: NoAction)
+  userId String?
+}
+
+// ============================================================ Event
+
+model Event {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  name     String
+  desc     String
+  image    String?
+  images   String[]      @default([])
+  address  String?
+  phone    String?
+  url      String?
+  slug     String        @unique
+  rating   Int           @default(0)
+  views    Int           @default(0)
+  start    String[]
+  duration Int
+  periodic Boolean
+  rewiews  EventReview[]
+
+  category   EventCategory @relation(fields: [categoryId], references: [id])
+  categoryId String        @map("category_id")
+
+  palce   Place  @relation(fields: [placeId], references: [id])
+  placeId String @map("place_id")
+
+  User   User?   @relation(fields: [userId], references: [id], onDelete: NoAction)
+  userId String?
+}
+
+// ============================================================ Tags
+
+enum TagType {
+  PLACE
+  EVENT
+  ARTICLE
+}
+
+model Tag {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  type TagType
+  name String
+}
+
+// ============================================================ Article
+
+model Article {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  name   String
+  desc   String
+  text   String
+  image  String?
+  images String[] @default([])
+  slug   String   @unique
+  views  Int      @default(0)
+
+  place   Place? @relation(fields: [placeId], references: [id])
+  placeId String @map("place_id")
+
+  User   User?   @relation(fields: [userId], references: [id], onDelete: NoAction)
+  userId String?
+}
