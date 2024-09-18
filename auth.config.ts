@@ -3,20 +3,25 @@ import Credentials from 'next-auth/providers/credentials';
 import Facebook from 'next-auth/providers/facebook';
 import Google from 'next-auth/providers/google';
 
-import { LoginSchema } from '@lib/schemas';
+import { PrismaAdapter } from '@auth/prisma-adapter';
+import prisma from '@lib/prisma';
+import { SignInSchema } from '@schemas';
 import bcrypt from 'bcryptjs';
 
 import { getUserByEmail } from './data/user';
 
 export default {
+    adapter: PrismaAdapter(prisma),
+    secret: process.env.AUTH_SECRET,
+    session: { strategy: 'jwt' },
     providers: [
         Facebook({
-            clientId: process.env.AUTH_FACEBOOK_ID || '',
-            clientSecret: process.env.AUTH_FACEBOOK_SECRET || '',
+            clientId: process.env.AUTH_FACEBOOK_ID,
+            clientSecret: process.env.AUTH_FACEBOOK_SECRET,
         }),
         Google({
-            clientId: process.env.GOOGLE_CLIENT_ID || '',
-            clientSecret: process.env.GOOGLE_CLIENT_SECRET || '',
+            clientId: process.env.GOOGLE_CLIENT_ID,
+            clientSecret: process.env.GOOGLE_CLIENT_SECRET,
             authorization: {
                 params: {
                     scope: 'openid email profile',
@@ -24,30 +29,23 @@ export default {
             },
         }),
         Credentials({
-            credentials: {
-                email: {},
-                password: {},
-            },
-            authorize: async credentials => {
-                const { success, data } = LoginSchema.safeParse(credentials);
-
-                let user = null;
+            async authorize(credentials) {
+                const { success, data } = SignInSchema.safeParse(credentials);
 
                 if (success) {
                     const { email, password } = data;
 
-                    const existUser = await getUserByEmail(email);
+                    const user = await getUserByEmail(email);
 
-                    if (!existUser || !existUser?.password) return null;
+                    if (!user || !user?.password) return null;
 
-                    const passwordMatch = await bcrypt.compare(password, existUser.password);
+                    const passwordMatch = await bcrypt.compare(password, user.password);
 
-                    if (passwordMatch) user = existUser;
+                    if (passwordMatch) return { ...user, isOAuth: false };
                 }
 
-                return user;
+                return null;
             },
         }),
     ],
-    secret: process.env.AUTH_SECRET,
 } satisfies NextAuthConfig;

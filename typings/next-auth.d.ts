@@ -5,6 +5,9 @@ import type { UserRole } from '@prisma/client';
 declare module 'next-auth' {
     interface User {
         role: UserRole;
+        id: string;
+        isTwoFactorEnable: boolean;
+        isOAuth: boolean;
     }
 
     interface Session {

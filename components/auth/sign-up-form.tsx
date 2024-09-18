@@ -1,11 +1,13 @@
 'use client';
 
+import { useTransition } from 'react';
 import { useForm } from 'react-hook-form';
 
 import Link from 'next/link';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { SignUpSchema } from '@lib/schemas';
+import { register } from 'actions/register';
 import { type z } from 'zod';
 
 import AuthFormWrapper from './auth-form-wrapper';
@@ -20,6 +22,8 @@ const defaultValues = { name: '', email: '', password: '', confirmPassword: '' }
 export type LoginFormValues = z.infer<typeof SignUpSchema>;
 
 const SignUpForm = () => {
+    const [isPending, startTransition] = useTransition();
+
     const form = useForm<LoginFormValues>({
         resolver: zodResolver(SignUpSchema),
         defaultValues,
@@ -29,24 +33,27 @@ const SignUpForm = () => {
     });
 
     const handleSubmit = (values: LoginFormValues) => {
-        console.log('🚀 ~ handleSubmit ~ values:', values);
-        //  startTransition(() =>
-        //      login(values)
-        //          .then(data => {
-        //              if (data?.error) {
-        //                  form.reset();
-        //                  setError(data?.error);
-        //              }
-        //              if (data?.success) {
-        //                  form.reset();
-        //                  setSuccess(data?.success);
-        //              }
-        //              if (data?.twoFactor) {
-        //                  setShowTwoFactor(true);
-        //              }
-        //          })
-        //          .catch(() => setError('Something went wrong!'))
-        //  );
+        startTransition(
+            () =>
+                register(values).then(data => {
+                    console.log('🚀 ~ handleSubmit ~ data:', data);
+
+                    // if (data?.error) {
+                    //     form.reset();
+                    //     setError(data?.error);
+                    // }
+                    // if (data?.success) {
+                    //     form.reset();
+                    //     setSuccess(data?.success);
+                    // }
+                    // if (data?.twoFactor) {
+                    //     setShowTwoFactor(true);
+                    // }
+
+                    form.reset();
+                })
+            // .catch(() => setError('Something went wrong!'))
+        );
     };
 
     return (
@@ -66,13 +73,18 @@ const SignUpForm = () => {
                                 name={key as keyof LoginFormValues}
                                 label={key}
                                 type={type}
+                                disabled={isPending}
                             />
                         );
                     })}
+
+                    <Button type="submit" variant="default" disabled={isPending}>
+                        Submit
+                    </Button>
                 </form>
 
                 <div>
-                    <Button variant="link" asChild disabled={false} className="px-0">
+                    <Button variant="link" asChild disabled={isPending} className="px-0">
                         <Link href={'sign-in'}>Already have an account?</Link>
                     </Button>
                 </div>

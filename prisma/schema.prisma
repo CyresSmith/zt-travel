@@ -15,15 +15,17 @@ enum UserRole {
 }
 
 model User {
-  id            String    @id @default(cuid())
-  name          String?
-  email         String    @unique
-  emailVerified DateTime?
-  image         String?
-  password      String?
-  role          UserRole  @default(USER)
-  accounts      Account[]
-  sessions      Session[]
+  id                    String                 @id @default(cuid())
+  name                  String                 @default("")
+  email                 String                 @unique
+  emailVerified         DateTime?              @map("email_verified")
+  phone                 String                 @default("")
+  image                 String                 @default("")
+  password              String?
+  role                  UserRole               @default(USER)
+  isTwoFactorEnable     Boolean                @default(false)
+  twoFactorConfirmation TwoFactorConfirmation?
+  accounts              Account[]
 
   places       Place[]
   events       Event[]
@@ -31,9 +33,8 @@ model User {
   eventRewiews EventReview[]
   articles     Article[]
 
-  createdAt             DateTime               @default(now())
-  updatedAt             DateTime               @updatedAt
-  TwoFactorConfirmation TwoFactorConfirmation?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@map("users")
 }
@@ -60,20 +61,6 @@ model Account {
 
   @@id([provider, providerAccountId])
   @@map("accounts")
-}
-
-// ============================================================ Session
-
-model Session {
-  sessionToken String   @unique
-  userId       String
-  expires      DateTime
-  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@map("sessions")
 }
 
 // ============================================================ Verification Token

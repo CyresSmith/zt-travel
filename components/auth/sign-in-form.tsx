@@ -1,11 +1,13 @@
 'use client';
 
+import { useTransition } from 'react';
 import { useForm } from 'react-hook-form';
 
 import Link from 'next/link';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { SignInSchema } from '@lib/schemas';
+import { login } from 'actions/login';
 import type { z } from 'zod';
 
 import AuthFormWrapper from './auth-form-wrapper';
@@ -20,30 +22,31 @@ const defaultValues = { email: '', password: '' };
 export type LoginFormValues = z.infer<typeof SignInSchema>;
 
 const SignInForm = () => {
+    const [isPending, startTransition] = useTransition();
+
     const form = useForm<LoginFormValues>({
         resolver: zodResolver(SignInSchema),
         defaultValues,
     });
 
     const handleSubmit = (values: LoginFormValues) => {
-        console.log('🚀 ~ handleSubmit ~ values:', values);
-        //  startTransition(() =>
-        //      login(values)
-        //          .then(data => {
-        //              if (data?.error) {
-        //                  form.reset();
-        //                  setError(data?.error);
-        //              }
-        //              if (data?.success) {
-        //                  form.reset();
-        //                  setSuccess(data?.success);
-        //              }
-        //              if (data?.twoFactor) {
-        //                  setShowTwoFactor(true);
-        //              }
-        //          })
-        //          .catch(() => setError('Something went wrong!'))
-        //  );
+        startTransition(
+            () =>
+                login(values).then(data => {
+                    //  if (data?.error) {
+                    //      form.reset();
+                    //      setError(data?.error);
+                    //  }
+                    //  if (data?.success) {
+                    //      form.reset();
+                    //      setSuccess(data?.success);
+                    //  }
+                    //  if (data?.twoFactor) {
+                    //      setShowTwoFactor(true);
+                    //  }
+                })
+            //  .catch(() => setError('Something went wrong!'))
+        );
     };
 
     return (
@@ -58,6 +61,10 @@ const SignInForm = () => {
                             label={key}
                         />
                     ))}
+
+                    <Button type="submit" variant="default" disabled={isPending}>
+                        Sign in
+                    </Button>
                 </form>
 
                 <div>
