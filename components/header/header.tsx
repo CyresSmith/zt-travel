@@ -10,6 +10,7 @@ import AuthButton from './auth-button';
 import HeaderLink from './header-link';
 import LocaleSwitcher from './locale-switcher';
 
+import Container from '@components/container';
 import Icon from '@components/icon';
 
 type Props = { absolute?: boolean; params: { locale: string } };
@@ -20,13 +21,8 @@ const Header = ({ absolute = false, params: { locale } }: Props) => {
     const t = useTranslations('Header');
 
     return (
-        <header
-            className={clsx(
-                'bg-primary-dark left-0 top-0 z-20 w-full bg-opacity-70 py-5',
-                absolute && 'absolute'
-            )}
-        >
-            <div>
+        <header className="mobile:py-3 tablet:py-4 desktop:py-6 }">
+            <Container>
                 <div className="flex h-[60px] items-center gap-6">
                     <nav className="flex h-[60px] flex-1 items-center justify-between">
                         <Link href={'/'} className="inline-flex items-center gap-6">
@@ -62,7 +58,7 @@ const Header = ({ absolute = false, params: { locale } }: Props) => {
                         <LocaleSwitcher />
                     </div>
                 </div>
-            </div>
+            </Container>
         </header>
     );
 };

@@ -7,9 +7,9 @@ export default async function RootLayout({
     params: { locale },
 }: WithChildren & WithLocale) {
     return (
-        <main>
+        <>
             <Header params={{ locale }} />
-            {children}
-        </main>
+            <main>{children}</main>
+        </>
     );
 }

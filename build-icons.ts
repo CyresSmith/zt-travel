@@ -7,7 +7,7 @@ const cwd = process.cwd();
 const inputDir = path.join(cwd, 'svg-icons');
 const inputDirRelative = path.relative(cwd, inputDir);
 const outputDir = path.join(cwd, 'public', 'icons');
-const namesDir = path.join(cwd, 'src', 'lib', 'types');
+const namesDir = path.join(cwd, 'lib', 'types');
 
 // const outputDirRelative = path.relative(cwd, outputDir);
 
