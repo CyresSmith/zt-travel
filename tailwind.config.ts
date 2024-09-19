@@ -23,6 +23,10 @@ const config: Config = {
         },
         extend: {
             colors: {
+                themeYellow: 'hsl(var(--theme-yellow))',
+                themeGreen: 'hsl(var(--theme-green))',
+                themePurple: 'hsl(var(--theme-purple))',
+                themeRed: 'hsl(var(--theme-red))',
                 backdrop: 'rgba(var(--backdrop))',
                 background: 'hsl(var(--background))',
                 foreground: 'hsl(var(--foreground))',

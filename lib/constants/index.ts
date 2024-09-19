@@ -1,6 +1,6 @@
 export const THEME_TRANSITION = 'transition-all ease-in-out duration-300';
 
-export const NAV_KEYS = ['about', 'news', 'events', 'places', 'routes', 'guides'];
+export const NAV_KEYS = ['about', 'news', 'events', 'places', 'routes', 'guides'] as const;
 
 export const LOCALE_COOKIE = 'ZT_TIC_LOCALE';
 

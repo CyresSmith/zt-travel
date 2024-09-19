@@ -34,6 +34,7 @@ export type IconName =
 	| "tic_logo"
 	| "tiktok"
 	| "uk"
+	| "user-circle"
 	| "x-mark"
 	| "xs-1"
 	| "xs-2"

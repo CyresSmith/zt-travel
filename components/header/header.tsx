@@ -1,30 +1,35 @@
-import { useTranslations } from 'next-intl';
-import { unstable_setRequestLocale } from 'next-intl/server';
+import { NavigationMenu } from '@radix-ui/react-navigation-menu';
+
+import { getTranslations } from 'next-intl/server';
 import Link from 'next/link';
 
+import { auth } from '@auth';
 import { NAV_KEYS } from '@lib/constants';
 import { namu } from 'app/[locale]/layout';
 import clsx from 'clsx';
 
 import AuthButton from './auth-button';
-import HeaderLink from './header-link';
 import LocaleSwitcher from './locale-switcher';
+import Navigation from './navigation';
 
 import Container from '@components/container';
 import Icon from '@components/icon';
 
-type Props = { absolute?: boolean; params: { locale: string } };
+type Props = { absolute?: boolean };
 
-const Header = ({ absolute = false, params: { locale } }: Props) => {
-    unstable_setRequestLocale(locale);
+type NavKeysType = (typeof NAV_KEYS)[number];
 
-    const t = useTranslations('Header');
+const Header = async ({ absolute = false }: Props) => {
+    const session = await auth();
+    const t = await getTranslations('Header');
+
+    const user = session?.user;
 
     return (
         <header className="mobile:py-3 tablet:py-4 desktop:py-6 }">
             <Container>
                 <div className="flex h-[60px] items-center gap-6">
-                    <nav className="flex h-[60px] flex-1 items-center justify-between">
+                    <NavigationMenu className="flex h-[60px] flex-1 items-center justify-between">
                         <Link href={'/'} className="inline-flex items-center gap-6">
                             <Icon name="zt-region-logo" width={100} height={60} />
 
@@ -38,23 +43,16 @@ const Header = ({ absolute = false, params: { locale } }: Props) => {
                             </p>
                         </Link>
 
-                        <ul className="flex h-full gap-5">
-                            {NAV_KEYS.map((key: string) => {
-                                return (
-                                    <li key={key} className="h-full">
-                                        <HeaderLink
-                                            key={key}
-                                            label={t(`navigation.${key}`)}
-                                            slug={key}
-                                        />
-                                    </li>
-                                );
-                            })}
-                        </ul>
-                    </nav>
+                        <Navigation
+                            items={NAV_KEYS.map(key => ({
+                                href: `/${key}`,
+                                label: t(`navigation.${key as NavKeysType}`),
+                            }))}
+                        />
+                    </NavigationMenu>
 
                     <div className="flex items-center gap-2">
-                        <AuthButton label={t('enter')} />
+                        <AuthButton user={user} />
                         <LocaleSwitcher />
                     </div>
                 </div>

@@ -1,6 +1,7 @@
 import NextAuth from 'next-auth';
 
 import prisma from '@lib/prisma';
+import type { UserRole } from '@prisma/client';
 import authConfig from 'auth.config';
 
 import { getAccountByUserId } from '@data/accaunt';
@@ -9,8 +10,8 @@ import { getUserById } from '@data/user';
 
 export const { auth, handlers, signIn, signOut } = NextAuth({
     pages: {
-        signIn: '/auth/login',
-        error: '/auth/error',
+        signIn: '/sign-in',
+        error: '/error',
     },
     events: {
         async linkAccount({ user }) {
@@ -53,7 +54,7 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
                 if (token.sub) session.user.id = token.sub;
                 if (token.name) session.user.name = token.name;
                 if (token.email) session.user.email = token.email;
-                if (token.role) session.user.role = token.role as Role;
+                if (token.role) session.user.role = token.role as UserRole;
                 if (token.isOAuth) session.user.isOAuth = token.isOAuth as boolean;
             }
 

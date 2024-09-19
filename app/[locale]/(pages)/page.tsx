@@ -6,9 +6,10 @@ type RootPageProps = {
 
 export default async function Home({ params: { locale } }: RootPageProps) {
     return (
-        <main>
+        <div>
+            Main page
             {/* <PlacesSection locale={locale} />
             <EventsSection locale={locale} /> */}
-        </main>
+        </div>
     );
 }

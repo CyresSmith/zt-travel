@@ -1,4 +1,11 @@
 /**
+ *The prefix for API routes.
+ *Routes that start with this prefix are used for API purposes
+ *@type {string}
+ */
+export const apiPrefix: string = '/api';
+
+/**
  *The prefix for API auth routes.
  *Routes that start with this prefix are used for API authentication purposes
  *@type {string}
