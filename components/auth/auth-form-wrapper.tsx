@@ -1,7 +1,6 @@
 import type { ReactNode } from 'react';
 
-import { Button } from '@ui/button';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@ui/card';
 
 type Props = {
     title: string;
@@ -19,12 +18,6 @@ const AuthFormWrapper = ({ title, desc, buttonLabel, children }: Props) => {
             </CardHeader>
 
             <CardContent>{children}</CardContent>
-
-            <CardFooter>
-                <Button variant="default" disabled={false} type="submit" className="w-full">
-                    {buttonLabel}
-                </Button>
-            </CardFooter>
         </Card>
     );
 };

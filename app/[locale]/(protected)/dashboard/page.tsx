@@ -1,12 +1,6 @@
-import { getSession } from '@lib/utils';
-
 type Props = {};
 
-const DashboardPage = async () => {
-    const session = await getSession();
-
-    console.log('🚀 ~ DashboardPage ~ session:', session);
-
+const DashboardPage = (props: Props) => {
     return <div>DashboardPage</div>;
 };
 

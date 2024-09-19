@@ -94,10 +94,30 @@ const config: Config = {
                 inputError: `0 0 0 3px #ED2B2A`,
             },
             animation: {
+                slideDownAndFade: 'slideDownAndFade 0.35s cubic-bezier(0.16, 1, 0.3, 1)',
+                slideLeftAndFade: 'slideLeftAndFade 0.35s cubic-bezier(0.16, 1, 0.3, 1)',
+                slideUpAndFade: 'slideUpAndFade 0.35s cubic-bezier(0.16, 1, 0.3, 1)',
+                slideRightAndFade: 'slideRightAndFade 0.35s cubic-bezier(0.16, 1, 0.3, 1)',
                 opacity: 'animationOpacity 0.35s ease-in-out',
                 patternScaleIn: 'patternScaleIn 15s ease-in-out',
             },
             keyframes: {
+                slideDownAndFade: {
+                    from: { opacity: '0', transform: 'translateY(-2px)' },
+                    to: { opacity: '1', transform: 'translateY(0)' },
+                },
+                slideLeftAndFade: {
+                    from: { opacity: '0', transform: 'translateX(2px)' },
+                    to: { opacity: '1', transform: 'translateX(0)' },
+                },
+                slideUpAndFade: {
+                    from: { opacity: '0', transform: 'translateY(2px)' },
+                    to: { opacity: '1', transform: 'translateY(0)' },
+                },
+                slideRightAndFade: {
+                    from: { opacity: '0', transform: 'translateX(-2px)' },
+                    to: { opacity: '1', transform: 'translateX(0)' },
+                },
                 animationOpacity: {
                     from: { opacity: '0.2' },
                     to: { opacity: '1' },

@@ -42,7 +42,12 @@ export const publicRoutes: string[] = ['/', '/en', '/auth/new-verification'];
  *This routes required authentication
  *@type {string[]}
  */
-export const protectedRoutes: string[] = ['/dashboard', '/en/dashboard'];
+export const protectedRoutes: string[] = [
+    '/dashboard',
+    '/en/dashboard',
+    '/settings',
+    '/en/settings',
+];
 
 /**
  *An array of routs that are used for authentication.

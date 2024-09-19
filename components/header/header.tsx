@@ -8,7 +8,7 @@ import { NAV_KEYS } from '@lib/constants';
 import { namu } from 'app/[locale]/layout';
 import clsx from 'clsx';
 
-import AuthButton from './auth-button';
+import AuthButton from './auth-button/auth-button';
 import LocaleSwitcher from './locale-switcher';
 import Navigation from './navigation';
 
@@ -26,7 +26,7 @@ const Header = async ({ absolute = false }: Props) => {
     const user = session?.user;
 
     return (
-        <header className="mobile:py-3 tablet:py-4 desktop:py-6 }">
+        <header className="} mobile:py-3 tablet:py-4 desktop:py-6">
             <Container>
                 <div className="flex h-[60px] items-center gap-6">
                     <NavigationMenu className="flex h-[60px] flex-1 items-center justify-between">
@@ -35,7 +35,7 @@ const Header = async ({ absolute = false }: Props) => {
 
                             <p
                                 className={clsx(
-                                    'text-xxl w-[250px] leading-7 text-white',
+                                    'w-[250px] text-xxl leading-7 text-white',
                                     namu.className
                                 )}
                             >

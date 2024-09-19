@@ -10,7 +10,7 @@ type Props = SVGProps<SVGSVGElement> & {
     height?: number;
 };
 
-const Icon = ({ name, width = 24, height = 24, className, ...props }: Props) => {
+const Icon = ({ name, width = 22, height = 22, className, ...props }: Props) => {
     return (
         <svg
             {...props}
