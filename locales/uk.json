@@ -1,18 +1,56 @@
 {
-    "HomePage": {
-        "title": "Привіт світ!",
-        "about": "Перейти до інщої сторінки"
+    "head": {
+        "title": "Житомирський обласний туристичний інформаційний центр",
+        "desc": "Житомирський обласний туристичний інформаційний центр створений для сприяння та реалізації туристичного потенціалу Житомирщини. Тут Вам безкоштовно нададуть інформацію про туристичну інфраструктуру, архітектурну та культурну спадщину, екскурсії та можливості гарного дозвілля в Поліському краї.",
+        "appTitle": "ЖОТІЦ"
     },
-    "Header": {
-        "title": "Привіт хедер!",
-        "enter": "Вхід",
+    "homePage": {
+        "hero-link": "Детальніше",
+        "events-title": "Актуальні події",
+        "places-title": "Популярні місця"
+    },
+    "header": {
+        "title": "Мандруй Житомирщиною",
+        "enter": "Увійти",
         "navigation": {
-            "about": "Про житомирщіну",
-            "events": "Події",
+            "about": "Про Житомирщину",
+            "news": "Новини",
+            "events": "Афіша",
             "places": "Місця",
             "routes": "Маршрути",
-            "guides": "Гіди",
-            "news": "Новини"
+            "guides": "Гіди"
+        },
+        "user-menu": {
+            "settings": "Налаштування",
+            "dashboard": "Панель керування",
+            "sign-out": "Вийти"
         }
+    },
+    "auth": {
+        "name": "Ім'я",
+        "namePlaceholder": "Ваше ім'я",
+        "email": "Email",
+        "emailPlaceholder": "user@mail.com",
+        "password": "Пароль",
+        "passPlaceholder": "Your name",
+        "repeatPassword": "Повторіть пароль",
+        "sign-in": "Увійти",
+        "sign-up": "Реєстрація"
+    },
+    "footer": {
+        "address": "м.Житомир, вул. Мала Бердичівська 25, оф. 51"
+    },
+    "navigetion": {
+        "about": "Про Житомирщину",
+        "news": "Новини",
+        "events": "Афіша",
+        "places": "Місця",
+        "routes": "Маршрути",
+        "guides": "Гіди"
+    },
+    "not-found": {
+        "title": "Not Found",
+        "message": "Could not find requested resource",
+        "button": "Return to the main page"
     }
 }

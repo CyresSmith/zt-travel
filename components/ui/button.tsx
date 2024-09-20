@@ -12,10 +12,10 @@ const buttonVariants = cva(
             variant: {
                 default:
                     'bg-primary fill-primary-foreground text-primary-foreground shadow hover:bg-primary/90',
-                yellow: 'bg-themeYellow fill-primary-foreground text-primary-foreground shadow hover:bg-themeYellow/90',
-                red: 'bg-themeRed fill-primary-foreground text-primary-foreground shadow hover:bg-themeRed/90',
-                green: 'bg-themeGreen fill-primary-foreground text-primary-foreground shadow hover:bg-themeGreen/90',
-                purple: 'bg-themePurple fill-primary-foreground text-primary-foreground shadow hover:bg-themePurple/90',
+                yellow: 'bg-themeYellow fill-background text-primary-foreground shadow hover:bg-themeYellow/90',
+                red: 'bg-themeRed fill-background text-primary-foreground shadow hover:bg-themeRed/90',
+                green: 'bg-themeGreen fill-background text-primary-foreground shadow hover:bg-themeGreen/90',
+                purple: 'bg-themePurple fill-background text-primary-foreground shadow hover:bg-themePurple/90',
                 destructive:
                     'bg-destructive fill-destructive-foreground text-destructive-foreground shadow-sm hover:bg-destructive/90',
                 outline:

@@ -13,15 +13,19 @@ const config: Config = {
             tablet: { min: '768px', max: '1279px' },
             desktop: { min: '1280px' },
         },
-        fontSize: {
-            xs: '10px',
-            s: '12px',
-            m: '14px',
-            l: '18px',
-            xl: '22px',
-            xxl: '26px',
-        },
         extend: {
+            fontFamily: {
+                sans: ['var(--font-nunito)'],
+                heading: ['var(--font-namu)'],
+            },
+            fontSize: {
+                xs: '10px',
+                s: '12px',
+                m: '14px',
+                l: '18px',
+                xl: '22px',
+                xxl: '26px',
+            },
             colors: {
                 themeYellow: 'hsl(var(--theme-yellow))',
                 themeGreen: 'hsl(var(--theme-green))',

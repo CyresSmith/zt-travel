@@ -1,25 +1,24 @@
-import clsx from 'clsx';
+import { getLocale, getTranslations } from 'next-intl/server';
 
 import PlaceItem from './placeItem';
 
 import HomeSection from '../home-section';
+import SectionCarousel from '../section-carousel';
 
-import type { WithLocale } from '@types';
+import type { LocaleType } from '@i18n/routing';
 
-import initTranslations from '@i18n';
+import { getPlaces } from '@data/places/places';
 
-type Props = {};
-
-const PlacesSection = async ({ locale }: Props & WithLocale) => {
-    const { t } = await initTranslations(locale, ['home']);
+const PlacesSection = async () => {
+    const t = await getTranslations('homePage');
+    const locale = (await getLocale()) as LocaleType;
+    const palaces = await getPlaces({ take: 4, locale });
 
     return (
         <HomeSection title={t('places-title')} titleHref="places" isFirst>
-            <ul className={clsx('grid w-full gap-8', `grid-cols-3`)}>
-                <PlaceItem />
-                <PlaceItem />
-                <PlaceItem />
-            </ul>
+            <SectionCarousel
+                items={palaces?.map(place => <PlaceItem key={place.id} place={place} />)}
+            />
         </HomeSection>
     );
 };

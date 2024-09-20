@@ -1,5 +1,6 @@
+'use client';
+
 import Image from 'next/image';
-import Link from 'next/link';
 
 import clsx from 'clsx';
 
@@ -7,18 +8,24 @@ import Icon from '@components/icon';
 
 import karier from '@assets/images/druzhbivskyy-karier.jpg';
 
-type Props = {};
+import { Link } from '@i18n/routing';
 
-const PlaceItem = (props: Props) => {
+import type { PlaceBasicInfo } from '@data/places/types';
+
+type Props = { place: PlaceBasicInfo };
+
+const PlaceItem = ({ place }: Props) => {
+    const text = place.placeText[0];
+
     return (
         <li
             className={clsx(
-                'text-primary-dark flex h-[400px] flex-col overflow-hidden rounded-3xl bg-white'
+                'flex h-[400px] flex-col overflow-hidden rounded-3xl bg-white text-black'
             )}
         >
             <Image
                 src={karier}
-                alt="some alt"
+                alt={text.name}
                 placeholder="blur"
                 quality={100}
                 style={{
@@ -28,20 +35,19 @@ const PlaceItem = (props: Props) => {
             />
 
             <div className="flex flex-1 flex-col justify-between gap-4 p-5">
-                <Link href={`events/some-event`}>
-                    <h4 className="hover:text-secondary-main line-clamp-2 max-h-[66px] w-full overflow-hidden text-ellipsis text-xl font-bold transition-colors duration-300 ease-in-out">
-                        some event title some event title some event title some event title some
-                        event title
+                <Link href={`places/${place.slug}`}>
+                    <h4 className="line-clamp-2 max-h-[66px] w-full overflow-hidden text-ellipsis text-xl font-bold transition-colors duration-300 ease-in-out hover:text-black/50">
+                        {text.name}
                     </h4>
                 </Link>
 
                 <div className="flex gap-2">
                     <Icon name="map-point" width={24} height={24} className="fill-secondary-main" />
                     <Link
-                        href={'places/some-place'}
-                        className="hover:text-secondary-main overflow-hidden text-ellipsis text-nowrap transition-colors duration-300 ease-in-out"
+                        href={place.gmapsUrl || ''}
+                        className="overflow-hidden text-ellipsis text-nowrap transition-colors duration-300 ease-in-out hover:text-black/50"
                     >
-                        Some place
+                        {text.address}
                     </Link>
                 </div>
             </div>

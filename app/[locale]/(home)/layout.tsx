@@ -22,7 +22,7 @@ export default async function PagesLayout({
 
     return (
         <SessionProvider session={session}>
-            <Header />
+            <Header absolute />
 
             <main>{children}</main>
         </SessionProvider>

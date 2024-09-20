@@ -1,8 +1,8 @@
-import type { WithChildren, WithLocale } from '@lib/types';
+import type { WithChildren, WithLocaleParam } from '@lib/types';
 
 export default async function AuthLayout({
     children,
     params: { locale },
-}: WithLocale & WithChildren) {
+}: WithLocaleParam & WithChildren) {
     return <main className="flex h-screen w-screen items-center justify-center">{children}</main>;
 }

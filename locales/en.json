@@ -1,12 +1,17 @@
 {
-    "HomePage": {
-        "title": "Hello world!",
-        "about": "Go to the about page"
+    "head": {
+        "title": "Zhytomyr Regional Tourist Information Center",
+        "desc": "Zhytomyr Regional Tourist Information Center",
+        "appTitle": "ZHRTIC"
     },
-
-    "Header": {
-        "title": "Hello header!",
-        "enter": "Enter",
+    "homePage": {
+        "hero-link": "More",
+        "events-title": "Current events",
+        "places-title": "Popular places"
+    },
+    "header": {
+        "title": "Travel through Zhytomyr region",
+        "enter": "Sing in",
         "navigation": {
             "about": "About",
             "events": "Events",
@@ -14,6 +19,38 @@
             "routes": "Routes",
             "guides": "Guides",
             "news": "News"
+        },
+        "user-menu": {
+            "settings": "Settings",
+            "dashboard": "Dashboard",
+            "sign-out": "Sign out"
         }
+    },
+    "auth": {
+        "name": "Name",
+        "namePlaceholder": "Your name",
+        "email": "Email",
+        "emailPlaceholder": "user@mail.com",
+        "password": "Password",
+        "passPlaceholder": "Your name",
+        "confirmPassword": "Confirm password",
+        "sign-in": "Sign in",
+        "sign-up": "Sign up"
+    },
+    "footer": {
+        "address": "Zhytomyr, st. Mala Berdychivska 25, office 51"
+    },
+    "navigetion": {
+        "about": "About Zhitomir region",
+        "news": "News",
+        "events": "Events",
+        "places": "Places",
+        "routes": "Routes",
+        "guides": "Guides"
+    },
+    "not-found": {
+        "title": "Not Found",
+        "message": "Could not find requested resource",
+        "button": "Return to the main page"
     }
 }

@@ -1,16 +1,16 @@
+import type { DropdownMenuItemProps } from '@radix-ui/react-dropdown-menu';
 import {
     DropdownMenuContent,
     DropdownMenuGroup,
     DropdownMenuItem,
-    DropdownMenuItemProps,
     DropdownMenuLabel,
     DropdownMenuPortal,
     DropdownMenuSeparator,
 } from '@radix-ui/react-dropdown-menu';
 import { signOut } from 'next-auth/react';
-import { useTransition } from 'react';
 
 import type { User } from 'next-auth';
+import { useTranslations } from 'next-intl';
 
 import { THEME_TRANSITION } from '@lib/constants';
 import type { WithChildren } from '@lib/types';
@@ -26,20 +26,20 @@ import { Link } from '@i18n/routing';
 type Props = { user: User };
 
 const UserMenu = ({ user }: Props) => {
-    const [isPending, startTransition] = useTransition();
+    const handleSignOut = () => signOut({ callbackUrl: '/' });
 
-    const handleSignOut = () => startTransition(() => signOut({ callbackUrl: '/' }));
+    const t = useTranslations('header.user-menu');
 
     return (
         <DropdownMenuPortal>
             <DropdownMenuContent className="data-[side=top]:animate-slideDownAndFade data-[side=right]:animate-slideLeftAndFade data-[side=bottom]:animate-slideUpAndFade data-[side=left]:animate-slideRightAndFade w-48 rounded-3xl bg-card p-4 text-black will-change-[opacity,transform]">
-                <DropdownMenuLabel>{user.name || 'User'}</DropdownMenuLabel>
+                <DropdownMenuLabel>{user.name || user.email || 'User'}</DropdownMenuLabel>
 
                 <Separator />
 
-                <DropdownMenuGroup className="flex flex-col gap-2">
-                    <MenuLink iconName="settings" href="/settings" name="Settings" />
-                    <MenuLink iconName="widget" href="/dashboard" name="Dashboard" />
+                <DropdownMenuGroup className="flex flex-col gap-1">
+                    <MenuLink iconName="settings" href="/settings" name={t('settings')} />
+                    <MenuLink iconName="widget" href="/dashboard" name={t('dashboard')} />
 
                     {user.role === UserRole.ADMIN && (
                         <MenuLink iconName="eye" href="/admin" name="Admin" />
@@ -48,14 +48,14 @@ const UserMenu = ({ user }: Props) => {
 
                 <Separator />
 
-                <DropdownMenuItem className={`outline-none`}>
+                <DropdownMenuItem className={`mt-4 outline-none`}>
                     <Button
                         variant={'purple'}
                         onClick={handleSignOut}
                         className="flex w-full items-center"
                     >
                         <Icon name="logout" className="mr-2" />
-                        Sign Out
+                        {t('sign-out')}
                     </Button>
                 </DropdownMenuItem>
             </DropdownMenuContent>
@@ -74,7 +74,7 @@ const MenuItem = ({ children, ...props }: WithChildren & DropdownMenuItemProps) 
     </DropdownMenuItem>
 );
 
-const Separator = () => <DropdownMenuSeparator className="my-4 border-b-2" />;
+const Separator = () => <DropdownMenuSeparator className="my-2 border-b-2" />;
 
 type MenuLinkProps = { iconName: IconName; href: string; name: string };
 
@@ -82,7 +82,7 @@ const MenuLink = ({ iconName, href, name }: MenuLinkProps) => (
     <MenuItem asChild>
         <Link href={href} className="flex items-center gap-2">
             <Icon name={iconName} />
-            <span>{name}</span>
+            <span className="flex-1 truncate">{name}</span>
         </Link>
     </MenuItem>
 );

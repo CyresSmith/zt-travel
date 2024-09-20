@@ -3,8 +3,6 @@
 import { useTransition } from 'react';
 import { useForm } from 'react-hook-form';
 
-import Link from 'next/link';
-
 import { zodResolver } from '@hookform/resolvers/zod';
 import { SignInSchema } from '@lib/schemas';
 import { login } from 'actions/login';
@@ -16,6 +14,8 @@ import { Button } from '@ui/button';
 import { Form } from '@ui/form';
 
 import FormInputField from '@components/form-input-field';
+
+import { Link } from '@i18n/routing';
 
 const defaultValues = { email: '', password: '' };
 

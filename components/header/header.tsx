@@ -1,11 +1,10 @@
 import { NavigationMenu } from '@radix-ui/react-navigation-menu';
 
 import { getTranslations } from 'next-intl/server';
-import Link from 'next/link';
 
 import { auth } from '@auth';
 import { NAV_KEYS } from '@lib/constants';
-import { namu } from 'app/[locale]/layout';
+import { namu } from '@lib/fonts';
 import clsx from 'clsx';
 
 import AuthButton from './auth-button/auth-button';
@@ -15,18 +14,25 @@ import Navigation from './navigation';
 import Container from '@components/container';
 import Icon from '@components/icon';
 
+import { Link } from '@i18n/routing';
+
 type Props = { absolute?: boolean };
 
 type NavKeysType = (typeof NAV_KEYS)[number];
 
 const Header = async ({ absolute = false }: Props) => {
     const session = await auth();
-    const t = await getTranslations('Header');
+    const t = await getTranslations('header');
 
     const user = session?.user;
 
     return (
-        <header className="} mobile:py-3 tablet:py-4 desktop:py-6">
+        <header
+            className={clsx(
+                'w-full mobile:py-3 tablet:py-4 desktop:py-6',
+                absolute && 'absolute left-0 top-0 z-10'
+            )}
+        >
             <Container>
                 <div className="flex h-[60px] items-center gap-6">
                     <NavigationMenu className="flex h-[60px] flex-1 items-center justify-between">

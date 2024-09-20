@@ -1,4 +1,6 @@
 export type IconName =
+	| "arrow-left"
+	| "arrow-right"
 	| "black-hole"
 	| "bookmark"
 	| "calendar-add"

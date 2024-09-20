@@ -53,7 +53,7 @@ const NewVerificationForm = () => {
 
             <CardFooter>
                 <Button variant={'outline'} asChild>
-                    <Link href="/auth/login">Return to login</Link>
+                    <Link href="/sign-in">Return to login</Link>
                 </Button>
             </CardFooter>
         </Card>

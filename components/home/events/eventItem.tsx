@@ -1,11 +1,12 @@
 import Image from 'next/image';
-import Link from 'next/link';
 
 import clsx from 'clsx';
 
 import Icon from '@components/icon';
 
 import karier from '@assets/images/druzhbivskyy-karier.jpg';
+
+import { Link } from '@i18n/routing';
 
 type Props = {};
 
@@ -31,7 +32,7 @@ const EventItem = ({}: Props) => {
                 />
                 <ul className="absolute left-5 top-5 flex flex-col gap-2">
                     <li
-                        className={`bg-accent-light text-m text-primary-dark hover:bg-accent-main rounded-2xl px-2 py-1`}
+                        className={`bg-accent-light text-primary-dark hover:bg-accent-main rounded-2xl px-2 py-1 text-m`}
                     >
                         Some tag
                     </li>

@@ -7,3 +7,5 @@ export const LOCALE_COOKIE = 'ZT_TIC_LOCALE';
 export const EMAIL = 'ztreg.tic@gmail.com';
 
 export const PHONE = '+38 066 747 3755';
+
+export const PER_PAGE = 10;

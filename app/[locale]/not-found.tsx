@@ -1,6 +1,6 @@
-import Link from 'next/link';
-
 import { Button } from '@ui/button';
+
+import { Link } from '@i18n/routing';
 
 const NotFound = async () => {
     return (

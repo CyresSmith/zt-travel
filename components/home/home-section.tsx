@@ -1,6 +1,11 @@
 import type { ReactNode } from 'react';
 
-import Link from 'next/link';
+import { namu } from '@lib/fonts';
+import clsx from 'clsx';
+
+import Container from '@components/container';
+
+import { Link } from '@i18n/routing';
 
 type Props = {
     title: string;
@@ -13,11 +18,13 @@ type Props = {
 const HomeSection = ({ title, titleHref, children, isLight, isFirst }: Props) => {
     return (
         <section>
-            <Link href={titleHref}>
-                <h2>{title}</h2>
-            </Link>
+            <Container>
+                <Link href={titleHref}>
+                    <h2 className={clsx(namu.className, 'text-3xl mb-5')}>{title}</h2>
+                </Link>
 
-            {children}
+                {children}
+            </Container>
         </section>
     );
 };

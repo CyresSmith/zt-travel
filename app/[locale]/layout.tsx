@@ -3,30 +3,17 @@ import { type ReactNode } from 'react';
 import { dir } from 'i18next';
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages, unstable_setRequestLocale } from 'next-intl/server';
-import { Nunito } from 'next/font/google';
-import localFont from 'next/font/local';
 
-import type { WithLocale } from '@lib/types';
+import { nunito } from '@lib/fonts';
+import type { WithLocaleParam } from '@lib/types';
 import clsx from 'clsx';
 import { routing } from 'i18n/routing';
 
 import '../globals.css';
 
-const nunito = Nunito({ subsets: ['latin', 'cyrillic-ext', 'cyrillic'] });
-
-export const namu = localFont({
-    src: [
-        {
-            path: '../../assets/fonts/NAMU-1400.ttf',
-            weight: '400',
-        },
-    ],
-    variable: '--font-namu',
-});
-
 interface RootLayoutProps {
     children: ReactNode;
-    params: WithLocale;
+    params: WithLocaleParam;
 }
 
 export function generateStaticParams() {
