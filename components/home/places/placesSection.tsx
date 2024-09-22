@@ -1,18 +1,15 @@
-import { getLocale, getTranslations } from 'next-intl/server';
+import { getTranslations } from 'next-intl/server';
 
 import PlaceItem from './placeItem';
 
 import HomeSection from '../home-section';
 import SectionCarousel from '../section-carousel';
 
-import type { LocaleType } from '@i18n/routing';
-
 import { getPlaces } from '@data/places/places';
 
 const PlacesSection = async () => {
     const t = await getTranslations('homePage');
-    const locale = (await getLocale()) as LocaleType;
-    const palaces = await getPlaces({ take: 4, locale });
+    const palaces = await getPlaces({ take: 4 });
 
     return (
         <HomeSection title={t('places-title')} titleHref="places" isFirst>

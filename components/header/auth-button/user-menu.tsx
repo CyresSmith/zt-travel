@@ -32,8 +32,10 @@ const UserMenu = ({ user }: Props) => {
 
     return (
         <DropdownMenuPortal>
-            <DropdownMenuContent className="data-[side=top]:animate-slideDownAndFade data-[side=right]:animate-slideLeftAndFade data-[side=bottom]:animate-slideUpAndFade data-[side=left]:animate-slideRightAndFade w-48 rounded-3xl bg-card p-4 text-black will-change-[opacity,transform]">
-                <DropdownMenuLabel>{user.name || user.email || 'User'}</DropdownMenuLabel>
+            <DropdownMenuContent className="z-10 w-48 rounded-3xl border-2 border-themePrimary/30 bg-themeBg p-3 text-themeFg shadow-main will-change-[opacity,transform] data-[side=bottom]:animate-slideUpAndFade data-[side=left]:animate-slideRightAndFade data-[side=right]:animate-slideLeftAndFade data-[side=top]:animate-slideDownAndFade">
+                <DropdownMenuLabel className="truncate font-bold">
+                    {user.name || user.email || 'User'}
+                </DropdownMenuLabel>
 
                 <Separator />
 
@@ -50,7 +52,7 @@ const UserMenu = ({ user }: Props) => {
 
                 <DropdownMenuItem className={`mt-4 outline-none`}>
                     <Button
-                        variant={'purple'}
+                        variant={'default'}
                         onClick={handleSignOut}
                         className="flex w-full items-center"
                     >
@@ -68,13 +70,15 @@ export default UserMenu;
 const MenuItem = ({ children, ...props }: WithChildren & DropdownMenuItemProps) => (
     <DropdownMenuItem
         {...props}
-        className={`rounded-lg px-2 py-1 outline-none data-[highlighted]:bg-accent ${THEME_TRANSITION}`}
+        className={`rounded-full fill-themeFg px-4 py-2 outline-none data-[highlighted]:bg-themePrimary/20 ${THEME_TRANSITION}`}
     >
         {children}
     </DropdownMenuItem>
 );
 
-const Separator = () => <DropdownMenuSeparator className="my-2 border-b-2" />;
+const Separator = () => (
+    <DropdownMenuSeparator className="my-2 rounded-full border-b-[1px] border-themeSecondary/20" />
+);
 
 type MenuLinkProps = { iconName: IconName; href: string; name: string };
 

@@ -23,8 +23,7 @@ export default async function PagesLayout({
     return (
         <SessionProvider session={session}>
             <Header absolute />
-
-            <main>{children}</main>
+            <main className="flex-1">{children}</main>
         </SessionProvider>
     );
 }

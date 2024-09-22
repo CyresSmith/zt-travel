@@ -1,7 +1,7 @@
-'use client';
-
+import { getLocale } from 'next-intl/server';
 import Image from 'next/image';
 
+import { getLocaleValue } from '@lib/utils';
 import clsx from 'clsx';
 
 import Icon from '@components/icon';
@@ -14,8 +14,11 @@ import type { PlaceBasicInfo } from '@data/places/types';
 
 type Props = { place: PlaceBasicInfo };
 
-const PlaceItem = ({ place }: Props) => {
-    const text = place.placeText[0];
+const PlaceItem = async ({ place }: Props) => {
+    const locale = await getLocale();
+
+    const name = getLocaleValue(place.name, locale);
+    const address = getLocaleValue(place.address, locale);
 
     return (
         <li
@@ -25,7 +28,7 @@ const PlaceItem = ({ place }: Props) => {
         >
             <Image
                 src={karier}
-                alt={text.name}
+                alt={name}
                 placeholder="blur"
                 quality={100}
                 style={{
@@ -37,7 +40,7 @@ const PlaceItem = ({ place }: Props) => {
             <div className="flex flex-1 flex-col justify-between gap-4 p-5">
                 <Link href={`places/${place.slug}`}>
                     <h4 className="line-clamp-2 max-h-[66px] w-full overflow-hidden text-ellipsis text-xl font-bold transition-colors duration-300 ease-in-out hover:text-black/50">
-                        {text.name}
+                        {name}
                     </h4>
                 </Link>
 
@@ -47,7 +50,7 @@ const PlaceItem = ({ place }: Props) => {
                         href={place.gmapsUrl || ''}
                         className="overflow-hidden text-ellipsis text-nowrap transition-colors duration-300 ease-in-out hover:text-black/50"
                     >
-                        {text.address}
+                        {address}
                     </Link>
                 </div>
             </div>

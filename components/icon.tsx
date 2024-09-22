@@ -1,7 +1,6 @@
 import { type SVGProps } from 'react';
 
 import type { IconName } from '@icon-names';
-import { THEME_TRANSITION } from '@lib/constants';
 import clsx from 'clsx';
 
 type Props = SVGProps<SVGSVGElement> & {
@@ -12,13 +11,7 @@ type Props = SVGProps<SVGSVGElement> & {
 
 const Icon = ({ name, width = 22, height = 22, className, ...props }: Props) => {
     return (
-        <svg
-            {...props}
-            width={width}
-            height={height}
-            fill="inherit"
-            className={clsx(className, THEME_TRANSITION)}
-        >
+        <svg {...props} width={width} height={height} fill="inherit" className={clsx(className)}>
             <use href={`/icons/sprite.svg#${name}`} />
         </svg>
     );

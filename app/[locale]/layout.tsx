@@ -11,6 +11,8 @@ import { routing } from 'i18n/routing';
 
 import '../globals.css';
 
+import Footer from '@components/footer';
+
 interface RootLayoutProps {
     children: ReactNode;
     params: WithLocaleParam;
@@ -26,13 +28,9 @@ export default async function RootLayout({ children, params: { locale } }: RootL
 
     return (
         <html lang={locale} dir={dir(locale)}>
-            <body
-                className={clsx(
-                    nunito.className,
-                    'bg-primary-dark flex min-h-screen flex-col text-white'
-                )}
-            >
+            <body className={clsx(nunito.className, 'flex min-h-screen flex-col')}>
                 <NextIntlClientProvider messages={messages}>{children}</NextIntlClientProvider>
+                <Footer />
             </body>
         </html>
     );

@@ -29,19 +29,18 @@ const Header = async ({ absolute = false }: Props) => {
     return (
         <header
             className={clsx(
-                'w-full mobile:py-3 tablet:py-4 desktop:py-6',
-                absolute && 'absolute left-0 top-0 z-10'
+                'fixed left-0 top-0 z-10 w-full bg-themeFg/60 py-0 backdrop-blur-[2px]'
             )}
         >
             <Container>
-                <div className="flex h-[60px] items-center gap-6">
-                    <NavigationMenu className="flex h-[60px] flex-1 items-center justify-between">
-                        <Link href={'/'} className="inline-flex items-center gap-6">
+                <div className="flex items-center gap-6">
+                    <NavigationMenu className="flex h-full flex-1 items-center justify-between">
+                        <Link href={'/'} className="inline-flex items-center gap-6 py-3">
                             <Icon name="zt-region-logo" width={100} height={60} />
 
                             <p
                                 className={clsx(
-                                    'w-[250px] text-xxl leading-7 text-white',
+                                    'w-[250px] text-xl leading-7 text-white',
                                     namu.className
                                 )}
                             >

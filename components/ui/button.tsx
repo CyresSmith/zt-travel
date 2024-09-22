@@ -6,29 +6,33 @@ import { cn } from '@lib/utils';
 import { type VariantProps, cva } from 'class-variance-authority';
 
 const buttonVariants = cva(
-    `${THEME_TRANSITION} inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50`,
+    `${THEME_TRANSITION} inline-flex items-center hover:shadow-button justify-center whitespace-nowrap rounded-full text-m font-medium focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50`,
     {
         variants: {
             variant: {
-                default:
-                    'bg-primary fill-primary-foreground text-primary-foreground shadow hover:bg-primary/90',
-                yellow: 'bg-themeYellow fill-background text-primary-foreground shadow hover:bg-themeYellow/90',
-                red: 'bg-themeRed fill-background text-primary-foreground shadow hover:bg-themeRed/90',
-                green: 'bg-themeGreen fill-background text-primary-foreground shadow hover:bg-themeGreen/90',
-                purple: 'bg-themePurple fill-background text-primary-foreground shadow hover:bg-themePurple/90',
-                destructive:
-                    'bg-destructive fill-destructive-foreground text-destructive-foreground shadow-sm hover:bg-destructive/90',
-                outline:
-                    'border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground',
-                secondary:
-                    'bg-secondary fill-secondary-foreground text-secondary-foreground shadow-sm hover:bg-secondary/80',
-                ghost: 'hover:bg-accent hover:fill-accent-foreground hover:text-accent-foreground',
-                link: 'fill-primary text-primary underline-offset-4 hover:underline',
+                default: 'bg-themePrimary fill-themeBg text-themeBg hover:bg-themePrimary/90',
+                yellow: 'bg-themeYellow fill-themePrimary text-themePrimary hover:bg-themeYellow/90',
+                red: 'bg-themeRed fill-themeBg text-themeBg hover:bg-themeRed/90',
+                green: 'bg-themeGreen fill-themeBg text-themeBg hover:bg-themeGreen/90',
+                purple: 'bg-themePurple fill-themeBg text-themeBg hover:bg-themePurple/90',
+                outlineDark:
+                    'border border-themePrimary bg-transparent fill-themeFg text-themeFg hover:bg-themeSecondary hover:text-themeBg hover:fill-themeBg',
+                outlineLight:
+                    'border border-themeBg bg-transparent fill-themeBg text-themeBg hover:bg-themeBg hover:text-themeFg hover:fill-themeFg',
+                secondary: 'bg-themeSecondary fill-themeBg text-themeBg hover:bg-themeSecondary/80',
+                ghostDark:
+                    'bg-transparent fill-themeFg text-themeFg hover:shadow-none hover:fill-themePrimary hover:text-themePrimary',
+                ghostLight:
+                    'bg-transparent fill-themeBg text-themeBg hover:shadow-none hover:fill-themeYellow hover:text-themeYellow',
+                linkLight:
+                    'fill-themeBg text-themeBg underline-offset-4 hover:underline hover:shadow-none ',
+                linkDark:
+                    'fill-themeFg text-themeFg underline-offset-4 hover:underline hover:shadow-none ',
             },
             size: {
-                default: 'h-9 px-4 py-2',
-                sm: 'h-8 rounded-md px-3 text-xs',
-                lg: 'h-10 rounded-md px-8',
+                default: 'px-4 py-2',
+                sm: 'px-3 py-1 text-xs',
+                lg: 'px-8  py-3',
                 icon: 'h-9 w-9',
             },
         },

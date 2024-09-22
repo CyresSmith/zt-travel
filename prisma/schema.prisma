@@ -95,45 +95,34 @@ model PlaceCategory {
 }
 
 model Place {
-  id          String   @id @default(uuid())
-  createdAt   DateTime @default(now()) @map("created_at")
-  updatedAt   DateTime @updatedAt @map("updated_at")
+  id          String        @id @default(uuid())
+  createdAt   DateTime      @default(now()) @map("created_at")
+  updatedAt   DateTime      @updatedAt @map("updated_at")
   logo        String?
   image       String?
-  images      String[] @default([])
+  images      String[]      @default([])
   phone       String?
   email       String?
   url         String?
   facebook    String?
   instagram   String?
-  gmapsUrl    String?  @map("gmaps_url")
-  latLang     String[] @default([])
-  slug        String   @unique
-  rating      Int      @default(0)
-  views       Int      @default(0)
-  categoryId  String   @map("category_id")
-  userId      String   @map("user_id")
-  communityId String   @map("community_id")
-
-  community Community     @relation(fields: [communityId], references: [id])
-  articles  Article[]
-  events    Event[]
-  category  PlaceCategory @relation(fields: [categoryId], references: [id])
-  user      User          @relation(fields: [userId], references: [id], onDelete: NoAction)
-  rewiews   PlaceReview[]
-  placeText PlaceText[]
-}
-
-model PlaceText {
-  place   Place  @relation(fields: [placeId], references: [id])
-  placeId String
-
-  locale  Locale
-  name    String @unique
-  desc    String
-  address String
-
-  @@id([placeId, locale])
+  gmapsUrl    String?       @map("gmaps_url")
+  slug        String        @unique
+  rating      Int           @default(0)
+  views       Int           @default(0)
+  categoryId  String        @map("category_id")
+  userId      String        @map("user_id")
+  communityId String        @map("community_id")
+  latLang     String[]      @default([])
+  name        Json
+  desc        Json
+  address     Json
+  articles    Article[]
+  events      Event[]
+  category    PlaceCategory @relation(fields: [categoryId], references: [id])
+  community   Community     @relation(fields: [communityId], references: [id])
+  user        User          @relation(fields: [userId], references: [id], onDelete: NoAction)
+  rewiews     PlaceReview[]
 }
 
 model PlaceReview {
@@ -231,19 +220,19 @@ model Article {
 model District {
   id          String      @id @default(uuid())
   name_uk     String
-  name_en     String?
   geometry    String
   createdAt   DateTime    @default(now()) @map("created_at")
+  name_en     String?
   communities Community[]
 }
 
 model Community {
   id         String   @id @default(uuid())
   name_uk    String
-  name_en    String?
   districtId String   @map("district_id")
   geometry   String
   createdAt  DateTime @default(now()) @map("created_at")
+  name_en    String?
   district   District @relation(fields: [districtId], references: [id])
   Place      Place[]
 }

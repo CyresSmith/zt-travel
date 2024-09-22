@@ -70,7 +70,7 @@ const LocaleSwitcher = () => {
             </SelectTrigger>
 
             <SelectContent
-                className="overflow-hidden rounded-xl border-none outline-none"
+                className="overflow-hidden rounded-full border-none outline-none"
                 align="start"
                 position="popper"
             >
@@ -83,7 +83,7 @@ const LocaleSwitcher = () => {
                                     asChild
                                     key={l}
                                     data-state={l === currentLocale ? 'checked' : 'unchecked'}
-                                    className={`${THEME_TRANSITION} flex cursor-pointer items-center px-2 py-1 leading-none data-[disabled]:pointer-events-none data-[highlighted]:bg-accent data-[highlighted]:outline-none`}
+                                    className={`${THEME_TRANSITION} flex cursor-pointer items-center px-2 py-1 leading-none data-[disabled]:pointer-events-none data-[highlighted]:bg-themeBg data-[highlighted]:outline-none`}
                                     value={l}
                                 >
                                     <li>

@@ -1,3 +1,4 @@
+import { JsonObject, JsonValue } from '@prisma/client/runtime/library';
 import { type ClassValue, clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
@@ -14,4 +15,8 @@ export function getPagination(dto: PaginationDto) {
     const skip = (page - 1) * take;
 
     return { take, skip };
+}
+
+export function getLocaleValue(value: JsonValue, locale: string): string {
+    return (value as JsonObject)[locale] as string;
 }

@@ -1,27 +1,23 @@
 import prisma from '@lib/prisma';
-import type { PaginationDto, WithLocale } from '@lib/types';
+import type { PaginationDto } from '@lib/types';
 import { getPagination } from '@lib/utils';
+import type { Place } from '@prisma/client';
 
-import type { PlaceBasicInfo, PlaceWithText } from './types';
+import type { PlaceBasicInfo } from './types';
 
-export const getPlaces = async (
-    dto: PaginationDto & Partial<WithLocale>
-): Promise<PlaceBasicInfo[] | null> => {
-    const { locale = 'uk', ...rest } = dto;
-
+export const getPlaces = async (dto: PaginationDto): Promise<PlaceBasicInfo[] | null> => {
     try {
         return await prisma.place.findMany({
-            ...getPagination(rest),
+            ...getPagination(dto),
             select: {
                 id: true,
                 slug: true,
                 rating: true,
                 image: true,
                 gmapsUrl: true,
-                placeText: {
-                    where: { locale },
-                    select: { address: true, desc: true, name: true },
-                },
+                address: true,
+                desc: true,
+                name: true,
             },
         });
     } catch (error) {
@@ -29,66 +25,40 @@ export const getPlaces = async (
     }
 };
 
-export const getPlaceById = async (
-    dto: { id: string } & Partial<WithLocale>
-): Promise<PlaceWithText | null> => {
-    const { id, locale = 'uk' } = dto;
-
+export const getPlaceById = async (id: string): Promise<Place | null> => {
     try {
         return await prisma.place.findUnique({
             where: { id },
-            include: {
-                placeText: { where: { locale }, select: { address: true, name: true, desc: true } },
-            },
         });
     } catch (error) {
         return null;
     }
 };
 
-export const getPlaceBySlug = async (
-    dto: { slug: string } & Partial<WithLocale>
-): Promise<PlaceWithText | null> => {
-    const { slug, locale = 'uk' } = dto;
-
+export const getPlaceBySlug = async (slug: string): Promise<Place | null> => {
     try {
         return await prisma.place.findUnique({
             where: { slug },
-            include: {
-                placeText: { where: { locale }, select: { address: true, name: true, desc: true } },
-            },
         });
     } catch (error) {
         return null;
     }
 };
 
-export const getPlacesByCategory = async (
-    dto: { categoryId: string } & WithLocale
-): Promise<PlaceWithText[] | null> => {
-    const { categoryId, locale } = dto;
-
+export const getPlacesByCategory = async (categoryId: string): Promise<Place[] | null> => {
     try {
         return await prisma.place.findMany({
             where: { categoryId },
-            include: {
-                placeText: { where: { locale }, select: { address: true, name: true, desc: true } },
-            },
         });
     } catch (error) {
         return null;
     }
 };
 
-export const getPlacesByCommunity = async (dto: { communityId: string } & WithLocale) => {
-    const { communityId, locale } = dto;
-
+export const getPlacesByCommunity = async (communityId: string): Promise<Place[] | null> => {
     try {
         return await prisma.place.findMany({
             where: { communityId },
-            include: {
-                placeText: { where: { locale }, select: { address: true, name: true, desc: true } },
-            },
         });
     } catch (error) {
         return null;
