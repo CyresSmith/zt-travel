@@ -32,7 +32,10 @@ const UserMenu = ({ user }: Props) => {
 
     return (
         <DropdownMenuPortal>
-            <DropdownMenuContent className="z-10 w-48 rounded-3xl border-2 border-themePrimary/30 bg-themeBg p-3 text-themeFg shadow-main will-change-[opacity,transform] data-[side=bottom]:animate-slideUpAndFade data-[side=left]:animate-slideRightAndFade data-[side=right]:animate-slideLeftAndFade data-[side=top]:animate-slideDownAndFade">
+            <DropdownMenuContent
+                sideOffset={12}
+                className="z-50 w-48 rounded-3xl border-2 border-themePrimary/30 bg-themeBg p-3 text-themeFg shadow-main will-change-[opacity,transform] data-[side=bottom]:animate-slideUpAndFade data-[side=left]:animate-slideRightAndFade data-[side=right]:animate-slideLeftAndFade data-[side=top]:animate-slideDownAndFade"
+            >
                 <DropdownMenuLabel className="truncate font-bold">
                     {user.name || user.email || 'User'}
                 </DropdownMenuLabel>

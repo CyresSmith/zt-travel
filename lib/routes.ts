@@ -42,12 +42,14 @@ export const publicRoutes: string[] = ['/', '/en', '/auth/new-verification'];
  *This routes required authentication
  *@type {string[]}
  */
-export const protectedRoutes: string[] = [
-    '/dashboard',
-    '/en/dashboard',
-    '/settings',
-    '/en/settings',
-];
+export const protectedRoutes: string[] = ['/settings', '/en/settings'];
+
+/**
+ *An array of routs that are accessible to admin role.
+ *This routes required authentication
+ *@type {string[]}
+ */
+export const adminRoutes: string[] = ['/dashboard', '/en/dashboard'];
 
 /**
  *An array of routs that are used for authentication.

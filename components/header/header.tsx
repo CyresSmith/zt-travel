@@ -16,11 +16,9 @@ import Icon from '@components/icon';
 
 import { Link } from '@i18n/routing';
 
-type Props = { fixed?: boolean };
-
 type NavKeysType = (typeof NAV_KEYS)[number];
 
-const Header = async ({ fixed = false }: Props) => {
+const Header = async () => {
     const session = await auth();
     const t = await getTranslations('header');
 
@@ -29,8 +27,7 @@ const Header = async ({ fixed = false }: Props) => {
     return (
         <header
             className={clsx(
-                'left-0 top-0 z-50 w-full bg-themeFg/60 py-0 backdrop-blur-[2px]',
-                fixed && 'fixed'
+                'fixed left-0 top-0 z-40 w-screen bg-themeFg/60 py-0 backdrop-blur-[2px]'
             )}
         >
             <Container>
