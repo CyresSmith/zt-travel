@@ -7,7 +7,9 @@
     "homePage": {
         "hero-link": "More",
         "events-title": "Current events",
-        "places-title": "Popular places"
+        "places-title": "Popular places",
+        "events-link-label": "View all events",
+        "places-link-label": "View all locations"
     },
     "header": {
         "title": "Travel through Zhytomyr region",
@@ -38,7 +40,8 @@
         "sign-up": "Sign up"
     },
     "footer": {
-        "address": "Zhytomyr, st. Mala Berdychivska 25, office 51"
+        "address": "Zhytomyr, st. Mala Berdychivska 25, office 51",
+        "copyright": "© 2024 the official website of the Zhytomyr Regional Tourist Information Center of the Zhytomyr Regional Council"
     },
     "navigetion": {
         "about": "About Zhitomir region",

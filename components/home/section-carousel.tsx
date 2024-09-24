@@ -18,13 +18,15 @@ const SectionCarousel = ({ items = [] }: Props) => {
                 duration: 60,
             }}
         >
-            <CarouselContent>
-                {items.map((item, i) => (
-                    <CarouselItem key={i} className="basis-1/3">
-                        {item}
-                    </CarouselItem>
-                ))}
-            </CarouselContent>
+            <div className="overflow-hidden rounded-3xl">
+                <CarouselContent>
+                    {items.map((item, i) => (
+                        <CarouselItem key={i} className="basis-1/3">
+                            {item}
+                        </CarouselItem>
+                    ))}
+                </CarouselContent>
+            </div>
             <CarouselPrevious variant={'yellow'} />
             <CarouselNext variant={'yellow'} />
         </Carousel>

@@ -2,11 +2,15 @@ import { Slot } from '@radix-ui/react-slot';
 import * as React from 'react';
 
 import { THEME_TRANSITION } from '@lib/constants';
+import type { IconName } from '@lib/types/icon-names';
 import { cn } from '@lib/utils';
 import { type VariantProps, cva } from 'class-variance-authority';
+import clsx from 'clsx';
+
+import Icon from '@components/icon';
 
 const buttonVariants = cva(
-    `${THEME_TRANSITION} inline-flex items-center hover:shadow-button justify-center whitespace-nowrap rounded-full text-m font-medium focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50`,
+    `${THEME_TRANSITION} inline-flex items-center hover:shadow-button justify-center gap-2 whitespace-nowrap rounded-full text-m font-medium focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50`,
     {
         variants: {
             variant: {
@@ -47,17 +51,38 @@ export interface ButtonProps
     extends React.ButtonHTMLAttributes<HTMLButtonElement>,
         VariantProps<typeof buttonVariants> {
     asChild?: boolean;
+    isLoading?: boolean;
+    iconName?: IconName;
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-    ({ className, variant, size, asChild = false, ...props }, ref) => {
+    (
+        {
+            className,
+            variant,
+            size,
+            children,
+            asChild = false,
+            isLoading = false,
+            iconName,
+            ...props
+        },
+        ref
+    ) => {
         const Comp = asChild ? Slot : 'button';
+
         return (
-            <Comp
-                className={cn(buttonVariants({ variant, size, className }))}
-                ref={ref}
-                {...props}
-            />
+            <Comp className={cn(buttonVariants({ variant, size, className }))} ref={ref} {...props}>
+                <>
+                    {iconName && (
+                        <Icon
+                            name={isLoading ? 'black-hole' : iconName}
+                            className={clsx(isLoading && 'animate-spin', '')}
+                        />
+                    )}
+                    {children}
+                </>
+            </Comp>
         );
     }
 );

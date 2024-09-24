@@ -40,12 +40,11 @@ const UserMenu = ({ user }: Props) => {
                 <Separator />
 
                 <DropdownMenuGroup className="flex flex-col gap-1">
-                    <MenuLink iconName="settings" href="/settings" name={t('settings')} />
-                    <MenuLink iconName="widget" href="/dashboard" name={t('dashboard')} />
-
                     {user.role === UserRole.ADMIN && (
-                        <MenuLink iconName="eye" href="/admin" name="Admin" />
+                        <MenuLink iconName="widget" href="/dashboard" name={t('dashboard')} />
                     )}
+
+                    <MenuLink iconName="settings" href="/settings" name={t('settings')} />
                 </DropdownMenuGroup>
 
                 <Separator />
@@ -55,8 +54,8 @@ const UserMenu = ({ user }: Props) => {
                         variant={'default'}
                         onClick={handleSignOut}
                         className="flex w-full items-center"
+                        iconName="logout"
                     >
-                        <Icon name="logout" className="mr-2" />
                         {t('sign-out')}
                     </Button>
                 </DropdownMenuItem>

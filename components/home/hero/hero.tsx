@@ -7,6 +7,7 @@ import Slide from './slide';
 
 import { Carousel, CarouselContent, CarouselItem } from '@ui/carousel';
 
+import Gradient from '@components/gradient';
 import Icon from '@components/icon';
 
 import dom from '@assets/images/domik.jpeg';
@@ -51,8 +52,9 @@ const Hero = () => {
                 >
                     <CarouselContent>
                         {slides.map(slide => (
-                            <CarouselItem key={slide.slug} className="basis-full">
+                            <CarouselItem key={slide.slug} className="relative basis-full">
                                 <Slide {...slide} />
+                                <Gradient />
                             </CarouselItem>
                         ))}
                     </CarouselContent>

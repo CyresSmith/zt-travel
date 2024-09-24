@@ -34,49 +34,62 @@ const Footer = async () => {
     const t = await getTranslations('footer');
 
     return (
-        <footer className="bg-themePrimary py-8">
-            <Container className="flex justify-between">
-                <div className="flex gap-5">
-                    <Link href={'/'}>
-                        <Icon name="zt-region-logo" width={50} height={30} />
-                    </Link>
+        <footer className="py-10">
+            <Container>
+                <div className="flex justify-between gap-10">
+                    <div className="flex flex-1 gap-10">
+                        <Link href={'/'}>
+                            <Icon name="zt-region-logo" width={100} height={50} />
+                        </Link>
 
-                    <address className="not-italic">
-                        <ul>
-                            {contacts.map(({ iconName, contact, href }, i) => (
-                                <li key={contact} className={clsx(i !== 0 && 'mt-2')}>
-                                    <Link
-                                        href={href}
-                                        rel="noopener noreferrer nofollow"
-                                        target="_blank"
-                                        className={`flex gap-2 fill-white hover:fill-themeYellow hover:text-themeYellow ${THEME_TRANSITION}`}
-                                    >
-                                        <Icon name={iconName as IconName} fill="inherit" />
+                        <div className="flex flex-col justify-between gap-10">
+                            <address className="not-italic">
+                                <ul>
+                                    {contacts.map(({ iconName, contact, href }, i) => (
+                                        <li key={contact} className={clsx(i !== 0 && 'mt-2')}>
+                                            <Link
+                                                href={href}
+                                                rel="noopener noreferrer nofollow"
+                                                target="_blank"
+                                                className={`flex gap-2 fill-white hover:fill-themeYellow hover:text-themeYellow ${THEME_TRANSITION}`}
+                                            >
+                                                <Icon name={iconName as IconName} fill="inherit" />
 
-                                        {contact === 'address' ? t('address') : contact}
-                                    </Link>
-                                </li>
-                            ))}
-                        </ul>
-                    </address>
+                                                {contact === 'address' ? t('address') : contact}
+                                            </Link>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </address>
+
+                            <ul className="flex gap-4">
+                                {socialLinks.map(({ href, label }) => (
+                                    <li key={label}>
+                                        <Link
+                                            href={href}
+                                            rel="noopener noreferrer nofollow"
+                                            target="_blank"
+                                            className={clsx(
+                                                `fill-white hover:fill-themeYellow ${THEME_TRANSITION}`
+                                            )}
+                                        >
+                                            <Icon
+                                                name={label as IconName}
+                                                width={32}
+                                                height={32}
+                                                className="inherit"
+                                            />
+                                        </Link>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    </div>
+
+                    <Icon name="UKT-logo-light" width={200} height={200} />
                 </div>
 
-                <ul className="flex gap-2">
-                    {socialLinks.map(({ href, label }) => (
-                        <li key={label}>
-                            <Link
-                                href={href}
-                                rel="noopener noreferrer nofollow"
-                                target="_blank"
-                                className={clsx(
-                                    `fill-white hover:fill-themeYellow ${THEME_TRANSITION}`
-                                )}
-                            >
-                                <Icon name={label as IconName} className="inherit" />
-                            </Link>
-                        </li>
-                    ))}
-                </ul>
+                <p className="mt-10 text-center text-s text-themeSecondary">{t('copyright')}</p>
             </Container>
         </footer>
     );

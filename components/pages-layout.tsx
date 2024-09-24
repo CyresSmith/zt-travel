@@ -7,12 +7,6 @@ import type { WithChildren, WithLocaleParam } from '@lib/types';
 
 import Header from '@components/header';
 
-import { routing } from '@i18n/routing';
-
-export function generateStaticParams() {
-    return routing.locales.map(locale => ({ locale }));
-}
-
 export default async function PagesLayout({
     children,
     params: { locale },
@@ -22,7 +16,8 @@ export default async function PagesLayout({
 
     return (
         <SessionProvider session={session}>
-            <Header fixed />
+            <Header />
+
             <main className="flex-1">{children}</main>
         </SessionProvider>
     );

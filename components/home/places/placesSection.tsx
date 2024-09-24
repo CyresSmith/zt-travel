@@ -12,7 +12,7 @@ const PlacesSection = async () => {
     const palaces = await getPlaces({ take: 4 });
 
     return (
-        <HomeSection title={t('places-title')} titleHref="places" isFirst>
+        <HomeSection title={t('places-title')} href={`events`} linkLabel={t('places-link-label')}>
             <SectionCarousel
                 items={palaces?.map(place => <PlaceItem key={place.id} place={place} />)}
             />

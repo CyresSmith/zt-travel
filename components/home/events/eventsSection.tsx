@@ -9,7 +9,12 @@ const EventsSection = async () => {
     const t = await getTranslations('homePage');
 
     return (
-        <HomeSection title={t('events-title')} titleHref={`events`} isLight>
+        <HomeSection
+            title={t('events-title')}
+            href={`events`}
+            linkLabel={t('events-link-label')}
+            light
+        >
             <SectionCarousel
                 items={Array.from({ length: 5 }).map((event, i) => (
                     <EventItem key={i} />

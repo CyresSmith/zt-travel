@@ -16,11 +16,11 @@ import Icon from '@components/icon';
 
 import { Link } from '@i18n/routing';
 
-type Props = { absolute?: boolean };
+type Props = { fixed?: boolean };
 
 type NavKeysType = (typeof NAV_KEYS)[number];
 
-const Header = async ({ absolute = false }: Props) => {
+const Header = async ({ fixed = false }: Props) => {
     const session = await auth();
     const t = await getTranslations('header');
 
@@ -29,7 +29,8 @@ const Header = async ({ absolute = false }: Props) => {
     return (
         <header
             className={clsx(
-                'fixed left-0 top-0 z-10 w-full bg-themeFg/60 py-0 backdrop-blur-[2px]'
+                'left-0 top-0 z-50 w-full bg-themeFg/60 py-0 backdrop-blur-[2px]',
+                fixed && 'fixed'
             )}
         >
             <Container>

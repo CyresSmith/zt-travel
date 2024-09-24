@@ -41,6 +41,7 @@ export type IconName =
 	| "tiktok"
 	| "trash"
 	| "uk"
+	| "UKT-logo-light"
 	| "user-circle"
 	| "widget"
 	| "x-mark"
