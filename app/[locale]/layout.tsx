@@ -11,16 +11,20 @@ import { routing } from 'i18n/routing';
 
 import '../globals.css';
 
+import { Toaster } from '@ui/toaster';
+
 interface RootLayoutProps {
     children: ReactNode;
-    params: WithLocaleParam;
 }
 
 export function generateStaticParams() {
     return routing.locales.map(locale => ({ locale }));
 }
 
-export default async function RootLayout({ children, params: { locale } }: RootLayoutProps) {
+export default async function RootLayout({
+    children,
+    params: { locale },
+}: RootLayoutProps & WithLocaleParam) {
     unstable_setRequestLocale(locale);
     const messages = await getMessages();
 
@@ -28,6 +32,7 @@ export default async function RootLayout({ children, params: { locale } }: RootL
         <html lang={locale} dir={dir(locale)}>
             <body className={clsx(nunito.className, 'flex min-h-screen flex-col')}>
                 <NextIntlClientProvider messages={messages}>{children}</NextIntlClientProvider>
+                <Toaster />
             </body>
         </html>
     );

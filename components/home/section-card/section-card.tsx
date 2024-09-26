@@ -34,12 +34,11 @@ const SectionCard = async ({ image, title, titleHref, tags, links }: Props) => {
                 <Image
                     src={image || karier}
                     alt={title}
-                    placeholder="blur"
+                    placeholder="empty"
                     quality={100}
+                    fill
                     style={{
                         objectFit: 'cover',
-                        width: '100%',
-                        height: '100%',
                     }}
                 />
 

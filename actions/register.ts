@@ -1,7 +1,7 @@
 'use server';
 
 import prisma from '@lib/prisma';
-import { generateVerificationToken } from '@lib/tokens';
+import { generateVerificationToken } from '@lib/tokens/index';
 import { SignUpSchema } from '@schemas';
 import bcrypt from 'bcryptjs';
 import { type z } from 'zod';

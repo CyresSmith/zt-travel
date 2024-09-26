@@ -80,9 +80,9 @@ const config: Config = {
                         0px 3.9px 6.3px rgba(0, 0, 0, 0.07),
                         0px 5.8px 11.1px rgba(0, 0, 0, 0.076),
                         0px 9px 24px rgba(0, 0, 0, 0.1)`,
-                inputHover: `0 0 0 2px #ffc700`,
-                inputActive: `0 0 0 3px #ffc700`,
-                inputError: `0 0 0 3px #ED2B2A`,
+                inputHover: `0 0 0 2px hsl(var(--theme-yellow))`,
+                inputActive: `0 0 0 3px hsl(var(--theme-yellow))`,
+                inputError: `0 0 0 3px hsl(var(--theme-red))`,
             },
             animation: {
                 slideDownAndFade: 'slideDownAndFade 0.35s cubic-bezier(0.16, 1, 0.3, 1)',

@@ -5,11 +5,11 @@ import PlaceItem from './placeItem';
 import HomeSection from '../home-section';
 import SectionCarousel from '../section-carousel';
 
-import { getPlaces } from '@data/places/places';
+import { getPlaces } from '@data/places';
 
 const PlacesSection = async () => {
     const t = await getTranslations('homePage');
-    const palaces = await getPlaces({ take: 4 });
+    const palaces = await getPlaces({ take: 5 });
 
     return (
         <HomeSection title={t('places-title')} href={`events`} linkLabel={t('places-link-label')}>

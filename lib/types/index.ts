@@ -2,6 +2,7 @@ import type { ReactNode } from 'react';
 
 import type { Session } from 'next-auth';
 
+import type { ResponseStatus } from '@lib/enums';
 import type uk from '@locales/uk.json';
 
 import type { LocaleType } from '@i18n/routing';
@@ -34,4 +35,9 @@ export type PaginationDto = {
 export type StringWithLocales = {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     [key in LocaleType]: string;
+};
+
+export type ActionResponse = {
+    status: ResponseStatus;
+    message?: string;
 };

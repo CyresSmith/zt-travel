@@ -1,7 +1,5 @@
-type Props = {};
-
-const DashboardPage = (props: Props) => {
-    return <div>DashboardPage</div>;
+const DashboardPage = () => {
+    return <div className="flex-1">Dashboard</div>;
 };
 
 export default DashboardPage;

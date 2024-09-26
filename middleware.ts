@@ -8,7 +8,7 @@ import {
     apiPrefix,
     authRoutes,
     protectedRoutes,
-} from '@lib/routes';
+} from '@lib/routes/index.ts';
 
 import { routing } from './i18n/routing';
 

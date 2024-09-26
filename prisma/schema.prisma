@@ -113,6 +113,7 @@ model Place {
   categoryId  String        @map("category_id")
   userId      String        @map("user_id")
   communityId String        @map("community_id")
+  districtId  String        @map("district_id")
   latLang     String[]      @default([])
   name        Json
   desc        Json
@@ -121,6 +122,7 @@ model Place {
   events      Event[]
   category    PlaceCategory @relation(fields: [categoryId], references: [id])
   community   Community     @relation(fields: [communityId], references: [id])
+  district    District      @relation(fields: [districtId], references: [id])
   user        User          @relation(fields: [userId], references: [id], onDelete: NoAction)
   rewiews     PlaceReview[]
 }
@@ -224,6 +226,7 @@ model District {
   createdAt   DateTime    @default(now()) @map("created_at")
   name_en     String?
   communities Community[]
+  Place       Place[]
 }
 
 model Community {

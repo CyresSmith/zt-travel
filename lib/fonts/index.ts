@@ -10,7 +10,7 @@ export const nunito = Nunito({
 export const namu = localFont({
     src: [
         {
-            path: '../assets/fonts/NAMU-1400.ttf',
+            path: '../../assets/fonts/NAMU-1400.ttf',
             weight: '400',
         },
     ],
