@@ -33,10 +33,12 @@ export const SignUpSchema = z
     });
 
 const zPhone = z.string().transform((arg, ctx) => {
+    if (!arg) return arg;
+
     const phone = parsePhoneNumberFromString(arg, {
         defaultCountry: 'UA',
         defaultCallingCode: '+380',
-        extract: false,
+        extract: true,
     });
 
     if (phone && phone.isValid()) {
@@ -80,37 +82,45 @@ export const AddPlaceSchema = z
         categoryId: z.string().min(1, { message: 'Category required!' }),
         districtId: z.string().min(1, { message: 'District required!' }),
         communityId: z.string().min(1, { message: 'Community required!' }),
-        email: z.string().email({ message: 'Not valid email!' }).optional(),
-        phone: zPhone.optional(),
+        email: z.string().email({ message: 'Not valid email!' }).optional().or(z.literal('')),
+        phone: zPhone.or(z.literal('')),
         url: z
             .string()
             .optional()
-            .refine(value => !value || enRegex.test(value), { message: 'Latin symbols required' }),
+            .nullable()
+            .refine(value => !value || enRegex.test(value), { message: 'Latin symbols required' })
+            .or(z.literal('')),
 
         facebook: z
             .string()
             .optional()
-            .refine(value => !value || enRegex.test(value), { message: 'Latin symbols required' }),
+            .nullable()
+            .refine(value => !value || enRegex.test(value), { message: 'Latin symbols required' })
+            .or(z.literal('')),
 
         instagram: z
             .string()
             .optional()
-            .refine(value => !value || enRegex.test(value), { message: 'Latin symbols required' }),
+            .nullable()
+            .refine(value => !value || enRegex.test(value), { message: 'Latin symbols required' })
+            .or(z.literal('')),
 
         gmapsUrl: z
             .string()
             .optional()
-            .refine(value => !value || enRegex.test(value), { message: 'Latin symbols required' }),
-        latitude: z.string().optional(),
-        longitude: z.string().optional(),
-        // logo: z.string().optional(),
-        // image: z.string().optional(),
+            .nullable()
+            .refine(value => !value || enRegex.test(value), { message: 'Latin symbols required' })
+            .or(z.literal('')),
+        latitude: z.string().optional().nullable(),
+        longitude: z.string().optional().nullable(),
+        logo: z.string().optional().nullable().or(z.literal('')),
+        image: z.string().optional().nullable().or(z.literal('')),
         // images: z.string().array().optional(),
     })
     .refine(
         data => {
-            const latitudeExists = !!data.latitude;
-            const longitudeExists = !!data.longitude;
+            const latitudeExists = data.latitude !== undefined && data.latitude !== null;
+            const longitudeExists = data.longitude !== undefined && data.longitude !== null;
             return latitudeExists === longitudeExists;
         },
         {
@@ -118,3 +128,49 @@ export const AddPlaceSchema = z
             path: ['latitude', 'longitude'],
         }
     );
+
+export const AddEventSchema = z.object({
+    nameUk: z
+        .string()
+        .min(3, { message: 'Min 3 characters' })
+        .regex(ukRegex, { message: 'Cyrillic symbols required' }),
+    nameEn: z
+        .string()
+        .min(3, { message: 'Min 3 characters' })
+        .regex(enRegex, { message: 'Latin symbols required' }),
+    descUk: z
+        .string()
+        .min(50, { message: 'Min 50 characters' })
+        .regex(ukRegex, { message: 'Cyrillic symbols required' }),
+    descEn: z
+        .string()
+        .min(50, { message: 'Min 50 characters' })
+        .regex(enRegex, { message: 'Latin symbols required' }),
+    addressUk: z
+        .string()
+        .min(10, { message: 'Min 10 characters' })
+        .regex(ukRegex, { message: 'Cyrillic symbols required' }),
+    addressEn: z
+        .string()
+        .min(10, { message: 'Min 10 characters' })
+        .regex(enRegex, { message: 'Latin symbols required' }),
+    categoryId: z.string().optional().or(z.literal('')),
+    email: z.string().email({ message: 'Not valid email!' }).optional().or(z.literal('')),
+    phone: zPhone,
+    url: z
+        .string()
+        .optional()
+        .refine(value => !value || enRegex.test(value), { message: 'Latin symbols required' })
+        .or(z.literal('')),
+    image: z.string().optional().or(z.literal('')),
+    start: z.date(),
+    duration: z.string().length(5),
+    periodic: z.boolean(),
+    tags: z.array(
+        z.object({
+            value: z.string(),
+            label: z.string(),
+        })
+    ),
+    // placeId: z.string().optional().or(z.literal('')),
+});

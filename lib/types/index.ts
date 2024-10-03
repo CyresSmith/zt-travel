@@ -40,4 +40,5 @@ export type StringWithLocales = {
 export type ActionResponse = {
     status: ResponseStatus;
     message?: string;
+    data?: unknown;
 };

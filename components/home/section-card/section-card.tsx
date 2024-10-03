@@ -2,28 +2,28 @@ import Image from 'next/image';
 
 import { THEME_TRANSITION } from '@lib/constants';
 import type { IconName } from '@lib/types/icon-names';
+import { getLocaleValue } from '@lib/utils';
 import clsx from 'clsx';
 
 import CardLink from './card-link';
 
 import karier from '@assets/images/druzhbivskyy-karier.jpg';
 
+import type { LocaleType } from '@i18n/routing';
 import { Link } from '@i18n/routing';
 
-type Tag = {
-    label: string;
-    href: string;
-};
+import type { TagBasicInfo } from '@data/tags/types';
 
 type Props = {
     image: string;
     title: string;
     titleHref: string;
-    tags?: Tag[];
+    tags: TagBasicInfo[];
     links: { label: string; href: string; icon: IconName }[];
+    locale: LocaleType;
 };
 
-const SectionCard = async ({ image, title, titleHref, tags, links }: Props) => {
+const SectionCard = async ({ image, title, titleHref, tags, links, locale }: Props) => {
     return (
         <li
             className={clsx(
@@ -44,12 +44,14 @@ const SectionCard = async ({ image, title, titleHref, tags, links }: Props) => {
 
                 {tags && tags.length > 0 && (
                     <ul className="absolute left-5 top-5 flex flex-col items-start gap-2">
-                        {tags.map(({ href, label }) => (
+                        {tags.map(({ id, name }) => (
                             <li
-                                key={href}
-                                className={`rounded-full bg-themeYellow/70 px-2 py-1 text-m font-semibold hover:bg-themeYellow ${THEME_TRANSITION}`}
+                                key={id}
+                                className={`rounded-full bg-themeYellow/80 px-2 py-1 text-m text-themeFg hover:bg-themeYellow ${THEME_TRANSITION}`}
                             >
-                                <Link href={href}>{label}</Link>
+                                <Link href={`events?tag=${id}`}>
+                                    {getLocaleValue(name, locale)}
+                                </Link>
                             </li>
                         ))}
                     </ul>
@@ -69,7 +71,7 @@ const SectionCard = async ({ image, title, titleHref, tags, links }: Props) => {
                     {links &&
                         links.length > 0 &&
                         links.map(link => (
-                            <li key={link.href}>
+                            <li key={link.label}>
                                 <CardLink {...link} />
                             </li>
                         ))}

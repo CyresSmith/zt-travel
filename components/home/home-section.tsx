@@ -11,7 +11,7 @@ import Gradient from '@components/gradient';
 import { Link } from '@i18n/routing';
 
 type Props = {
-    title: string;
+    title?: string;
     children: ReactNode;
     href?: string;
     linkLabel?: string;
@@ -21,9 +21,11 @@ type Props = {
 const HomeSection = ({ title, children, light = false, href, linkLabel }: Props) => {
     return (
         <section className={clsx(light && 'bg-themePrimary', 'relative py-5')}>
-            <Gradient light={!light} className="z-0" />
+            <Gradient light={!light} />
             <Container>
-                <h2 className={clsx(namu.className, 'mb-8 text-3xl text-themeBg')}>{title}</h2>
+                {title && (
+                    <h2 className={clsx(namu.className, 'mb-5 text-3xl text-themeBg')}>{title}</h2>
+                )}
 
                 {children}
 

@@ -5,21 +5,23 @@ import type { Place } from '@prisma/client';
 
 import type { PlaceBasicInfo } from './types';
 
-export const getPlaces = async (dto: PaginationDto): Promise<PlaceBasicInfo[] | null> => {
+export const getPlaces = async (dto: PaginationDto): Promise<PlaceBasicInfo[]> => {
     try {
-        return await prisma.place.findMany({
-            ...getPagination(dto),
-            select: {
-                id: true,
-                slug: true,
-                rating: true,
-                image: true,
-                gmapsUrl: true,
-                address: true,
-                desc: true,
-                name: true,
-            },
-        });
+        return (
+            (await prisma.place.findMany({
+                ...getPagination(dto),
+                select: {
+                    id: true,
+                    slug: true,
+                    rating: true,
+                    image: true,
+                    gmapsUrl: true,
+                    address: true,
+                    desc: true,
+                    name: true,
+                },
+            })) || []
+        );
     } catch (error) {
         return null;
     }

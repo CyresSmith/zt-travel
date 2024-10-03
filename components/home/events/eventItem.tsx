@@ -1,25 +1,35 @@
+import { getLocale } from 'next-intl/server';
+
+import type { IconName } from '@lib/types/icon-names';
+import { getLocaleValue } from '@lib/utils';
+import { format } from 'date-fns';
+
 import SectionCard from '../section-card/section-card';
 
-type Props = {};
+import type { LocaleType } from '@i18n/routing';
 
-const EventItem = ({}: Props) => {
-    const eventDate = new Date(Date.now()).toLocaleString();
+import type { EventBasicInfo } from '@data/events/types';
 
-    const tags = [
-        { label: 'first tag', href: 'events/first-tag' },
-        { label: 'second tag', href: 'events/second-tag' },
+type Props = { event: EventBasicInfo };
+
+const EventItem = async ({
+    event: { address, desc, duration, id, image, name, start, tags },
+}: Props) => {
+    const locale = await getLocale();
+
+    const links = [
+        { href: '', icon: 'calendar-add' as IconName, label: format(start, 'PPPP') },
+        { href: '', icon: 'map-point' as IconName, label: getLocaleValue(address, locale) },
     ];
 
     return (
         <SectionCard
-            image={''}
-            title={'Some event Some event Some event Some event Some event'}
+            image={image || ''}
+            title={getLocaleValue(name, locale)}
             titleHref={`events/some-event`}
             tags={tags}
-            links={[
-                { href: '', icon: 'calendar-add', label: eventDate },
-                { href: 'place/some-place', icon: 'map-point', label: 'some place' },
-            ]}
+            links={links}
+            locale={locale as LocaleType}
         />
     );
 };

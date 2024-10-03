@@ -21,7 +21,7 @@ const addPlace = async (data: AddPlaceDto): Promise<ActionResponse> => {
         const result = await prisma.place.create({ data });
 
         if (result) {
-            return { status: ResponseStatus.SUCCESS, message: 'Created' };
+            return { status: ResponseStatus.SUCCESS, message: 'Created', data: { id: result.id } };
         } else {
             return { status: ResponseStatus.ERROR, message: 'Failed' };
         }

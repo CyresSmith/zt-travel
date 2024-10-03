@@ -4,6 +4,8 @@ import { useSession } from 'next-auth/react';
 import { useEffect, useState, useTransition } from 'react';
 import { useForm, useWatch } from 'react-hook-form';
 
+import { useTranslations } from 'next-intl';
+
 import { zodResolver } from '@hookform/resolvers/zod';
 import { ResponseStatus } from '@lib/enums';
 import { useToast } from '@lib/hooks/use-toast';
@@ -23,33 +25,34 @@ import { getPlaceBySlug } from '@data/places';
 
 import uploadToCloudinary from '@actions/cloudinary/upload-image';
 import addPlace from '@actions/places/add-place';
+import updatePlace from '@actions/places/update-place';
 
 export type AddPlaceValues = z.infer<typeof AddPlaceSchema>;
 
 const inputsWithLang = [
-    { name: 'nameUk', label: 'Назва україньською', type: 'text' },
-    { name: 'nameEn', label: 'Назва англійською', type: 'text' },
-    { name: 'descUk', label: 'Опис україньською', type: 'textarea' },
-    { name: 'descEn', label: 'Опис англійською', type: 'textarea' },
-    { name: 'addressUk', label: 'Адреса україньською', type: 'address' },
-    { name: 'addressEn', label: 'Адреса англійською', type: 'address' },
+    { name: 'nameUk', type: 'text' },
+    { name: 'nameEn', type: 'text' },
+    { name: 'descUk', type: 'textarea' },
+    { name: 'descEn', type: 'textarea' },
+    { name: 'addressUk', type: 'address' },
+    { name: 'addressEn', type: 'address' },
 ];
 
 const inputsInfo = [
-    { name: 'phone', label: 'Phone', type: 'phone' },
-    { name: 'email', label: 'Email', type: 'email' },
-    { name: 'facebook', label: 'Facebook', type: 'text' },
-    { name: 'instagram', label: 'Instagram', type: 'text' },
-    { name: 'url', label: 'Url', type: 'text' },
-    { name: 'gmapsUrl', label: 'GmapsUrl', type: 'text' },
-    { name: 'latitude', label: 'Latitude', type: 'text' },
-    { name: 'longitude', label: 'Longitude', type: 'text' },
+    { name: 'phone', type: 'phone' },
+    { name: 'email', type: 'email' },
+    { name: 'facebook', type: 'text' },
+    { name: 'instagram', type: 'text' },
+    { name: 'url', type: 'text' },
+    { name: 'gmapsUrl', type: 'text' },
+    { name: 'latitude', type: 'text' },
+    { name: 'longitude', type: 'text' },
 ];
 
 const inputsSelects = [
-    { name: 'districtId', label: 'Район', type: 'select' },
-    { name: 'communityId', label: 'Громада', type: 'select' },
-    { name: 'categoryId', label: 'Категорія', type: 'select' },
+    { name: 'districtId', type: 'select' },
+    { name: 'communityId', type: 'select' },
+    { name: 'categoryId', type: 'select' },
 ];
 
 const defaultValues: AddPlaceValues = {
@@ -82,13 +85,12 @@ type Props = {
 
 const AddLocationForm = ({ categories, districts, communities }: Props) => {
     const { data: session } = useSession();
-
-    const userId = session?.user?.id;
-
+    const t = useTranslations('dashboard.addLocation');
     const { toast } = useToast();
     const [fileData, setFileData] = useState<null | { file: File; fileName: string }>(null);
-
     const [isPending, startTransition] = useTransition();
+
+    const userId = session?.user?.id;
 
     const form = useForm<AddPlaceValues>({
         resolver: zodResolver(AddPlaceSchema),
@@ -148,38 +150,20 @@ const AddLocationForm = ({ categories, districts, communities }: Props) => {
 
         const slug = nameEn.split(' ').join('-').toLowerCase();
 
-        let image: undefined | string = undefined;
-
         startTransition(async () => {
             const slugExist = await getPlaceBySlug(slug);
 
             if (slugExist) {
-                return toast({
+                toast({
                     title: 'Slug already exist',
                     description: 'Slug must be uniq',
                     variant: 'destructive',
                 });
+
+                return;
             }
 
-            if (fileData) {
-                const fileUri = await getFileUri(fileData.file);
-
-                const { status, message, url } = await uploadToCloudinary({
-                    fileUri,
-                    fileName: fileData.fileName,
-                    folder: `place_${slug}`,
-                });
-
-                if (status === ResponseStatus.ERROR) {
-                    toast({ title: String(status), description: message });
-                }
-
-                if (url) {
-                    image = url;
-                }
-            }
-
-            let data = {
+            const data = {
                 name: { en: nameEn, uk: nameUk },
                 address: { en: addressEn, uk: addressUk },
                 desc: { en: descEn, uk: descUk },
@@ -192,11 +176,7 @@ const AddLocationForm = ({ categories, districts, communities }: Props) => {
                 ...restValues,
             };
 
-            if (image) {
-                data = Object.assign(data, { image });
-            }
-
-            const { status, message } = await addPlace(data);
+            const { status, message, data: place } = await addPlace(data);
 
             if (status === ResponseStatus.ERROR) {
                 toast({
@@ -206,10 +186,55 @@ const AddLocationForm = ({ categories, districts, communities }: Props) => {
                 });
             }
 
-            if (status === ResponseStatus.SUCCESS) {
+            if (status === ResponseStatus.SUCCESS && place) {
+                const successMessage = 'Place created successfully';
+
+                if (fileData) {
+                    const fileUri = await getFileUri(fileData.file);
+
+                    const { status, url } = await uploadToCloudinary({
+                        fileUri,
+                        fileName: fileData.fileName,
+                        folder: `place_${slug}`,
+                    });
+
+                    if (status === ResponseStatus.ERROR) {
+                        toast({
+                            title: String(status),
+                            description: 'Place created, but image load failed!',
+                        });
+                    }
+
+                    if (url) {
+                        const data = { image: url };
+
+                        const { status } = await updatePlace({
+                            id: (place as { id: string }).id,
+                            data,
+                        });
+
+                        if (status === ResponseStatus.SUCCESS) {
+                            toast({
+                                title: 'Success',
+                                description: successMessage,
+                                variant: 'success',
+                            });
+                        }
+
+                        if (status === ResponseStatus.ERROR) {
+                            toast({
+                                title: 'Failed',
+                                description: 'Place update failed',
+                                variant: 'destructive',
+                            });
+                        }
+                        return;
+                    }
+                }
+
                 toast({
                     title: 'Success',
-                    description: message,
+                    description: successMessage,
                     variant: 'success',
                 });
             }
@@ -223,7 +248,11 @@ const AddLocationForm = ({ categories, districts, communities }: Props) => {
 
     return (
         <div>
-            <LocationHeaderPreview setFileData={setFileData} isPending={isPending} />
+            <LocationHeaderPreview
+                setFileData={setFileData}
+                isPending={isPending}
+                title={t('addImage')}
+            />
 
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(handleSubmit)} className="flex flex-col gap-10">
@@ -231,7 +260,8 @@ const AddLocationForm = ({ categories, districts, communities }: Props) => {
                         {inputsWithLang.map(item => (
                             <FormInputField<AddPlaceValues>
                                 {...item}
-                                key={item.label}
+                                label={t(item.name)}
+                                key={item.name}
                                 control={form.control}
                                 required
                                 disabled={
@@ -252,7 +282,8 @@ const AddLocationForm = ({ categories, districts, communities }: Props) => {
                         {inputsInfo.map(item => (
                             <FormInputField<AddPlaceValues>
                                 {...item}
-                                key={item.label}
+                                label={t(item.name)}
+                                key={item.name}
                                 control={form.control}
                                 disabled={
                                     (item.name === 'communityId' && !districtIdState) || isPending
@@ -272,7 +303,8 @@ const AddLocationForm = ({ categories, districts, communities }: Props) => {
                         {inputsSelects.map(item => (
                             <FormInputField<AddPlaceValues>
                                 {...item}
-                                key={item.label}
+                                label={t(item.name)}
+                                key={item.name}
                                 control={form.control}
                                 required
                                 disabled={
@@ -295,7 +327,7 @@ const AddLocationForm = ({ categories, districts, communities }: Props) => {
                                 disabled={!isValid || isPending}
                                 className="w-full"
                             >
-                                Submit
+                                {t('submit')}
                             </Button>
                         </div>
                     </div>

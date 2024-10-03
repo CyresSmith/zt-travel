@@ -4,7 +4,7 @@ import { CaretSortIcon, ChevronDownIcon, ChevronUpIcon } from '@radix-ui/react-i
 import * as SelectPrimitive from '@radix-ui/react-select';
 import * as React from 'react';
 
-import { INPUT_STYLES, THEME_TRANSITION } from '@lib/constants';
+import { THEME_TRANSITION } from '@lib/constants';
 import { cn } from '@lib/utils';
 
 import Icon from '@components/icon';
@@ -18,23 +18,25 @@ const SelectValue = SelectPrimitive.Value;
 const SelectTrigger = React.forwardRef<
     React.ElementRef<typeof SelectPrimitive.Trigger>,
     React.ComponentPropsWithoutRef<typeof SelectPrimitive.Trigger>
->(({ className, children, ...props }, ref) => (
-    <SelectPrimitive.Trigger
-        ref={ref}
-        className={cn(
-            'w-full items-center justify-between whitespace-nowrap [&>span]:line-clamp-1',
-            INPUT_STYLES,
-            THEME_TRANSITION,
-            className
-        )}
-        {...props}
-    >
-        {children}
-        <SelectPrimitive.Icon asChild>
-            <CaretSortIcon className="h-4 w-4 opacity-50" />
-        </SelectPrimitive.Icon>
-    </SelectPrimitive.Trigger>
-));
+>(({ className, children, ...props }, ref) => {
+    return (
+        <SelectPrimitive.Trigger
+            ref={ref}
+            className={cn(
+                `w-full items-center justify-between whitespace-nowrap [&>span]:line-clamp-1`,
+                'transition-all duration-300 ease-in-out',
+                'flex h-[40px] rounded-full bg-themeBg px-4 py-2 text-m text-themeFg placeholder:text-themeFg/50 hover:shadow-inputHover focus-visible:shadow-inputActive focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50',
+                className
+            )}
+            {...props}
+        >
+            {children}
+            <SelectPrimitive.Icon asChild>
+                <CaretSortIcon className="h-4 w-4 opacity-50" />
+            </SelectPrimitive.Icon>
+        </SelectPrimitive.Trigger>
+    );
+});
 SelectTrigger.displayName = SelectPrimitive.Trigger.displayName;
 
 const SelectScrollUpButton = React.forwardRef<

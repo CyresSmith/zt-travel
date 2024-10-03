@@ -12,7 +12,7 @@ import { Link } from '@i18n/routing';
 
 const contacts = [
     {
-        iconName: 'point-on-map',
+        iconName: 'streets-map-point',
         contact: 'address',
         href: 'https://maps.app.goo.gl/nfPMMFSwdnVgNSEEA',
     },

@@ -3,6 +3,7 @@ import { enRegex, ukRegex } from '@lib/regexps';
 import type { PaginationDto } from '@lib/types';
 import type { JsonObject, JsonValue } from '@prisma/client/runtime/library';
 import { type ClassValue, clsx } from 'clsx';
+import { getMilliseconds } from 'date-fns';
 import { twMerge } from 'tailwind-merge';
 
 import type { LocaleType } from '@i18n/routing';
@@ -10,6 +11,8 @@ import type { LocaleType } from '@i18n/routing';
 export function cn(...inputs: ClassValue[]) {
     return twMerge(clsx(inputs));
 }
+
+// export const cn = (...inputs: ClassValue[]) => clsx(inputs);
 
 export function getPagination(dto: PaginationDto) {
     const page = dto.page || 1;
@@ -20,7 +23,7 @@ export function getPagination(dto: PaginationDto) {
 }
 
 export function getLocaleValue(value: JsonValue, locale: string): string {
-    return (value as JsonObject)[locale] as string;
+    return value ? ((value as JsonObject)[locale] as string) : '';
 }
 
 export const checkLanguage = (text: string): LocaleType | undefined => {
