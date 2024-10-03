@@ -53,7 +53,7 @@ body {
 
 ::-webkit-scrollbar-thumb {
     border-radius: 10px;
-    background-color: hsl(var(--theme-bg));
+    background-color: hsl(var(--theme-secondary));
 }
 
 ::-webkit-scrollbar-track {

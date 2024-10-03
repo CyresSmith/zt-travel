@@ -5,12 +5,14 @@ import Icon from '@components/icon';
 
 import { Link } from '@i18n/routing';
 
-type Props = { label: string; href: string; icon: IconName };
+type Props = { label: string; icon: IconName; href?: string };
 
-const CardLink = ({ label, href, icon }: Props) => {
+const CardLink = ({ label, icon, href = '' }: Props) => {
+    const Slot = href ? Link : 'p';
+
     return (
-        <Link
-            href={href}
+        <Slot
+            {...(href ? { href } : {})}
             className={`${THEME_TRANSITION} flex gap-1 fill-themeSecondary hover:fill-themeGreen hover:text-themeGreen`}
         >
             <Icon name={icon} />
@@ -18,7 +20,7 @@ const CardLink = ({ label, href, icon }: Props) => {
             <span className="fill-secondary-main flex-1 overflow-hidden text-ellipsis text-nowrap">
                 {label}
             </span>
-        </Link>
+        </Slot>
     );
 };
 

@@ -88,9 +88,8 @@ model PlaceCategory {
   createdAt DateTime  @default(now()) @map("created_at")
   updatedAt DateTime  @updatedAt @map("updated_at")
   type      PlaceType
-  name_uk   String    @unique
-  name_en   String    @unique
   slug      String
+  name      Json?
   palces    Place[]
 }
 
@@ -113,11 +112,11 @@ model Place {
   categoryId  String        @map("category_id")
   userId      String        @map("user_id")
   communityId String        @map("community_id")
-  districtId  String        @map("district_id")
   latLang     String[]      @default([])
   name        Json
   desc        Json
   address     Json
+  districtId  String        @map("district_id")
   articles    Article[]
   events      Event[]
   category    PlaceCategory @relation(fields: [categoryId], references: [id])
@@ -132,9 +131,9 @@ model PlaceReview {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
   rating    Int
-  text      String
   placetId  String   @map("place_id")
   userId    String   @map("user_id")
+  text      Json
   place     Place    @relation(fields: [placetId], references: [id])
   user      User     @relation(fields: [userId], references: [id], onDelete: NoAction)
 }
@@ -143,9 +142,8 @@ model EventCategory {
   id        String   @id @default(uuid())
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
-  name_uk   String   @unique
-  name_en   String   @unique
   slug      String
+  name      Json?
   events    Event[]
 }
 
@@ -154,67 +152,72 @@ model EventReview {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
   rating    Int
-  text      String
   eventId   String   @map("event_id")
   userId    String   @map("user_id")
+  text      Json?
   event     Event    @relation(fields: [eventId], references: [id])
   user      User     @relation(fields: [userId], references: [id], onDelete: NoAction)
 }
 
 model Event {
-  id         String        @id @default(uuid())
-  createdAt  DateTime      @default(now()) @map("created_at")
-  updatedAt  DateTime      @updatedAt @map("updated_at")
-  name_uk    String        @unique
-  name_en    String        @unique
-  desc_uk    String
-  desc_en    String
-  address_uk String
-  address_en String
+  id         String         @id @default(uuid())
+  createdAt  DateTime       @default(now()) @map("created_at")
+  updatedAt  DateTime       @updatedAt @map("updated_at")
   image      String?
-  images     String[]      @default([])
+  images     String[]       @default([])
   phone      String
   url        String?
-  slug       String        @unique
-  rating     Int           @default(0)
-  views      Int           @default(0)
-  start      String[]
+  slug       String         @unique
+  rating     Int            @default(0)
+  views      Int            @default(0)
   duration   Int
   periodic   Boolean
-  categoryId String        @map("category_id")
-  placeId    String?       @map("place_id")
-  userId     String        @map("user_id")
-  category   EventCategory @relation(fields: [categoryId], references: [id])
-  palce      Place?        @relation(fields: [placeId], references: [id])
-  user       User          @relation(fields: [userId], references: [id], onDelete: NoAction)
+  categoryId String?        @map("category_id")
+  placeId    String?        @map("place_id")
+  userId     String         @map("user_id")
+  name       Json
+  desc       Json
+  address    Json?
+  start      DateTime
+  category   EventCategory? @relation(fields: [categoryId], references: [id])
+  palce      Place?         @relation(fields: [placeId], references: [id])
+  user       User           @relation(fields: [userId], references: [id], onDelete: NoAction)
   rewiews    EventReview[]
+  tags       TagsOnEvents[]
 }
 
 model Tag {
-  id        String   @id @default(uuid())
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
+  id        String         @id @default(uuid())
+  createdAt DateTime       @default(now()) @map("created_at")
+  updatedAt DateTime       @updatedAt @map("updated_at")
   type      TagType
-  name_uk   String   @unique
-  name_en   String   @unique
+  name      Json?
+  events    TagsOnEvents[]
+}
+
+model TagsOnEvents {
+  event     Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  eventId   String
+  tag       Tag      @relation(fields: [tagId], references: [id])
+  tagId     String
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@id([eventId, tagId])
 }
 
 model Article {
   id        String   @id @default(uuid())
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
-  name_uk   String   @unique
-  name_en   String?  @unique
-  desc_uk   String
-  desc_en   String?
-  text_uk   String
-  text_en   String?
   image     String?
   images    String[] @default([])
   slug      String   @unique
   views     Int      @default(0)
   placeId   String?  @map("place_id")
   userId    String?  @map("user_id")
+  name      Json?
+  desc      Json?
+  text      Json?
   place     Place?   @relation(fields: [placeId], references: [id])
   user      User?    @relation(fields: [userId], references: [id], onDelete: NoAction)
 }

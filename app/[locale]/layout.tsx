@@ -7,6 +7,8 @@ import { getMessages, unstable_setRequestLocale } from 'next-intl/server';
 import { nunito } from '@lib/fonts';
 import type { WithLocaleParam } from '@lib/types';
 import clsx from 'clsx';
+import { setDefaultOptions } from 'date-fns';
+import { enIN, uk } from 'date-fns/locale';
 import { routing } from 'i18n/routing';
 
 import '../globals.css';
@@ -27,6 +29,8 @@ export default async function RootLayout({
 }: RootLayoutProps & WithLocaleParam) {
     unstable_setRequestLocale(locale);
     const messages = await getMessages();
+
+    setDefaultOptions({ locale: locale === 'uk' ? uk : enIN });
 
     return (
         <html lang={locale} dir={dir(locale)}>

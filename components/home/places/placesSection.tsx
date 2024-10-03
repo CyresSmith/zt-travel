@@ -9,10 +9,10 @@ import { getPlaces } from '@data/places';
 
 const PlacesSection = async () => {
     const t = await getTranslations('homePage');
-    const palaces = await getPlaces({ take: 5 });
+    const palaces = await getPlaces({ take: 6 });
 
     return (
-        <HomeSection title={t('places-title')} href={`events`} linkLabel={t('places-link-label')}>
+        <HomeSection title={t('places-title')} href={`places`} linkLabel={t('places-link-label')}>
             <SectionCarousel
                 items={palaces?.map(place => <PlaceItem key={place.id} place={place} />)}
             />

@@ -55,5 +55,51 @@
         "title": "Not Found",
         "message": "Could not find requested resource",
         "button": "Return to the main page"
+    },
+    "dashboard": {
+        "menu": {
+            "dashboard": "Панель керування",
+            "addLocation": "Додати місце",
+            "addEvent": "Додати подію"
+        },
+        "addLocation": {
+            "addImage": "Натисніть для додавання або перетягніть сюди файл",
+            "nameUk": "Назва українською",
+            "nameEn": "Назва англійською",
+            "descUk": "Опис українською",
+            "descEn": "Опис англійською",
+            "addressUk": "Адреса українською",
+            "addressEn": "Адреса англійською",
+            "phone": "Телефон",
+            "email": "Email",
+            "url": "Сайт",
+            "facebook": "Facebook",
+            "instagram": "Instagram",
+            "gmapsUrl": "Посилання google maps",
+            "latitude": "Широта",
+            "longitude": "Довгота",
+            "districtId": "Район",
+            "communityId": "Громада",
+            "categoryId": "Категорія",
+            "submit": "Додати місце"
+        },
+        "addEvent": {
+            "addImage": "Натисніть для додавання або перетягніть сюди файл",
+            "nameUk": "Назва українською",
+            "nameEn": "Назва англійською",
+            "descUk": "Опис українською",
+            "descEn": "Опис англійською",
+            "addressUk": "Адреса українською",
+            "addressEn": "Адреса англійською",
+            "phone": "Телефон",
+            "email": "Email",
+            "url": "Сайт",
+            "categoryId": "Категорія",
+            "submit": "Додати подію",
+            "start": "Початок події",
+            "duration": "Тривалість події",
+            "tags": "Теги",
+            "periodic": "Періодична подія"
+        }
     }
 }

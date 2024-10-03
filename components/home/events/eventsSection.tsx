@@ -5,8 +5,11 @@ import EventItem from './eventItem';
 import HomeSection from '../home-section';
 import SectionCarousel from '../section-carousel';
 
+import { getEvents } from '@data/events';
+
 const EventsSection = async () => {
     const t = await getTranslations('homePage');
+    const events = await getEvents({ take: 6 });
 
     return (
         <HomeSection
@@ -16,8 +19,8 @@ const EventsSection = async () => {
             light
         >
             <SectionCarousel
-                items={Array.from({ length: 5 }).map((event, i) => (
-                    <EventItem key={i} />
+                items={events.map((event, i) => (
+                    <EventItem key={i} event={event} />
                 ))}
             />
         </HomeSection>

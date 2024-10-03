@@ -15,6 +15,7 @@ const buttonVariants = cva(
         variants: {
             variant: {
                 default: 'bg-themePrimary fill-themeBg text-themeBg hover:bg-themePrimary/90',
+                light: 'bg-themeBg fill-themeFg text-themeFg hover:bg-themeBg/90',
                 yellow: 'bg-themeYellow fill-themePrimary text-themePrimary hover:bg-themeYellow/90',
                 red: 'bg-themeRed fill-themeBg text-themeBg hover:bg-themeRed/90',
                 green: 'bg-themeGreen fill-themeBg text-themeBg hover:bg-themeGreen/90',
@@ -25,7 +26,7 @@ const buttonVariants = cva(
                     'border border-themeBg bg-transparent fill-themeBg text-themeBg hover:bg-themeBg hover:text-themeFg hover:fill-themeFg',
                 secondary: 'bg-themeSecondary fill-themeBg text-themeBg hover:bg-themeSecondary/80',
                 ghostDark:
-                    'bg-transparent fill-themeFg text-themeFg hover:shadow-none hover:fill-themePrimary hover:text-themePrimary hover:bg-themeFg',
+                    'bg-transparent fill-themeFg text-themeFg hover:shadow-none hover:fill-themeBg hover:text-themeBg hover:bg-themeFg',
                 ghostLight:
                     'bg-transparent fill-themeBg text-themeBg hover:shadow-none hover:fill-themeFg hover:text-themeFg hover:bg-themeBg',
                 linkLight:
