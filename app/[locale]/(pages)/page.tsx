@@ -1,5 +1,6 @@
 import EventsSection from '@components/home/events';
 import Hero from '@components/home/hero';
+import NewsSection from '@components/home/news';
 import PlacesSection from '@components/home/places';
 
 export default async function Home() {
@@ -8,6 +9,7 @@ export default async function Home() {
             <Hero />
             <PlacesSection />
             <EventsSection />
+            <NewsSection />
         </>
     );
 }

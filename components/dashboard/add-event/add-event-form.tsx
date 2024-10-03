@@ -15,7 +15,7 @@ import { getFileUri } from '@lib/utils';
 import { hoursToMilliseconds, minutesToMilliseconds, setHours, setMinutes } from 'date-fns';
 import type { z } from 'zod';
 
-import EventHeaderPreview from './event-header-preview';
+import MainImageLoad from '../main-image-load';
 
 import { Button } from '@ui/button';
 import { Form, FormLabel } from '@ui/form';
@@ -77,7 +77,7 @@ type Props = {
     tags: SelectItemType[];
 };
 
-const AddLocationForm = ({ categories, tags }: Props) => {
+const AddEventForm = ({ categories, tags }: Props) => {
     const { data: session } = useSession();
     const t = useTranslations('dashboard.addEvent');
     const { toast } = useToast();
@@ -144,6 +144,11 @@ const AddLocationForm = ({ categories, tags }: Props) => {
         );
 
         const slug = nameEn.split(' ').join('-').toLowerCase();
+
+        const resetState = () => {
+            form.reset();
+            setFileData(null);
+        };
 
         startTransition(async () => {
             const slugExist = await getEventBySlug(slug);
@@ -226,6 +231,8 @@ const AddLocationForm = ({ categories, tags }: Props) => {
                                 description: successMessage,
                                 variant: 'success',
                             });
+
+                            resetState();
                         }
 
                         if (status === ResponseStatus.ERROR) {
@@ -239,7 +246,7 @@ const AddLocationForm = ({ categories, tags }: Props) => {
                     }
                 }
 
-                form.reset();
+                resetState();
 
                 toast({
                     title: 'Success',
@@ -252,7 +259,8 @@ const AddLocationForm = ({ categories, tags }: Props) => {
 
     return (
         <div>
-            <EventHeaderPreview
+            <MainImageLoad
+                isFileData={!!fileData}
                 setFileData={setFileData}
                 isPending={isPending}
                 title={t('addImage')}
@@ -345,4 +353,4 @@ const AddLocationForm = ({ categories, tags }: Props) => {
     );
 };
 
-export default AddLocationForm;
+export default AddEventForm;

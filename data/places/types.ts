@@ -1,12 +1,12 @@
 import type { StringWithLocales } from '@lib/types';
-import type { Place } from '@prisma/client';
+import type { Place, PlaceCategory } from '@prisma/client';
 
 import type { CloudinaryUploadDto } from '@actions/cloudinary/upload-image';
 
 export type PlaceBasicInfo = Pick<
     Place,
     'id' | 'image' | 'rating' | 'slug' | 'gmapsUrl' | 'name' | 'address' | 'desc'
->;
+> & { category: Pick<PlaceCategory, 'id' | 'name' | 'slug'> };
 
 export type AddPlaceDto = Partial<
     Pick<Place, 'email' | 'facebook' | 'gmapsUrl' | 'instagram' | 'latLang' | 'url'>

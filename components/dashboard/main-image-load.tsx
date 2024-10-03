@@ -7,12 +7,13 @@ import useFileUpload from '@lib/hooks/use-file-upload';
 import PlaceImage from '@components/place-page/place-image';
 
 type Props = {
+    isFileData: boolean;
     setFileData: (dto: { file: File; fileName: string }) => void;
     isPending: boolean;
     title: string;
 };
 
-const EventHeaderPreview = ({ setFileData, isPending, title }: Props) => {
+const MainImageLoad = ({ isFileData, setFileData, isPending, title }: Props) => {
     const {
         fileName,
         file,
@@ -30,6 +31,12 @@ const EventHeaderPreview = ({ setFileData, isPending, title }: Props) => {
 
         setFileData({ file, fileName: `${fileName}_${new Date().toLocaleString()}` });
     }, [file, fileName, setFileData]);
+
+    useEffect(() => {
+        if (file && !isFileData) {
+            reset();
+        }
+    }, [file, isFileData, reset]);
 
     return (
         <div
@@ -63,4 +70,4 @@ const EventHeaderPreview = ({ setFileData, isPending, title }: Props) => {
     );
 };
 
-export default EventHeaderPreview;
+export default MainImageLoad;

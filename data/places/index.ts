@@ -19,11 +19,12 @@ export const getPlaces = async (dto: PaginationDto): Promise<PlaceBasicInfo[]> =
                     address: true,
                     desc: true,
                     name: true,
+                    category: { select: { id: true, name: true, slug: true } },
                 },
             })) || []
         );
     } catch (error) {
-        return null;
+        return [];
     }
 };
 

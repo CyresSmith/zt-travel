@@ -3,7 +3,7 @@ import { getLocale } from 'next-intl/server';
 import { getLocaleValue } from '@lib/utils';
 import { TagType } from '@prisma/client';
 
-import AddEventForm from '@components/dashboard/add-event/add-event-form';
+import AddEventForm from '@components/dashboard/add-event';
 
 import { getEventCategories } from '@data/event-categories';
 import { getTagsByType } from '@data/tags';

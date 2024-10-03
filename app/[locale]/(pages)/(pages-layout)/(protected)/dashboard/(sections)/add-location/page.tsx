@@ -2,7 +2,7 @@ import { getLocale } from 'next-intl/server';
 
 import { getLocaleValue } from '@lib/utils';
 
-import AddLocationForm from '@components/dashboard/add-location/add-location-form';
+import AddLocationForm from '@components/dashboard/add-location';
 
 import { getCommunities } from '@data/community';
 import { getDistricts } from '@data/district';

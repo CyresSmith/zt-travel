@@ -13,7 +13,7 @@ import { AddPlaceSchema } from '@lib/schemas';
 import { getFileUri } from '@lib/utils';
 import type { z } from 'zod';
 
-import LocationHeaderPreview from './location-header-preview';
+import MainImageLoad from '../main-image-load';
 
 import { Button } from '@ui/button';
 import { Form } from '@ui/form';
@@ -150,6 +150,11 @@ const AddLocationForm = ({ categories, districts, communities }: Props) => {
 
         const slug = nameEn.split(' ').join('-').toLowerCase();
 
+        const resetState = () => {
+            form.reset();
+            setFileData(null);
+        };
+
         startTransition(async () => {
             const slugExist = await getPlaceBySlug(slug);
 
@@ -219,6 +224,8 @@ const AddLocationForm = ({ categories, districts, communities }: Props) => {
                                 description: successMessage,
                                 variant: 'success',
                             });
+
+                            resetState();
                         }
 
                         if (status === ResponseStatus.ERROR) {
@@ -231,6 +238,8 @@ const AddLocationForm = ({ categories, districts, communities }: Props) => {
                         return;
                     }
                 }
+
+                resetState();
 
                 toast({
                     title: 'Success',
@@ -248,7 +257,8 @@ const AddLocationForm = ({ categories, districts, communities }: Props) => {
 
     return (
         <div>
-            <LocationHeaderPreview
+            <MainImageLoad
+                isFileData={!!fileData}
                 setFileData={setFileData}
                 isPending={isPending}
                 title={t('addImage')}

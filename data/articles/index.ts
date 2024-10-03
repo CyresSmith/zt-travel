@@ -1,23 +1,21 @@
 import prisma from '@lib/prisma';
 import type { PaginationDto } from '@lib/types';
 import { getPagination } from '@lib/utils';
-import type { Event } from '@prisma/client';
+import type { Article } from '@prisma/client';
 
-import type { EventBasicInfo } from './types';
+import type { ArticleBasicInfo } from './types';
 
-export const getEvents = async (dto: PaginationDto): Promise<EventBasicInfo[]> => {
-    const eventsData = await prisma.event.findMany({
+export const getArticles = async (dto: PaginationDto): Promise<ArticleBasicInfo[]> => {
+    const articlesData = await prisma.article.findMany({
         ...getPagination(dto),
         select: {
             id: true,
             slug: true,
-            rating: true,
             image: true,
-            address: true,
             desc: true,
+            text: true,
             name: true,
-            start: true,
-            duration: true,
+            createdAt: true,
             tags: {
                 select: {
                     tag: {
@@ -32,17 +30,17 @@ export const getEvents = async (dto: PaginationDto): Promise<EventBasicInfo[]> =
         },
     });
 
-    const events = eventsData.map(event => ({
-        ...event,
-        tags: event.tags.map(tagRelation => tagRelation.tag),
+    const articles = articlesData.map(article => ({
+        ...article,
+        tags: article.tags.map(tagRelation => tagRelation.tag),
     }));
 
-    return events;
+    return articles;
 };
 
-export const getEventById = async (id: string): Promise<Event | null> => {
+export const getArticleById = async (id: string): Promise<Article | null> => {
     try {
-        return await prisma.event.findUnique({
+        return await prisma.article.findUnique({
             where: { id },
         });
     } catch (error) {
@@ -50,9 +48,9 @@ export const getEventById = async (id: string): Promise<Event | null> => {
     }
 };
 
-export const getEventBySlug = async (slug: string): Promise<Event | null> => {
+export const getArticleBySlug = async (slug: string): Promise<Article | null> => {
     try {
-        return await prisma.event.findUnique({
+        return await prisma.article.findUnique({
             where: { slug },
         });
     } catch (error) {
@@ -60,9 +58,9 @@ export const getEventBySlug = async (slug: string): Promise<Event | null> => {
     }
 };
 
-export const getEventsByTagId = async (tagId: string): Promise<Event[] | null> => {
+export const getArticlesByTagId = async (tagId: string): Promise<Article[] | null> => {
     try {
-        return await prisma.event.findMany({
+        return await prisma.article.findMany({
             where: { tags: { some: { tagId } } },
         });
     } catch (error) {

@@ -174,3 +174,38 @@ export const AddEventSchema = z.object({
     ),
     // placeId: z.string().optional().or(z.literal('')),
 });
+
+export const AddArticleSchema = z.object({
+    nameUk: z
+        .string()
+        .min(3, { message: 'Min 3 characters' })
+        .regex(ukRegex, { message: 'Cyrillic symbols required' }),
+    nameEn: z
+        .string()
+        .min(3, { message: 'Min 3 characters' })
+        .regex(enRegex, { message: 'Latin symbols required' }),
+    descUk: z
+        .string()
+        .min(30, { message: 'Min 30 characters' })
+        .regex(ukRegex, { message: 'Cyrillic symbols required' }),
+    descEn: z
+        .string()
+        .min(30, { message: 'Min 30 characters' })
+        .regex(enRegex, { message: 'Latin symbols required' }),
+    textUk: z
+        .string()
+        .min(50, { message: 'Min 50 characters' })
+        .regex(ukRegex, { message: 'Cyrillic symbols required' }),
+    textEn: z
+        .string()
+        .min(50, { message: 'Min 50 characters' })
+        .regex(enRegex, { message: 'Latin symbols required' }),
+    image: z.string().optional().or(z.literal('')),
+    tags: z.array(
+        z.object({
+            value: z.string(),
+            label: z.string(),
+        })
+    ),
+    // placeId: z.string().optional().or(z.literal('')),
+});

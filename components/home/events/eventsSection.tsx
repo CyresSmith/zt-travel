@@ -12,12 +12,7 @@ const EventsSection = async () => {
     const events = await getEvents({ take: 6 });
 
     return (
-        <HomeSection
-            title={t('events-title')}
-            href={`events`}
-            linkLabel={t('events-link-label')}
-            light
-        >
+        <HomeSection title={t('events-title')} href={`events`} linkLabel={t('events-link-label')}>
             <SectionCarousel
                 items={events.map((event, i) => (
                     <EventItem key={i} event={event} />

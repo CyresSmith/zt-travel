@@ -8,8 +8,10 @@
         "hero-link": "More",
         "events-title": "Current events",
         "places-title": "Popular places",
+        "news-title": "News",
         "events-link-label": "View all events",
-        "places-link-label": "View all locations"
+        "places-link-label": "View all locations",
+        "news-link-label": "View all news"
     },
     "header": {
         "title": "Travel through Zhytomyr region",
@@ -60,7 +62,8 @@
         "menu": {
             "dashboard": "Dashboard",
             "addLocation": "Add place",
-            "addEvent": "Add event"
+            "addEvent": "Add event",
+            "addNews": "Add news"
         },
         "addLocation": {
             "addImage": "Click to add or drag a file here",
@@ -100,6 +103,17 @@
             "duration": "Event duration",
             "tags": "Tags",
             "periodic": "Periodic"
+        },
+        "addNews": {
+            "addImage": "Click to add or drag a file here",
+            "nameUk": "Title in Ukrainian",
+            "nameEn": "Title in English",
+            "descUk": "Description in Ukrainian",
+            "descEn": "Description in English",
+            "textUk": "Text in Ukrainian",
+            "textEn": "Text in English",
+            "submit": "Add article",
+            "tags": "Tags"
         }
     }
 }

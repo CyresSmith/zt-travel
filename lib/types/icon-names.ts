@@ -34,6 +34,7 @@ export type IconName =
 	| "m-6"
 	| "mailbox"
 	| "map-point"
+	| "notes"
 	| "phone-calling"
 	| "point-on-map"
 	| "s-1"

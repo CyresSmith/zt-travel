@@ -3,7 +3,7 @@ import { enRegex, ukRegex } from '@lib/regexps';
 import type { PaginationDto } from '@lib/types';
 import type { JsonObject, JsonValue } from '@prisma/client/runtime/library';
 import { type ClassValue, clsx } from 'clsx';
-import { getMilliseconds } from 'date-fns';
+import { setHours, setMinutes } from 'date-fns';
 import { twMerge } from 'tailwind-merge';
 
 import type { LocaleType } from '@i18n/routing';
@@ -45,4 +45,20 @@ export const getFileUri = async (file: File): Promise<string> => {
         };
         reader.readAsDataURL(file);
     });
+};
+
+export const getHoursAndMinutesFromString = (time: string) => {
+    return time.split(':').map(str => parseInt(str, 10));
+};
+
+export const getDateWithTime = (time: string, date: Date) => {
+    const [hours, minutes] = getHoursAndMinutesFromString(time);
+    return setHours(setMinutes(date, minutes), hours);
+};
+
+export const filterUndefinedValues = (object: object) => {
+    return Object.entries(object).reduce((acc: Record<string, unknown>, [key, value]) => {
+        if (value) acc[key] = value;
+        return acc;
+    }, {});
 };
