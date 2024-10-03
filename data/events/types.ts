@@ -8,7 +8,7 @@ export type EventBasicInfo = Pick<
     'id' | 'image' | 'rating' | 'slug' | 'name' | 'address' | 'desc' | 'start' | 'duration'
 > & { tags: TagBasicInfo[] };
 
-export type AddEventDto = Partial<Pick<Event, 'url' | 'categoryId'>> & {
+export type AddEventDto = Partial<Pick<Event, 'url'>> & {
     name: StringWithLocales;
     desc: StringWithLocales;
     address: StringWithLocales;

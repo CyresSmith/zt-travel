@@ -55,3 +55,10 @@ export const getDateWithTime = (time: string, date: Date) => {
     const [hours, minutes] = getHoursAndMinutesFromString(time);
     return setHours(setMinutes(date, minutes), hours);
 };
+
+export const filterUndefinedValues = (object: object) => {
+    return Object.entries(object).reduce((acc: Record<string, unknown>, [key, value]) => {
+        if (value) acc[key] = value;
+        return acc;
+    }, {});
+};

@@ -8,26 +8,26 @@ import SectionCard from '../section-card/section-card';
 
 import type { LocaleType } from '@i18n/routing';
 
-import type { EventBasicInfo } from '@data/events/types';
+import type { ArticleBasicInfo } from '@data/articles/types';
 
-type Props = { event: EventBasicInfo };
+type Props = { article: ArticleBasicInfo };
 
-const EventItem = async ({ event: { address, image, name, start, tags, slug } }: Props) => {
+const EventItem = async ({ article: { desc, image, name, tags, createdAt, slug } }: Props) => {
     const locale = await getLocale();
 
     const links = [
-        { href: '', icon: 'calendar-add' as IconName, label: format(start, 'PPPP') },
-        { href: '', icon: 'map-point' as IconName, label: getLocaleValue(address, locale) },
+        { href: '', icon: 'calendar-add' as IconName, label: format(createdAt, 'PPPP') },
     ];
 
     return (
         <SectionCard
             image={image || ''}
             title={getLocaleValue(name, locale)}
-            titleHref={`events/${slug}`}
-            tags={tags.map(tag => ({ ...tag, slug: `events/tag=${tag.slug}` }))}
+            titleHref={`news/${slug}`}
+            tags={tags.map(tag => ({ ...tag, slug: `news/tag=${tag.slug}` }))}
             links={links}
             locale={locale as LocaleType}
+            desc={getLocaleValue(desc, locale)}
         />
     );
 };

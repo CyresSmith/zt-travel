@@ -7,7 +7,7 @@ import clsx from 'clsx';
 
 import CardLink from './card-link';
 
-import karier from '@assets/images/druzhbivskyy-karier.jpg';
+import Icon from '@components/icon';
 
 import type { LocaleType } from '@i18n/routing';
 import { Link } from '@i18n/routing';
@@ -18,40 +18,43 @@ type Props = {
     image: string;
     title: string;
     titleHref: string;
-    tags: TagBasicInfo[];
-    links: { label: string; href: string; icon: IconName }[];
+    tags?: TagBasicInfo[];
+    links: { label: string; href?: string; icon: IconName }[];
     locale: LocaleType;
+    desc?: string;
 };
 
-const SectionCard = async ({ image, title, titleHref, tags, links, locale }: Props) => {
+const SectionCard = async ({ image, title, titleHref, tags = [], links, locale, desc }: Props) => {
     return (
         <li
             className={clsx(
                 'flex h-[400px] flex-col overflow-hidden rounded-3xl bg-themeBg text-themeFg shadow-main'
             )}
         >
-            <div className="relative h-[50%] w-full">
-                <Image
-                    src={image || karier}
-                    alt={title}
-                    placeholder="empty"
-                    quality={100}
-                    fill
-                    style={{
-                        objectFit: 'cover',
-                    }}
-                />
+            <div className="relative flex h-[50%] w-full items-center justify-center bg-themeSecondary">
+                {image ? (
+                    <Image
+                        src={image}
+                        alt={title}
+                        placeholder="empty"
+                        quality={100}
+                        fill
+                        style={{
+                            objectFit: 'cover',
+                        }}
+                    />
+                ) : (
+                    <Icon name="image" width={50} height={50} className="fill-themeBg" />
+                )}
 
                 {tags && tags.length > 0 && (
                     <ul className="absolute left-5 top-5 flex flex-col items-start gap-2">
-                        {tags.map(({ id, name }) => (
+                        {tags.map(({ id, name, slug }) => (
                             <li
                                 key={id}
                                 className={`rounded-full bg-themeYellow/80 px-2 py-1 text-m text-themeFg hover:bg-themeYellow ${THEME_TRANSITION}`}
                             >
-                                <Link href={`events?tag=${id}`}>
-                                    {getLocaleValue(name, locale)}
-                                </Link>
+                                <Link href={slug}>{getLocaleValue(name, locale)}</Link>
                             </li>
                         ))}
                     </ul>
@@ -66,6 +69,8 @@ const SectionCard = async ({ image, title, titleHref, tags, links, locale }: Pro
                         {title}
                     </h4>
                 </Link>
+
+                {desc && <p className="flex-1 truncate text-s">{desc}</p>}
 
                 <ul className="flex flex-col gap-2">
                     {links &&

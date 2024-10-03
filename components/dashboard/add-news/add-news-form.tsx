@@ -1,143 +1,91 @@
 'use client';
 
 import { useSession } from 'next-auth/react';
-import type { ChangeEventHandler } from 'react';
 import { useState, useTransition } from 'react';
-import { useForm, useWatch } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 
 import { useTranslations } from 'next-intl';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { ResponseStatus } from '@lib/enums';
 import { useToast } from '@lib/hooks/use-toast';
-import { AddEventSchema } from '@lib/schemas';
-import { getDateWithTime, getFileUri, getHoursAndMinutesFromString } from '@lib/utils';
-import { hoursToMilliseconds, minutesToMilliseconds } from 'date-fns';
+import { AddArticleSchema } from '@lib/schemas';
+import { getFileUri } from '@lib/utils';
 import type { z } from 'zod';
 
 import MainImageLoad from '../main-image-load';
 
 import { Button } from '@ui/button';
-import { Form, FormLabel } from '@ui/form';
-import { Input } from '@ui/input';
+import { Form } from '@ui/form';
 
 import type { SelectItemType } from '@components/form-input-field';
 import FormInputField from '@components/form-input-field';
 
-import { getEventBySlug } from '@data/events';
+import { getArticleBySlug } from '@data/articles';
 
+import addArticle from '@actions/articles/add-article';
+import updateArticle from '@actions/articles/update-article';
 import uploadToCloudinary from '@actions/cloudinary/upload-image';
-import addEvent from '@actions/events/add-event';
-import updateEvent from '@actions/events/update-event';
 
-export type AddEventValues = z.infer<typeof AddEventSchema>;
+export type AddArticleValues = z.infer<typeof AddArticleSchema>;
 
 const inputsWithLang = [
     { name: 'nameUk', type: 'text' },
     { name: 'nameEn', type: 'text' },
     { name: 'descUk', type: 'textarea' },
     { name: 'descEn', type: 'textarea' },
-    { name: 'addressUk', type: 'address' },
-    { name: 'addressEn', type: 'address' },
-];
-
-const inputsInfo = [
-    { name: 'phone', type: 'phone' },
-    { name: 'email', type: 'email' },
-    { name: 'url', type: 'text' },
-    // { name: 'categoryId', type: 'select' },
+    { name: 'textUk', type: 'textarea' },
+    { name: 'textEn', type: 'textarea' },
     { name: 'tags', type: 'multi' },
-    { name: 'start', type: 'date' },
-    { name: 'duration', type: 'time' },
-    { name: 'periodic', type: 'check' },
 ];
-
-const requiredInfo = ['phone', 'start', 'duration'];
 
 const defaultValues = {
     nameUk: '',
     nameEn: '',
     descUk: '',
     descEn: '',
-    addressUk: '',
-    addressEn: '',
-    // categoryId: '',
+    textUk: '',
+    textEn: '',
     tags: [],
-    email: '',
-    phone: '',
-    url: '',
-    start: new Date(),
-    duration: '01:00',
-    periodic: false,
-    placeId: '',
 };
 
 type Props = {
-    categories: SelectItemType[];
     tags: SelectItemType[];
 };
 
-const AddNewsForm = ({ categories, tags }: Props) => {
+const AddNewsForm = ({ tags }: Props) => {
     const { data: session } = useSession();
-    const t = useTranslations('dashboard.addEvent');
+    const t = useTranslations('dashboard.addNews');
     const { toast } = useToast();
     const [fileData, setFileData] = useState<null | { file: File; fileName: string }>(null);
     const [isPending, startTransition] = useTransition();
-    const [timeValue, setTimeValue] = useState<string>('12:00');
 
     const userId = session?.user?.id;
 
-    const form = useForm<AddEventValues>({
-        resolver: zodResolver(AddEventSchema),
+    const form = useForm<AddArticleValues>({
+        resolver: zodResolver(AddArticleSchema),
         defaultValues,
         mode: 'onChange',
         reValidateMode: 'onChange',
         shouldUseNativeValidation: false,
     });
 
-    const start = useWatch({
-        control: form.control,
-        name: 'start',
-    });
-
     const { isValid, errors } = form.formState;
 
-    const handleTimeChange: ChangeEventHandler<HTMLInputElement> = e => {
-        const time = e.target.value;
-        form.setValue('start', getDateWithTime(time, start));
-        setTimeValue(time);
-    };
-
-    const handleSubmit = async (values: AddEventValues) => {
+    const handleSubmit = async (values: AddArticleValues) => {
         if (!userId) return;
 
-        const {
-            nameEn,
-            nameUk,
-            addressEn,
-            addressUk,
-            descEn,
-            descUk,
-            phone,
-            start,
-            duration,
-            periodic,
-            tags: tagsValues,
-            ...rest
-        } = values;
-
-        const restValues = Object.entries(rest).reduce(
-            (acc: Record<string, string | number | boolean | string[]>, [key, value]) => {
-                if (value) acc[key] = value;
-                return acc;
-            },
-            {}
-        );
+        const { nameEn, nameUk, textEn, textUk, descEn, descUk, tags: tagsValues } = values;
 
         const slug = nameEn.split(' ').join('-').toLowerCase();
 
+        const resetState = () => {
+            form.reset();
+            setFileData(null);
+        };
+
         startTransition(async () => {
-            const slugExist = await getEventBySlug(slug);
+            const slugExist = await getArticleBySlug(slug);
 
             if (slugExist) {
                 toast({
@@ -149,11 +97,6 @@ const AddNewsForm = ({ categories, tags }: Props) => {
                 return;
             }
 
-            const [hours, minutes] = getHoursAndMinutesFromString(duration);
-            const durationInMs = hoursToMilliseconds(hours) + minutesToMilliseconds(minutes);
-
-            const startDate = getDateWithTime(timeValue, start);
-
             const tagsData = tagsValues.reduce((acc: string[], { value }) => {
                 const exist = tags.find(tag => tag.label === value);
                 if (exist) acc.push(exist.value);
@@ -162,19 +105,14 @@ const AddNewsForm = ({ categories, tags }: Props) => {
 
             const data = {
                 name: { en: nameEn, uk: nameUk },
-                address: { en: addressEn, uk: addressUk },
                 desc: { en: descEn, uk: descUk },
-                phone,
+                text: { en: textEn, uk: textUk },
                 slug,
                 userId,
-                start: startDate,
-                duration: durationInMs,
-                periodic,
                 tags: tagsData,
-                ...restValues,
             };
 
-            const { status, message, data: event } = await addEvent(data);
+            const { status, message, data: article } = await addArticle(data);
 
             if (status === ResponseStatus.ERROR) {
                 toast({
@@ -184,8 +122,8 @@ const AddNewsForm = ({ categories, tags }: Props) => {
                 });
             }
 
-            if (status === ResponseStatus.SUCCESS && event) {
-                const successMessage = 'Event created successfully';
+            if (status === ResponseStatus.SUCCESS && article) {
+                const successMessage = 'Article created successfully';
 
                 if (fileData) {
                     const fileUri = await getFileUri(fileData.file);
@@ -193,21 +131,21 @@ const AddNewsForm = ({ categories, tags }: Props) => {
                     const { status, url } = await uploadToCloudinary({
                         fileUri,
                         fileName: fileData.fileName,
-                        folder: `event_${slug}`,
+                        folder: `article_${slug}`,
                     });
 
                     if (status === ResponseStatus.ERROR) {
                         toast({
                             title: String(status),
-                            description: 'Event created, but image load failed!',
+                            description: 'Article created, but image load failed!',
                         });
                     }
 
                     if (url) {
                         const data = { image: url };
 
-                        const { status } = await updateEvent({
-                            id: (event as { id: string }).id,
+                        const { status } = await updateArticle({
+                            id: (article as { id: string }).id,
                             data,
                         });
 
@@ -217,6 +155,8 @@ const AddNewsForm = ({ categories, tags }: Props) => {
                                 description: successMessage,
                                 variant: 'success',
                             });
+
+                            resetState();
                         }
 
                         if (status === ResponseStatus.ERROR) {
@@ -230,7 +170,7 @@ const AddNewsForm = ({ categories, tags }: Props) => {
                     }
                 }
 
-                form.reset();
+                resetState();
 
                 toast({
                     title: 'Success',
@@ -243,77 +183,36 @@ const AddNewsForm = ({ categories, tags }: Props) => {
 
     return (
         <div>
-            <MainImageLoad setFileData={setFileData} isPending={isPending} title={t('addImage')} />
+            <MainImageLoad
+                isFileData={!!fileData}
+                setFileData={setFileData}
+                isPending={isPending}
+                title={t('addImage')}
+            />
 
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(handleSubmit)} className="flex flex-col gap-10">
                     <div className="grid grid-cols-2 gap-10">
                         {inputsWithLang.map(item => (
-                            <FormInputField<AddEventValues>
+                            <FormInputField<AddArticleValues>
                                 {...item}
                                 label={t(item.name)}
                                 key={item.name}
                                 control={form.control}
                                 required
                                 disabled={isPending}
-                                error={!!errors[item.name as keyof AddEventValues]}
-                                name={item.name as keyof AddEventValues}
+                                error={!!errors[item.name as keyof AddArticleValues]}
+                                name={item.name as keyof AddArticleValues}
+                                {...(item.name === 'tags'
+                                    ? {
+                                          selectItems: tags.map(({ label }) => ({
+                                              label,
+                                              value: label,
+                                          })),
+                                      }
+                                    : {})}
                             />
                         ))}
-                    </div>
-
-                    <div className="grid grid-cols-2 gap-10">
-                        {inputsInfo.map(item => {
-                            return item.name === 'start' ? (
-                                <div className="space-y-2" key={item.name}>
-                                    <div>
-                                        <FormLabel>{t(item.name)}</FormLabel>
-                                        <span className="ml-1 font-bold">*</span>
-                                    </div>
-
-                                    <div className="grid grid-cols-2 gap-5">
-                                        <Input
-                                            disabled={isPending}
-                                            type="time"
-                                            value={timeValue}
-                                            onChange={handleTimeChange}
-                                            required
-                                        />
-
-                                        <FormInputField<AddEventValues>
-                                            {...item}
-                                            control={form.control}
-                                            disabled={isPending}
-                                            error={!!errors[item.name as keyof AddEventValues]}
-                                            name={item.name as keyof AddEventValues}
-                                            required
-                                        />
-                                    </div>
-                                </div>
-                            ) : (
-                                <FormInputField<AddEventValues>
-                                    {...item}
-                                    label={t(item.name)}
-                                    key={item.name}
-                                    control={form.control}
-                                    disabled={isPending}
-                                    error={!!errors[item.name as keyof AddEventValues]}
-                                    name={item.name as keyof AddEventValues}
-                                    required={requiredInfo.includes(item.name)}
-                                    {...(item.name === 'categoryId' || item.name === 'tags'
-                                        ? {
-                                              selectItems:
-                                                  item.name === 'categoryId'
-                                                      ? categories
-                                                      : tags.map(({ label }) => ({
-                                                            value: label,
-                                                            label,
-                                                        })),
-                                          }
-                                        : {})}
-                                />
-                            );
-                        })}
 
                         <div className="flex items-end">
                             <Button

@@ -145,6 +145,11 @@ const AddEventForm = ({ categories, tags }: Props) => {
 
         const slug = nameEn.split(' ').join('-').toLowerCase();
 
+        const resetState = () => {
+            form.reset();
+            setFileData(null);
+        };
+
         startTransition(async () => {
             const slugExist = await getEventBySlug(slug);
 
@@ -226,6 +231,8 @@ const AddEventForm = ({ categories, tags }: Props) => {
                                 description: successMessage,
                                 variant: 'success',
                             });
+
+                            resetState();
                         }
 
                         if (status === ResponseStatus.ERROR) {
@@ -239,7 +246,7 @@ const AddEventForm = ({ categories, tags }: Props) => {
                     }
                 }
 
-                form.reset();
+                resetState();
 
                 toast({
                     title: 'Success',
@@ -252,7 +259,12 @@ const AddEventForm = ({ categories, tags }: Props) => {
 
     return (
         <div>
-            <MainImageLoad setFileData={setFileData} isPending={isPending} title={t('addImage')} />
+            <MainImageLoad
+                isFileData={!!fileData}
+                setFileData={setFileData}
+                isPending={isPending}
+                title={t('addImage')}
+            />
 
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(handleSubmit)} className="flex flex-col gap-10">

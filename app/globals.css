@@ -40,7 +40,7 @@
 }
 
 body {
-    color: white;
+    color: hsl(var(--theme-bg));
     background: hsl(var(--theme-fg));
     font-family: Nunito, Arial, Helvetica, sans-serif;
     font-size: 16px;

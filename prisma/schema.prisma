@@ -187,39 +187,52 @@ model Event {
 }
 
 model Tag {
-  id        String         @id @default(uuid())
-  createdAt DateTime       @default(now()) @map("created_at")
-  updatedAt DateTime       @updatedAt @map("updated_at")
+  id        String           @id @default(uuid())
+  createdAt DateTime         @default(now()) @map("created_at")
+  updatedAt DateTime         @updatedAt @map("updated_at")
   type      TagType
-  name      Json?
+  name      Json
+  slug      String
+  articles  TagsOnArticles[]
   events    TagsOnEvents[]
 }
 
 model TagsOnEvents {
-  event     Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
   eventId   String
-  tag       Tag      @relation(fields: [tagId], references: [id])
   tagId     String
   createdAt DateTime @default(now()) @map("created_at")
+  event     Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  tag       Tag      @relation(fields: [tagId], references: [id])
 
   @@id([eventId, tagId])
 }
 
 model Article {
-  id        String   @id @default(uuid())
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
+  id        String           @id @default(uuid())
+  createdAt DateTime         @default(now()) @map("created_at")
+  updatedAt DateTime         @updatedAt @map("updated_at")
   image     String?
-  images    String[] @default([])
-  slug      String   @unique
-  views     Int      @default(0)
-  placeId   String?  @map("place_id")
-  userId    String?  @map("user_id")
-  name      Json?
-  desc      Json?
-  text      Json?
-  place     Place?   @relation(fields: [placeId], references: [id])
-  user      User?    @relation(fields: [userId], references: [id], onDelete: NoAction)
+  images    String[]         @default([])
+  slug      String           @unique
+  views     Int              @default(0)
+  placeId   String?          @map("place_id")
+  userId    String           @map("user_id")
+  name      Json
+  desc      Json
+  text      Json
+  place     Place?           @relation(fields: [placeId], references: [id])
+  user      User             @relation(fields: [userId], references: [id], onDelete: NoAction)
+  tags      TagsOnArticles[]
+}
+
+model TagsOnArticles {
+  articleId String
+  tagId     String
+  createdAt DateTime @default(now()) @map("created_at")
+  article   Article  @relation(fields: [articleId], references: [id], onDelete: Cascade)
+  tag       Tag      @relation(fields: [tagId], references: [id])
+
+  @@id([articleId, tagId])
 }
 
 model District {

@@ -150,6 +150,11 @@ const AddLocationForm = ({ categories, districts, communities }: Props) => {
 
         const slug = nameEn.split(' ').join('-').toLowerCase();
 
+        const resetState = () => {
+            form.reset();
+            setFileData(null);
+        };
+
         startTransition(async () => {
             const slugExist = await getPlaceBySlug(slug);
 
@@ -219,6 +224,8 @@ const AddLocationForm = ({ categories, districts, communities }: Props) => {
                                 description: successMessage,
                                 variant: 'success',
                             });
+
+                            resetState();
                         }
 
                         if (status === ResponseStatus.ERROR) {
@@ -231,6 +238,8 @@ const AddLocationForm = ({ categories, districts, communities }: Props) => {
                         return;
                     }
                 }
+
+                resetState();
 
                 toast({
                     title: 'Success',
@@ -248,7 +257,12 @@ const AddLocationForm = ({ categories, districts, communities }: Props) => {
 
     return (
         <div>
-            <MainImageLoad setFileData={setFileData} isPending={isPending} title={t('addImage')} />
+            <MainImageLoad
+                isFileData={!!fileData}
+                setFileData={setFileData}
+                isPending={isPending}
+                title={t('addImage')}
+            />
 
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(handleSubmit)} className="flex flex-col gap-10">

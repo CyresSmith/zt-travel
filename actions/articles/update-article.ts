@@ -7,11 +7,14 @@ import type { ActionResponse } from '@lib/types';
 import { filterUndefinedValues } from '@lib/utils';
 import { UserRole } from '@prisma/client';
 
-import type { UpdateEventDto } from '@data/events/types';
+import type { UpdateArticleDto } from '@data/articles/types';
 
-type UpdateEventData = { id: string; data: UpdateEventDto };
+type UpdateArticleData = { id: string; data: UpdateArticleDto };
 
-const updateEvent = async ({ id, data: eventData }: UpdateEventData): Promise<ActionResponse> => {
+const updateArticle = async ({
+    id,
+    data: articleData,
+}: UpdateArticleData): Promise<ActionResponse> => {
     try {
         const session = await auth();
         const user = session?.user;
@@ -21,16 +24,16 @@ const updateEvent = async ({ id, data: eventData }: UpdateEventData): Promise<Ac
             return { status: ResponseStatus.ERROR, message: 'Forbidden' };
         }
 
-        const { tags, ...rest } = eventData;
+        const { tags, ...rest } = articleData;
 
         let data = filterUndefinedValues(rest);
 
         if (tags && tags.length > 0) {
-            await prisma.tagsOnEvents.deleteMany({ where: { eventId: id } });
+            await prisma.tagsOnArticles.deleteMany({ where: { articleId: id } });
 
             data = Object.assign(data, {
                 tags: {
-                    create: eventData.tags?.map(id => ({
+                    create: articleData.tags?.map(id => ({
                         createdAt: new Date(),
                         tag: { connect: { id } },
                     })),
@@ -38,10 +41,7 @@ const updateEvent = async ({ id, data: eventData }: UpdateEventData): Promise<Ac
             });
         }
 
-        const result = await prisma.event.update({
-            where: { id },
-            data,
-        });
+        const result = await prisma.article.update({ where: { id }, data });
 
         if (result) {
             return { status: ResponseStatus.SUCCESS, message: 'Updated' };
@@ -49,9 +49,9 @@ const updateEvent = async ({ id, data: eventData }: UpdateEventData): Promise<Ac
             return { status: ResponseStatus.ERROR, message: 'Failed' };
         }
     } catch (error) {
-        console.error('🚀 ~ addEvent ~ error:', error);
+        console.error('🚀 ~ addArticle ~ error:', error);
         return { status: ResponseStatus.ERROR, message: 'Something went wrong!' };
     }
 };
 
-export default updateEvent;
+export default updateArticle;
