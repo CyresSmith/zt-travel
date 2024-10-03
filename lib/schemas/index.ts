@@ -32,24 +32,33 @@ export const SignUpSchema = z
         message: 'Паролі мають співпадати',
     });
 
-const zPhone = z.string().transform((arg, ctx) => {
-    const phone = parsePhoneNumberFromString(arg, {
-        defaultCountry: 'UA',
-        defaultCallingCode: '+380',
-        extract: false,
+const zPhone = z
+    .string()
+    .optional()
+    .transform((arg, ctx) => {
+        if (!arg) return arg;
+
+        const phone = parsePhoneNumberFromString(arg, {
+            defaultCountry: 'UA',
+            defaultCallingCode: '+380',
+            extract: false,
+        });
+
+        if (phone && phone.isValid()) {
+            const code = phone.isPossible();
+
+            console.log('🚀 ~ .transform ~ code:', code);
+
+            return phone.formatInternational();
+        }
+
+        ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: 'Invalid phone number',
+        });
+
+        return z.NEVER;
     });
-
-    if (phone && phone.isValid()) {
-        return phone.formatInternational();
-    }
-
-    ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        message: 'Invalid phone number',
-    });
-
-    return z.NEVER;
-});
 
 export const AddPlaceSchema = z
     .object({
@@ -80,37 +89,41 @@ export const AddPlaceSchema = z
         categoryId: z.string().min(1, { message: 'Category required!' }),
         districtId: z.string().min(1, { message: 'District required!' }),
         communityId: z.string().min(1, { message: 'Community required!' }),
-        email: z.string().email({ message: 'Not valid email!' }).optional(),
-        phone: zPhone.optional(),
+        email: z.string().email({ message: 'Not valid email!' }).optional().nullable(),
+        phone: zPhone,
         url: z
             .string()
             .optional()
+            .nullable()
             .refine(value => !value || enRegex.test(value), { message: 'Latin symbols required' }),
 
         facebook: z
             .string()
             .optional()
+            .nullable()
             .refine(value => !value || enRegex.test(value), { message: 'Latin symbols required' }),
 
         instagram: z
             .string()
             .optional()
+            .nullable()
             .refine(value => !value || enRegex.test(value), { message: 'Latin symbols required' }),
 
         gmapsUrl: z
             .string()
             .optional()
+            .nullable()
             .refine(value => !value || enRegex.test(value), { message: 'Latin symbols required' }),
-        latitude: z.string().optional(),
-        longitude: z.string().optional(),
-        // logo: z.string().optional(),
-        // image: z.string().optional(),
+        latitude: z.string().optional().nullable(),
+        longitude: z.string().optional().nullable(),
+        logo: z.string().optional().nullable(),
+        image: z.string().optional().nullable(),
         // images: z.string().array().optional(),
     })
     .refine(
         data => {
-            const latitudeExists = !!data.latitude;
-            const longitudeExists = !!data.longitude;
+            const latitudeExists = data.latitude !== undefined && data.latitude !== null;
+            const longitudeExists = data.longitude !== undefined && data.longitude !== null;
             return latitudeExists === longitudeExists;
         },
         {
