@@ -1,14 +1,12 @@
 'use client';
 
-import Link from 'next/link';
-
 import { THEME_TRANSITION } from '@lib/constants';
 import type { IconName } from '@lib/types/icon-names';
 import clsx from 'clsx';
 
 import Icon from '@components/icon';
 
-import { usePathname } from '@i18n/routing';
+import { Link, usePathname } from '@i18n/routing';
 
 export type DashboardMenuLinkProps = { icon: IconName; label: string; href: string };
 

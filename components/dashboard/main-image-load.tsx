@@ -12,7 +12,7 @@ type Props = {
     title: string;
 };
 
-const EventHeaderPreview = ({ setFileData, isPending, title }: Props) => {
+const MainImageLoad = ({ setFileData, isPending, title }: Props) => {
     const {
         fileName,
         file,
@@ -63,4 +63,4 @@ const EventHeaderPreview = ({ setFileData, isPending, title }: Props) => {
     );
 };
 
-export default EventHeaderPreview;
+export default MainImageLoad;

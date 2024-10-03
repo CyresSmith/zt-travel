@@ -60,7 +60,8 @@
         "menu": {
             "dashboard": "Dashboard",
             "addLocation": "Add place",
-            "addEvent": "Add event"
+            "addEvent": "Add event",
+            "addNews": "Add news"
         },
         "addLocation": {
             "addImage": "Click to add or drag a file here",
@@ -100,6 +101,7 @@
             "duration": "Event duration",
             "tags": "Tags",
             "periodic": "Periodic"
-        }
+        },
+        "addNews": {}
     }
 }

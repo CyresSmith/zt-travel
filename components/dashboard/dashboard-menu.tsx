@@ -15,9 +15,14 @@ const links: DashboardMenuLinkProps[] = [
         href: '/dashboard/add-location',
     },
     {
-        icon: 'bookmark',
+        icon: 'calendar-add',
         label: 'addEvent',
         href: '/dashboard/add-event',
+    },
+    {
+        icon: 'notes',
+        label: 'addNews',
+        href: '/dashboard/add-news',
     },
 ];
 

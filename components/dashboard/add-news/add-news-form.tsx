@@ -11,8 +11,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { ResponseStatus } from '@lib/enums';
 import { useToast } from '@lib/hooks/use-toast';
 import { AddEventSchema } from '@lib/schemas';
-import { getFileUri } from '@lib/utils';
-import { hoursToMilliseconds, minutesToMilliseconds, setHours, setMinutes } from 'date-fns';
+import { getDateWithTime, getFileUri, getHoursAndMinutesFromString } from '@lib/utils';
+import { hoursToMilliseconds, minutesToMilliseconds } from 'date-fns';
 import type { z } from 'zod';
 
 import MainImageLoad from '../main-image-load';
@@ -77,7 +77,7 @@ type Props = {
     tags: SelectItemType[];
 };
 
-const AddEventForm = ({ categories, tags }: Props) => {
+const AddNewsForm = ({ categories, tags }: Props) => {
     const { data: session } = useSession();
     const t = useTranslations('dashboard.addEvent');
     const { toast } = useToast();
@@ -101,15 +101,6 @@ const AddEventForm = ({ categories, tags }: Props) => {
     });
 
     const { isValid, errors } = form.formState;
-
-    const getHorsAndMinutesFromString = (time: string) => {
-        return time.split(':').map(str => parseInt(str, 10));
-    };
-
-    const getDateWithTime = (time: string, date: Date) => {
-        const [hours, minutes] = getHorsAndMinutesFromString(time);
-        return setHours(setMinutes(date, minutes), hours);
-    };
 
     const handleTimeChange: ChangeEventHandler<HTMLInputElement> = e => {
         const time = e.target.value;
@@ -158,7 +149,7 @@ const AddEventForm = ({ categories, tags }: Props) => {
                 return;
             }
 
-            const [hours, minutes] = getHorsAndMinutesFromString(duration);
+            const [hours, minutes] = getHoursAndMinutesFromString(duration);
             const durationInMs = hoursToMilliseconds(hours) + minutesToMilliseconds(minutes);
 
             const startDate = getDateWithTime(timeValue, start);
@@ -341,4 +332,4 @@ const AddEventForm = ({ categories, tags }: Props) => {
     );
 };
 
-export default AddEventForm;
+export default AddNewsForm;

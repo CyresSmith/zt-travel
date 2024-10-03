@@ -13,7 +13,7 @@ import { AddPlaceSchema } from '@lib/schemas';
 import { getFileUri } from '@lib/utils';
 import type { z } from 'zod';
 
-import LocationHeaderPreview from './location-header-preview';
+import MainImageLoad from '../main-image-load';
 
 import { Button } from '@ui/button';
 import { Form } from '@ui/form';
@@ -248,11 +248,7 @@ const AddLocationForm = ({ categories, districts, communities }: Props) => {
 
     return (
         <div>
-            <LocationHeaderPreview
-                setFileData={setFileData}
-                isPending={isPending}
-                title={t('addImage')}
-            />
+            <MainImageLoad setFileData={setFileData} isPending={isPending} title={t('addImage')} />
 
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(handleSubmit)} className="flex flex-col gap-10">
