@@ -115,5 +115,11 @@
             "submit": "Add article",
             "tags": "Tags"
         }
+    },
+    "places": {
+        "places-page-metadata": {
+            "title": "Interesting places of Zhytomyr region",
+            "description": "A collection of places in the Zhytomyr region that will captivate both tourists visiting this enchanting land and local residents eager to explore their native land more deeply."
+        }
     }
 }

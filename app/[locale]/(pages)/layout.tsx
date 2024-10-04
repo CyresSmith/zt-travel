@@ -12,14 +12,16 @@ import Header from '@components/header';
 
 interface RootLayoutProps {
     children: ReactNode;
-    params: WithLocaleParam;
 }
 
 export function generateStaticParams() {
     return routing.locales.map(locale => ({ locale }));
 }
 
-export default async function RootLayout({ children, params: { locale } }: RootLayoutProps) {
+export default async function RootLayout({
+    children,
+    params: { locale },
+}: RootLayoutProps & WithLocaleParam) {
     unstable_setRequestLocale(locale);
     const session = await auth();
 

@@ -24,7 +24,7 @@ type Props = {
     desc?: string;
 };
 
-const SectionCard = async ({ image, title, titleHref, tags = [], links, locale, desc }: Props) => {
+const SectionCard = ({ image, title, titleHref, tags = [], links, locale, desc }: Props) => {
     return (
         <li
             className={clsx(

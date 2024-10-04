@@ -1,4 +1,4 @@
-import { PER_PAGE } from '@lib/constants';
+import { DEFAULT_PER_PAGE } from '@lib/constants';
 import { enRegex, ukRegex } from '@lib/regexps';
 import type { PaginationDto } from '@lib/types';
 import type { JsonObject, JsonValue } from '@prisma/client/runtime/library';
@@ -14,9 +14,9 @@ export function cn(...inputs: ClassValue[]) {
 
 // export const cn = (...inputs: ClassValue[]) => clsx(inputs);
 
-export function getPagination(dto: PaginationDto) {
-    const page = dto.page || 1;
-    const take = dto.take || PER_PAGE;
+export function getPagination(dto?: PaginationDto) {
+    const page = dto?.page || 1;
+    const take = dto?.take || DEFAULT_PER_PAGE;
     const skip = (page - 1) * take;
 
     return { take, skip };

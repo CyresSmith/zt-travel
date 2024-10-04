@@ -12,8 +12,9 @@ module.exports = {
     ],
     ignorePatterns: ['dist', '.eslintrc.cjs'],
     parser: '@typescript-eslint/parser',
-    plugins: ['import', 'prettier'],
+    plugins: ['import', 'prettier', '@tanstack/query'],
     rules: {
+        '@tanstack/query/exhaustive-deps': 'error',
         '@typescript-eslint/consistent-type-imports': ['warn', { prefer: 'type-imports' }],
         'prettier/prettier': [
             'warn',

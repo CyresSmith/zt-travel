@@ -2,7 +2,7 @@ import { getLocale } from 'next-intl/server';
 
 import { getLocaleValue } from '@lib/utils';
 
-import SectionCard from '../section-card/section-card';
+import SectionCard from '../../section-card/section-card';
 
 import type { LocaleType } from '@i18n/routing';
 

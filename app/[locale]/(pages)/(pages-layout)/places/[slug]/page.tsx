@@ -51,7 +51,9 @@ const PlacesPage = async ({ params: { slug, locale } }: Props) => {
             <Container>
                 {place.image && <PlaceImage src={place.image} alt={placeTitle} />}
 
-                <h1 className={clsx(namu.className, 'mt-5 text-4xl text-themeBg')}>{placeTitle}</h1>
+                <h1 className={clsx(namu.className, 'mb-5 mt-10 text-4xl text-themeBg')}>
+                    {placeTitle}
+                </h1>
             </Container>
 
             <HomeSection>

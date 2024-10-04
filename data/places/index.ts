@@ -5,7 +5,7 @@ import type { Place } from '@prisma/client';
 
 import type { PlaceBasicInfo } from './types';
 
-export const getPlaces = async (dto: PaginationDto): Promise<PlaceBasicInfo[]> => {
+export const getPlaces = async (dto?: PaginationDto): Promise<PlaceBasicInfo[]> => {
     try {
         return (
             (await prisma.place.findMany({
