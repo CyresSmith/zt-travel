@@ -1,4 +1,6 @@
-import { getLocale } from 'next-intl/server';
+'use client';
+
+import { useLocale } from 'next-intl';
 
 import type { IconName } from '@lib/types/icon-names';
 import { getLocaleValue } from '@lib/utils';
@@ -12,8 +14,8 @@ import type { EventBasicInfo } from '@data/events/types';
 
 type Props = { event: EventBasicInfo };
 
-const EventItem = async ({ event: { address, image, name, start, tags, slug } }: Props) => {
-    const locale = await getLocale();
+const EventItem = ({ event: { address, image, name, start, tags, slug } }: Props) => {
+    const locale = useLocale();
 
     const links = [
         { href: '', icon: 'calendar-add' as IconName, label: format(start, 'PPPP') },

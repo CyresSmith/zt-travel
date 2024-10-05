@@ -1,57 +1,38 @@
 'use server';
 
-import { auth } from '@auth';
-import { ResponseStatus } from '@lib/enums';
 import prisma from '@lib/prisma';
-import type { ActionResponse } from '@lib/types';
 import { filterUndefinedValues } from '@lib/utils';
-import { UserRole } from '@prisma/client';
 
-import type { UpdateEventDto } from '@data/events/types';
+import { EventBasicInfoSelector } from '@data/events/selectors';
+import type { EventBasicInfo, UpdateEventDto } from '@data/events/types';
 
 type UpdateEventData = { id: string; data: UpdateEventDto };
 
-const updateEvent = async ({ id, data: eventData }: UpdateEventData): Promise<ActionResponse> => {
-    try {
-        const session = await auth();
-        const user = session?.user;
-        const role = user?.role;
+const updateEvent = async ({ id, data: eventData }: UpdateEventData): Promise<EventBasicInfo> => {
+    const { tags, ...rest } = eventData;
 
-        if (!user || !role || role !== UserRole.ADMIN) {
-            return { status: ResponseStatus.ERROR, message: 'Forbidden' };
-        }
+    let data = filterUndefinedValues(rest);
 
-        const { tags, ...rest } = eventData;
+    if (tags && tags.length > 0) {
+        await prisma.tagsOnEvents.deleteMany({ where: { eventId: id } });
 
-        let data = filterUndefinedValues(rest);
-
-        if (tags && tags.length > 0) {
-            await prisma.tagsOnEvents.deleteMany({ where: { eventId: id } });
-
-            data = Object.assign(data, {
-                tags: {
-                    create: eventData.tags?.map(id => ({
-                        createdAt: new Date(),
-                        tag: { connect: { id } },
-                    })),
-                },
-            });
-        }
-
-        const result = await prisma.event.update({
-            where: { id },
-            data,
+        data = Object.assign(data, {
+            tags: {
+                create: eventData.tags?.map(id => ({
+                    createdAt: new Date(),
+                    tag: { connect: { id } },
+                })),
+            },
         });
-
-        if (result) {
-            return { status: ResponseStatus.SUCCESS, message: 'Updated' };
-        } else {
-            return { status: ResponseStatus.ERROR, message: 'Failed' };
-        }
-    } catch (error) {
-        console.error('🚀 ~ addEvent ~ error:', error);
-        return { status: ResponseStatus.ERROR, message: 'Something went wrong!' };
     }
+
+    const result = await prisma.event.update({
+        where: { id },
+        data,
+        select: EventBasicInfoSelector,
+    });
+
+    return result as unknown as EventBasicInfo;
 };
 
 export default updateEvent;

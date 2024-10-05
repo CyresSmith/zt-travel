@@ -1,10 +1,13 @@
 'use server';
 
-import { auth } from '@auth';
-import { ResponseStatus } from '@lib/enums';
 import prisma from '@lib/prisma';
-import type { ActionResponse } from '@lib/types';
 import { UserRole } from '@prisma/client';
+
+import type { ActionResponse } from '@types';
+
+import { ResponseStatus } from '@enums';
+
+import { auth } from '@auth';
 
 import type { AddArticleDto } from '@data/articles/types';
 

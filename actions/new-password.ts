@@ -1,11 +1,12 @@
 'use server';
 
+import bcrypt from 'bcryptjs';
+import { z } from 'zod';
+
 import { getPasswordResetTokenByToken } from '@/data/password-reset-token';
 import { getUserByEmail } from '@/data/user';
 import { db } from '@/lib/db';
 import { NewPasswordSchema } from '@/schemas';
-import bcrypt from 'bcryptjs';
-import { z } from 'zod';
 
 type NewPasswordDto = {
     values: z.infer<typeof NewPasswordSchema>;

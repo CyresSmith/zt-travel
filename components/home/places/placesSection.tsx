@@ -1,20 +1,23 @@
-import { getTranslations } from 'next-intl/server';
+'use client';
+
+import { useTranslations } from 'next-intl';
 
 import PlaceItem from './placeItem';
 
 import HomeSection from '../home-section';
 import SectionCarousel from '../section-carousel';
 
-import { getPlaces } from '@data/places';
+import { usePlaces } from '@data/places/queries';
 
-const PlacesSection = async () => {
-    const t = await getTranslations('homePage');
-    const palaces = await getPlaces({ take: 6 });
+const PlacesSection = () => {
+    const t = useTranslations('homePage');
+
+    const { data: places } = usePlaces({ take: 6 });
 
     return (
         <HomeSection title={t('places-title')} href={`places`} linkLabel={t('places-link-label')}>
             <SectionCarousel
-                items={palaces?.map(place => <PlaceItem key={place.id} place={place} />)}
+                items={places?.map(place => <PlaceItem key={place.id} place={place} />)}
             />
         </HomeSection>
     );

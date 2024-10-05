@@ -5,7 +5,7 @@ import { TagType } from '@prisma/client';
 
 import AddNewsForm from '@components/dashboard/add-news';
 
-import { getTagsByType } from '@data/tags';
+import { getTagsByType } from '@data/tags/queries';
 
 const AddNewsPage = async () => {
     const locale = await getLocale();

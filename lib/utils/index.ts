@@ -62,3 +62,33 @@ export const filterUndefinedValues = (object: object) => {
         return acc;
     }, {});
 };
+
+type Selector<T> = {
+    [K in keyof T]?: boolean | (T[K] extends object ? { select: Selector<T[K]> } : never);
+};
+
+export const filterObjectBySelector = <T>(obj: T, selector: Selector<T>) => {
+    const result: Partial<T> = {};
+
+    Object.keys(selector).forEach(key => {
+        const typedKey = key as keyof T;
+        const value = obj[typedKey];
+
+        if (typeof selector[typedKey] === 'boolean' && selector[typedKey]) {
+            result[typedKey] = value;
+        } else if (
+            typeof selector[typedKey] === 'object' &&
+            selector[typedKey] !== null &&
+            'select' in (selector[typedKey] as any)
+        ) {
+            result[typedKey] = filterObjectBySelector(
+                value as T[keyof T],
+                (selector[typedKey] as { select: Selector<T[keyof T]> }).select
+            ) as T[keyof T];
+        }
+    });
+
+    return result;
+};
+
+export const getSlug = (string: string) => string.split(' ').join('-').toLowerCase();

@@ -28,3 +28,5 @@ export type ImageUploadDto = {
     id: string;
     data: CloudinaryUploadDto;
 };
+
+export type UpdatePlaceData = { id: string; data: UpdatePlaceDto };

@@ -5,7 +5,7 @@ import PlacesList from '@components/places/places-list';
 
 import { routing } from '@i18n/routing';
 
-import { getPlaces } from '@data/places';
+import { getPlaces } from '@data/places/queries';
 
 export function generateStaticParams() {
     return routing.locales.map(locale => ({ locale }));

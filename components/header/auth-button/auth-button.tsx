@@ -25,7 +25,7 @@ const AuthButton = ({ user }: Props) => {
                             src={user.image}
                             alt={user.name || 'user image'}
                             fill
-                            className="aspect-square rounded-full bg-background object-cover"
+                            className="bg-background aspect-square rounded-full object-cover"
                         />
                     ) : (
                         <Icon name="user-circle" className="size-full fill-stone-500" />

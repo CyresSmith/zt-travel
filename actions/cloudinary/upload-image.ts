@@ -1,10 +1,11 @@
 'use server';
 
-import { auth } from '@auth';
 import { ResponseStatus } from '@lib/enums';
 import type { ActionResponse } from '@lib/types';
 import cloudinary from '@lib/utils/cloudinary';
 import { UserRole } from '@prisma/client';
+
+import { auth } from '@auth';
 
 type UploadResponse = ActionResponse & { url?: string };
 

@@ -1,3 +1,7 @@
+import { useQuery } from '@tanstack/react-query';
+
+import { DEFAULT_STALE_TIME } from '@lib/constants';
+import { QUERY_KEYS } from '@lib/keys';
 import prisma from '@lib/prisma';
 import type { PaginationDto } from '@lib/types';
 import { getPagination } from '@lib/utils';
@@ -5,7 +9,7 @@ import type { Article } from '@prisma/client';
 
 import type { ArticleBasicInfo } from './types';
 
-export const getArticles = async (dto: PaginationDto): Promise<ArticleBasicInfo[]> => {
+export const getArticles = async (dto?: PaginationDto): Promise<ArticleBasicInfo[]> => {
     const articlesData = await prisma.article.findMany({
         ...getPagination(dto),
         select: {
@@ -37,6 +41,13 @@ export const getArticles = async (dto: PaginationDto): Promise<ArticleBasicInfo[
 
     return articles;
 };
+
+export const useArticles = (dto?: PaginationDto) =>
+    useQuery({
+        queryKey: [QUERY_KEYS.ARTICLES, dto],
+        queryFn: async () => await getArticles(dto),
+        staleTime: DEFAULT_STALE_TIME,
+    });
 
 export const getArticleById = async (id: string): Promise<Article | null> => {
     try {

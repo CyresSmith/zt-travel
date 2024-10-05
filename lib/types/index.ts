@@ -3,9 +3,10 @@ import type { ReactNode } from 'react';
 import type { Session } from 'next-auth';
 
 import type { ResponseStatus } from '@lib/enums';
-import type uk from '@locales/uk.json';
 
 import type { LocaleType } from '@i18n/routing';
+
+import type uk from '@locales/uk.json';
 
 export type MessagesType = typeof uk;
 

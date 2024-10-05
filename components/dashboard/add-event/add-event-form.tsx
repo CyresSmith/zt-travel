@@ -2,17 +2,14 @@
 
 import { useSession } from 'next-auth/react';
 import type { ChangeEventHandler } from 'react';
-import { useState, useTransition } from 'react';
+import { useEffect, useState, useTransition } from 'react';
 import { useForm, useWatch } from 'react-hook-form';
 
 import { useTranslations } from 'next-intl';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import { ResponseStatus } from '@lib/enums';
-import { useToast } from '@lib/hooks/use-toast';
 import { AddEventSchema } from '@lib/schemas';
-import { getFileUri } from '@lib/utils';
-import { hoursToMilliseconds, minutesToMilliseconds, setHours, setMinutes } from 'date-fns';
+import { hoursToMilliseconds, minutesToMilliseconds } from 'date-fns';
 import type { z } from 'zod';
 
 import MainImageLoad from '../main-image-load';
@@ -24,11 +21,22 @@ import { Input } from '@ui/input';
 import type { SelectItemType } from '@components/form-input-field';
 import FormInputField from '@components/form-input-field';
 
-import { getEventBySlug } from '@data/events';
+import { useToast } from '@hooks';
+
+import {
+    filterUndefinedValues,
+    getDateWithTime,
+    getFileUri,
+    getHoursAndMinutesFromString,
+    getSlug,
+} from '@utils';
+
+import { ResponseStatus } from '@enums';
+
+import { useEventAdd, useEventUpdate } from '@data/events/mutations';
+import { getEventBySlug } from '@data/events/queries';
 
 import uploadToCloudinary from '@actions/cloudinary/upload-image';
-import addEvent from '@actions/events/add-event';
-import updateEvent from '@actions/events/update-event';
 
 export type AddEventValues = z.infer<typeof AddEventSchema>;
 
@@ -85,6 +93,13 @@ const AddEventForm = ({ categories, tags }: Props) => {
     const [isPending, startTransition] = useTransition();
     const [timeValue, setTimeValue] = useState<string>('12:00');
 
+    const { mutateAsync: addEvent, isError: isEventAddError, error: eventAddError } = useEventAdd();
+    const {
+        mutateAsync: updateEvent,
+        isError: isEventUpdateError,
+        error: eventUpdateError,
+    } = useEventUpdate();
+
     const userId = session?.user?.id;
 
     const form = useForm<AddEventValues>({
@@ -101,15 +116,6 @@ const AddEventForm = ({ categories, tags }: Props) => {
     });
 
     const { isValid, errors } = form.formState;
-
-    const getHorsAndMinutesFromString = (time: string) => {
-        return time.split(':').map(str => parseInt(str, 10));
-    };
-
-    const getDateWithTime = (time: string, date: Date) => {
-        const [hours, minutes] = getHorsAndMinutesFromString(time);
-        return setHours(setMinutes(date, minutes), hours);
-    };
 
     const handleTimeChange: ChangeEventHandler<HTMLInputElement> = e => {
         const time = e.target.value;
@@ -135,15 +141,7 @@ const AddEventForm = ({ categories, tags }: Props) => {
             ...rest
         } = values;
 
-        const restValues = Object.entries(rest).reduce(
-            (acc: Record<string, string | number | boolean | string[]>, [key, value]) => {
-                if (value) acc[key] = value;
-                return acc;
-            },
-            {}
-        );
-
-        const slug = nameEn.split(' ').join('-').toLowerCase();
+        const slug = getSlug(nameEn);
 
         const resetState = () => {
             form.reset();
@@ -163,9 +161,8 @@ const AddEventForm = ({ categories, tags }: Props) => {
                 return;
             }
 
-            const [hours, minutes] = getHorsAndMinutesFromString(duration);
+            const [hours, minutes] = getHoursAndMinutesFromString(duration);
             const durationInMs = hoursToMilliseconds(hours) + minutesToMilliseconds(minutes);
-
             const startDate = getDateWithTime(timeValue, start);
 
             const tagsData = tagsValues.reduce((acc: string[], { value }) => {
@@ -185,20 +182,12 @@ const AddEventForm = ({ categories, tags }: Props) => {
                 duration: durationInMs,
                 periodic,
                 tags: tagsData,
-                ...restValues,
+                ...filterUndefinedValues(rest),
             };
 
-            const { status, message, data: event } = await addEvent(data);
+            const newEvent = await addEvent(data);
 
-            if (status === ResponseStatus.ERROR) {
-                toast({
-                    title: 'Error acquired!',
-                    description: message,
-                    variant: 'destructive',
-                });
-            }
-
-            if (status === ResponseStatus.SUCCESS && event) {
+            if (newEvent) {
                 const successMessage = 'Event created successfully';
 
                 if (fileData) {
@@ -220,12 +209,12 @@ const AddEventForm = ({ categories, tags }: Props) => {
                     if (url) {
                         const data = { image: url };
 
-                        const { status } = await updateEvent({
-                            id: (event as { id: string }).id,
+                        const event = await updateEvent({
+                            id: newEvent.id,
                             data,
                         });
 
-                        if (status === ResponseStatus.SUCCESS) {
+                        if (event) {
                             toast({
                                 title: 'Success',
                                 description: successMessage,
@@ -235,13 +224,6 @@ const AddEventForm = ({ categories, tags }: Props) => {
                             resetState();
                         }
 
-                        if (status === ResponseStatus.ERROR) {
-                            toast({
-                                title: 'Failed',
-                                description: 'Place update failed',
-                                variant: 'destructive',
-                            });
-                        }
                         return;
                     }
                 }
@@ -256,6 +238,26 @@ const AddEventForm = ({ categories, tags }: Props) => {
             }
         });
     };
+
+    useEffect(() => {
+        if (!isEventAddError) return;
+
+        toast({
+            title: 'Error',
+            description: eventAddError.message || 'Event creation error',
+            variant: 'destructive',
+        });
+    }, [eventAddError, isEventAddError, toast]);
+
+    useEffect(() => {
+        if (!isEventUpdateError) return;
+
+        toast({
+            title: 'Error',
+            description: eventUpdateError.message || 'Event update error',
+            variant: 'destructive',
+        });
+    }, [eventUpdateError, isEventUpdateError, toast]);
 
     return (
         <div>

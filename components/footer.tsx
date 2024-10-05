@@ -1,14 +1,15 @@
 import { getTranslations } from 'next-intl/server';
 
-import type { IconName } from '@icon-names';
 import clsx from 'clsx';
 
 import Container from './container';
 import Icon from './icon';
 
-import { EMAIL, PHONE, THEME_TRANSITION } from '@constants';
-
 import { Link } from '@i18n/routing';
+
+import type { IconName } from '@icon-names';
+
+import { EMAIL, PHONE, THEME_TRANSITION } from '@constants';
 
 const contacts = [
     {

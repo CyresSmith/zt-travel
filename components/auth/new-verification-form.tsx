@@ -46,7 +46,7 @@ const NewVerificationForm = () => {
 
                 {(!error || !success) && <div>Loading...</div>}
 
-                {error && <p className="space-y-4 text-center text-destructive">{error}</p>}
+                {error && <p className="text-destructive space-y-4 text-center">{error}</p>}
 
                 {success && <p className="space-y-4 text-center text-emerald-400">{success}</p>}
             </CardContent>

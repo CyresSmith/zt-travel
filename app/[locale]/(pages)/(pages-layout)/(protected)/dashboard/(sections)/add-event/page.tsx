@@ -5,8 +5,8 @@ import { TagType } from '@prisma/client';
 
 import AddEventForm from '@components/dashboard/add-event';
 
-import { getEventCategories } from '@data/event-categories';
-import { getTagsByType } from '@data/tags';
+import { getEventCategories } from '@data/event-categories/queries';
+import { getTagsByType } from '@data/tags/queries';
 
 const AddEventPage = async () => {
     const locale = await getLocale();

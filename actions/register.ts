@@ -2,9 +2,10 @@
 
 import prisma from '@lib/prisma';
 import { generateVerificationToken } from '@lib/tokens/index';
-import { SignUpSchema } from '@schemas';
 import bcrypt from 'bcryptjs';
 import { type z } from 'zod';
+
+import { SignUpSchema } from '@schemas';
 
 import { sendVerificationEmail } from '@data/mail';
 import { getUserByEmail } from '@data/user';

@@ -1,3 +1,4 @@
+import { SessionProvider } from 'next-auth/react';
 import { type ReactNode } from 'react';
 
 import { dir } from 'i18next';
@@ -15,6 +16,10 @@ import '../globals.css';
 
 import { Toaster } from '@ui/toaster';
 
+import QueryProvider from '@components/queryProvider';
+
+import { auth } from '@auth';
+
 interface RootLayoutProps {
     children: ReactNode;
 }
@@ -29,13 +34,18 @@ export default async function RootLayout({
 }: RootLayoutProps & WithLocaleParam) {
     unstable_setRequestLocale(locale);
     const messages = await getMessages();
+    const session = await auth();
 
     setDefaultOptions({ locale: locale === 'uk' ? uk : enIN });
 
     return (
         <html lang={locale} dir={dir(locale)}>
             <body className={clsx(nunito.className, 'flex min-h-screen flex-col')}>
-                <NextIntlClientProvider messages={messages}>{children}</NextIntlClientProvider>
+                <NextIntlClientProvider messages={messages}>
+                    <SessionProvider session={session}>
+                        <QueryProvider>{children}</QueryProvider>
+                    </SessionProvider>
+                </NextIntlClientProvider>
                 <Toaster />
             </body>
         </html>

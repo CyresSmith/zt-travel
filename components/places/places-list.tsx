@@ -13,7 +13,7 @@ import SectionCard from '@components/section-card/section-card';
 
 import type { LocaleType } from '@i18n/routing';
 
-import { getPlaces } from '@data/places';
+import { getPlaces } from '@data/places/queries';
 import type { PlaceBasicInfo } from '@data/places/types';
 
 type Props = { places: PlaceBasicInfo[] };

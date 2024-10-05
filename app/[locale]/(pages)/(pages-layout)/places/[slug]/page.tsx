@@ -13,7 +13,7 @@ import HomeSection from '@components/home/home-section';
 import PlaceImage from '@components/place-page/place-image';
 import ContactItem from '@components/shared/contact-item';
 
-import { getPlaceBySlug } from '@data/places';
+import { getPlaceBySlug } from '@data/places/queries';
 
 type Props = { params: { slug: string } & WithLocale };
 

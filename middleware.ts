@@ -1,6 +1,5 @@
 import createMiddleware from 'next-intl/middleware';
 
-import { auth } from '@auth';
 import {
     DEFAULT_SIGN_IN_REDIRECT,
     SIGN_IN_REDIRECT,
@@ -11,6 +10,8 @@ import {
 } from '@lib/routes/index.ts';
 
 import { routing } from './i18n/routing';
+
+import { auth } from '@auth';
 
 const intlMiddleware = createMiddleware(routing);
 

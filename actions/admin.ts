@@ -1,7 +1,8 @@
 'use server';
 
-import { auth } from '@auth';
 import { UserRole } from '@prisma/client';
+
+import { auth } from '@auth';
 
 export const admin = async () => {
     const session = await auth();

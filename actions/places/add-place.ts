@@ -1,34 +1,17 @@
 'use server';
 
-import { auth } from '@auth';
-import { ResponseStatus } from '@lib/enums';
 import prisma from '@lib/prisma';
-import type { ActionResponse } from '@lib/types';
-import { UserRole } from '@prisma/client';
 
-import type { AddPlaceDto } from '@data/places/types';
+import { PlaceBasicInfoSelector } from '@data/places/selectors';
+import type { AddPlaceDto, PlaceBasicInfo } from '@data/places/types';
 
-const addPlace = async (data: AddPlaceDto): Promise<ActionResponse> => {
-    try {
-        const session = await auth();
-        const user = session?.user;
-        const role = user?.role;
+const addPlace = async (data: AddPlaceDto): Promise<PlaceBasicInfo> => {
+    const place = prisma.place.create({
+        data,
+        select: PlaceBasicInfoSelector,
+    });
 
-        if (!user || !role || role !== UserRole.ADMIN) {
-            return { status: ResponseStatus.ERROR, message: 'Forbidden' };
-        }
-
-        const result = await prisma.place.create({ data });
-
-        if (result) {
-            return { status: ResponseStatus.SUCCESS, message: 'Created', data: { id: result.id } };
-        } else {
-            return { status: ResponseStatus.ERROR, message: 'Failed' };
-        }
-    } catch (error) {
-        console.error('🚀 ~ addPlace ~ error:', error);
-        return { status: ResponseStatus.ERROR, message: 'Something went wrong!' };
-    }
+    return place;
 };
 
 export default addPlace;
