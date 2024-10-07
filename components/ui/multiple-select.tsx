@@ -4,14 +4,16 @@ import { X } from 'lucide-react';
 import * as React from 'react';
 import { forwardRef, useEffect } from 'react';
 
-import { THEME_BORDER, THEME_TRANSITION } from '@lib/constants';
-import { cn } from '@lib/utils';
 import { Command as CommandPrimitive, useCommandState } from 'cmdk';
 
 import { Badge } from './badge';
 
 import Icon from '@components/icon';
 import { Command, CommandGroup, CommandItem, CommandList } from '@components/ui/command';
+
+import { THEME_BORDER, THEME_TRANSITION } from '@constants';
+
+import { cn } from '@utils';
 
 export interface Option {
     value: string;

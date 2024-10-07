@@ -5,11 +5,11 @@ import clsx from 'clsx';
 import Container from './container';
 import Icon from './icon';
 
-import { Link } from '@i18n/routing';
-
 import type { IconName } from '@icon-names';
 
 import { EMAIL, PHONE, THEME_TRANSITION } from '@constants';
+
+import { Link } from '@i18n/routing';
 
 const contacts = [
     {

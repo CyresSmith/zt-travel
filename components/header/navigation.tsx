@@ -3,14 +3,14 @@
 import type { ComponentPropsWithoutRef, ElementRef } from 'react';
 import { forwardRef } from 'react';
 
-import { cn } from '@lib/utils';
-
 import {
     NavigationMenuItem,
     NavigationMenuLink,
     NavigationMenuList,
     navigationMenuTriggerStyle,
 } from '@ui/navigation-menu';
+
+import { cn } from '@utils';
 
 import { Link, usePathname } from '@i18n/routing';
 

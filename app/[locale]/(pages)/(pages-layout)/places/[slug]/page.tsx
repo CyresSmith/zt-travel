@@ -2,10 +2,6 @@ import { cache } from 'react';
 
 import { notFound } from 'next/navigation';
 
-import { namu } from '@lib/fonts';
-import prisma from '@lib/prisma';
-import type { StringWithLocales, WithLocale } from '@lib/types';
-import { getLocaleValue } from '@lib/utils';
 import clsx from 'clsx';
 
 import Container from '@components/container';
@@ -13,7 +9,15 @@ import HomeSection from '@components/home/home-section';
 import PlaceImage from '@components/place-page/place-image';
 import ContactItem from '@components/shared/contact-item';
 
-import { getPlaceBySlug } from '@data/places/queries';
+import { namu } from '@fonts';
+
+import type { StringWithLocales, WithLocale } from '@types';
+
+import prisma from '@prisma-util';
+
+import { getLocaleValue } from '@utils';
+
+import getPlaceBySlug from '@actions/places/get-place-by-slug';
 
 type Props = { params: { slug: string } & WithLocale };
 

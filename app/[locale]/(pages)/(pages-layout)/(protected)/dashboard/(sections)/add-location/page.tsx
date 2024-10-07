@@ -1,14 +1,17 @@
 import { HydrationBoundary, dehydrate } from '@tanstack/react-query';
 
-import { DEFAULT_STALE_TIME } from '@lib/constants';
-import { QUERY_KEYS } from '@lib/keys';
-import getQueryClient from '@lib/utils/get-query-client';
-
 import AddLocationForm from '@components/dashboard/add-location';
+
+import { QUERY_KEYS } from '@keys';
+
+import { DEFAULT_STALE_TIME } from '@constants';
+
+import getQueryClient from '@utils/get-query-client';
 
 import { getCommunities } from '@data/community/queries';
 import { getDistricts } from '@data/district/queries';
-import { getPlaceCategories } from '@data/place-categories/queries';
+
+import getPlaceCategories from '@actions/place-categories/get-place-categiries';
 
 const AddLocationPage = async () => {
     const queryClient = getQueryClient();

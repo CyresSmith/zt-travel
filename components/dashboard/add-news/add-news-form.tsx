@@ -21,7 +21,7 @@ import { Form } from '@ui/form';
 import type { SelectItemType } from '@components/form-input-field';
 import FormInputField from '@components/form-input-field';
 
-import { getArticleBySlug } from '@data/articles';
+import { getArticleBySlug } from '@data/articles/queries';
 
 import addArticle from '@actions/articles/add-article';
 import updateArticle from '@actions/articles/update-article';

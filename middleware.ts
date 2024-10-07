@@ -1,5 +1,7 @@
 import createMiddleware from 'next-intl/middleware';
 
+import { routing } from './i18n/routing';
+
 import {
     DEFAULT_SIGN_IN_REDIRECT,
     SIGN_IN_REDIRECT,
@@ -7,9 +9,7 @@ import {
     apiPrefix,
     authRoutes,
     protectedRoutes,
-} from '@lib/routes/index.ts';
-
-import { routing } from './i18n/routing';
+} from '@routes';
 
 import { auth } from '@auth';
 

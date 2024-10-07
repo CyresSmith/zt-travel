@@ -4,10 +4,11 @@ import { CaretSortIcon, ChevronDownIcon, ChevronUpIcon } from '@radix-ui/react-i
 import * as SelectPrimitive from '@radix-ui/react-select';
 import * as React from 'react';
 
-import { THEME_TRANSITION } from '@lib/constants';
-import { cn } from '@lib/utils';
-
 import Icon from '@components/icon';
+
+import { THEME_TRANSITION } from '@constants';
+
+import { cn } from '@utils';
 
 const Select = SelectPrimitive.Root;
 

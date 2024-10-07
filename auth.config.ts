@@ -3,12 +3,13 @@ import Credentials from 'next-auth/providers/credentials';
 import Facebook from 'next-auth/providers/facebook';
 import Google from 'next-auth/providers/google';
 
-import prisma from '@lib/prisma';
 import bcrypt from 'bcryptjs';
 
 import { getUserByEmail } from './data/user';
 
 import { SignInSchema } from '@schemas';
+
+import prisma from '@prisma-util';
 
 import { PrismaAdapter } from '@auth/prisma-adapter';
 

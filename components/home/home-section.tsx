@@ -1,11 +1,12 @@
 import type { ReactNode } from 'react';
 
-import { namu } from '@lib/fonts';
 import clsx from 'clsx';
 
 import { buttonVariants } from '@ui/button';
 
 import Container from '@components/container';
+
+import { namu } from '@fonts';
 
 import { Link } from '@i18n/routing';
 

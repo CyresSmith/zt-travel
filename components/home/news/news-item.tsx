@@ -1,14 +1,16 @@
 import { useLocale } from 'next-intl';
 
-import type { IconName } from '@lib/types/icon-names';
-import { getLocaleValue } from '@lib/utils';
 import { format } from 'date-fns';
 
 import SectionCard from '../../section-card/section-card';
 
-import type { LocaleType } from '@i18n/routing';
+import type { IconName } from '@icon-names';
+
+import { getLocaleValue } from '@utils';
 
 import type { ArticleBasicInfo } from '@data/articles/types';
+
+import type { LocaleType } from '@i18n/routing';
 
 type Props = { article: ArticleBasicInfo };
 

@@ -2,9 +2,9 @@
 
 import { useEffect } from 'react';
 
-import useFileUpload from '@lib/hooks/use-file-upload';
-
 import PlaceImage from '@components/place-page/place-image';
+
+import { useFileUpload } from '@hooks';
 
 type Props = {
     isFileData: boolean;

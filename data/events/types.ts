@@ -1,5 +1,6 @@
-import type { StringWithLocales } from '@lib/types';
 import type { Event } from '@prisma/client';
+
+import type { StringWithLocales } from '@types';
 
 import type { TagBasicInfo } from '@data/tags/types';
 

@@ -2,17 +2,17 @@
 
 import { useTranslations } from 'next-intl';
 
-import PlaceItem from './placeItem';
+import PlaceItem from './place-item';
 
 import HomeSection from '../home-section';
 import SectionCarousel from '../section-carousel';
 
-import { usePlaces } from '@data/places/queries';
+import { usePopularPlaces } from '@data/places/queries';
 
 const PlacesSection = () => {
     const t = useTranslations('homePage');
 
-    const { data: places } = usePlaces({ take: 6 });
+    const { data: places } = usePopularPlaces();
 
     return (
         <HomeSection title={t('places-title')} href={`places`} linkLabel={t('places-link-label')}>

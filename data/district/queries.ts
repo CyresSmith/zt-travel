@@ -1,16 +1,10 @@
 import { useQuery } from '@tanstack/react-query';
 
-import { DEFAULT_STALE_TIME } from '@lib/constants';
-import { QUERY_KEYS } from '@lib/keys';
-import prisma from '@lib/prisma';
-import type { District } from '@prisma/client';
+import { QUERY_KEYS } from '@keys';
 
-export const getDistricts = async (): Promise<Pick<District, 'id' | 'name_en' | 'name_uk'>[]> => {
-    return (
-        (await prisma.district.findMany({ select: { id: true, name_en: true, name_uk: true } })) ||
-        []
-    );
-};
+import { DEFAULT_STALE_TIME } from '@constants';
+
+import getDistricts from '@actions/districts/get-districts';
 
 export const useDistricts = () => {
     return useQuery({

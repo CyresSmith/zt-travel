@@ -12,7 +12,7 @@ import { useEvents } from '@data/events/queries';
 const EventsSection = () => {
     const t = useTranslations('homePage');
 
-    const { data: events } = useEvents({ take: 6 });
+    const { data: events } = useEvents();
 
     return (
         <HomeSection title={t('events-title')} href={`events`} linkLabel={t('events-link-label')}>

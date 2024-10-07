@@ -1,50 +1,34 @@
-import { useQuery } from '@tanstack/react-query';
+import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
 
-import { DEFAULT_STALE_TIME } from '@lib/constants';
-import { QUERY_KEYS } from '@lib/keys';
-import prisma from '@lib/prisma';
-import type { PaginationDto } from '@lib/types';
-import { getPagination } from '@lib/utils';
-import type { Place } from '@prisma/client';
+import { QUERY_KEYS } from '@keys';
 
-import { PlaceBasicInfoSelector } from './selectors';
-import type { PlaceBasicInfo } from './types';
+import { DEFAULT_STALE_TIME } from '@constants';
 
-export const getPlaces = async (dto?: PaginationDto): Promise<PlaceBasicInfo[]> => {
-    return (
-        (await prisma.place.findMany({
-            ...getPagination(dto),
-            select: PlaceBasicInfoSelector,
-        })) || []
-    );
-};
+import getPlaceBySlug from '@actions/places/get-place-by-slug';
+import getPlacesList from '@actions/places/get-places';
+import getPopularPlaces from '@actions/places/get-popular-places';
 
-export const usePlaces = (dto?: PaginationDto) => {
-    return useQuery({
+type GetPlacesListDto = { categories: string[]; districtId: string; communityId: string };
+
+export const usePlacesList = (dto?: Partial<GetPlacesListDto>) => {
+    return useInfiniteQuery({
         queryKey: [QUERY_KEYS.PLACES, dto],
-        queryFn: async () => await getPlaces(dto),
-        staleTime: DEFAULT_STALE_TIME,
+        queryFn: async ({ pageParam }) =>
+            await getPlacesList({ pagination: { page: pageParam }, ...dto }),
+        initialPageParam: 1,
+        getNextPageParam: ({ page, pagesCount }) => (page < pagesCount ? page + 1 : undefined),
+        getPreviousPageParam: (_firstPage, _allPages, firstPageParam) => {
+            return firstPageParam <= 1 ? undefined : firstPageParam - 1;
+        },
     });
 };
 
-export const getPlaceById = async (id: string): Promise<Place | null> => {
-    try {
-        return await prisma.place.findUnique({
-            where: { id },
-        });
-    } catch (error) {
-        return null;
-    }
-};
-
-export const getPlaceBySlug = async (slug: string): Promise<Place | null> => {
-    try {
-        return await prisma.place.findUnique({
-            where: { slug },
-        });
-    } catch (error) {
-        return null;
-    }
+export const usePopularPlaces = () => {
+    return useQuery({
+        queryKey: [QUERY_KEYS.POPULAR_PLACES],
+        queryFn: getPopularPlaces,
+        staleTime: DEFAULT_STALE_TIME,
+    });
 };
 
 export const usePlacesBySlug = (slug: string) => {
@@ -53,24 +37,4 @@ export const usePlacesBySlug = (slug: string) => {
         queryFn: async () => await getPlaceBySlug(slug),
         staleTime: DEFAULT_STALE_TIME,
     });
-};
-
-export const getPlacesByCategory = async (categoryId: string): Promise<Place[] | null> => {
-    try {
-        return await prisma.place.findMany({
-            where: { categoryId },
-        });
-    } catch (error) {
-        return null;
-    }
-};
-
-export const getPlacesByCommunity = async (communityId: string): Promise<Place[] | null> => {
-    try {
-        return await prisma.place.findMany({
-            where: { communityId },
-        });
-    } catch (error) {
-        return null;
-    }
 };

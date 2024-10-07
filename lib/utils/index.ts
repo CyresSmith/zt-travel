@@ -1,10 +1,13 @@
-import { DEFAULT_PER_PAGE } from '@lib/constants';
-import { enRegex, ukRegex } from '@lib/regexps';
-import type { PaginationDto } from '@lib/types';
 import type { JsonObject, JsonValue } from '@prisma/client/runtime/library';
 import { type ClassValue, clsx } from 'clsx';
 import { setHours, setMinutes } from 'date-fns';
 import { twMerge } from 'tailwind-merge';
+
+import type { PaginationDto } from '@types';
+
+import { DEFAULT_TAKE } from '@constants';
+
+import { enRegex, ukRegex } from '@regexps';
 
 import type { LocaleType } from '@i18n/routing';
 
@@ -16,7 +19,7 @@ export function cn(...inputs: ClassValue[]) {
 
 export function getPagination(dto?: PaginationDto) {
     const page = dto?.page || 1;
-    const take = dto?.take || DEFAULT_PER_PAGE;
+    const take = dto?.take || DEFAULT_TAKE;
     const skip = (page - 1) * take;
 
     return { take, skip };

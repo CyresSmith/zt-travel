@@ -79,6 +79,7 @@ const defaultValues: AddPlaceValues = {
 const AddLocationForm = () => {
     const locale = useLocale();
     const { data: session } = useSession();
+    console.log('🚀 ~ AddLocationForm ~ session:', session);
     const t = useTranslations('dashboard.addLocation');
     const { toast } = useToast();
     const [fileData, setFileData] = useState<null | { file: File; fileName: string }>(null);
@@ -153,6 +154,8 @@ const AddLocationForm = () => {
     };
 
     const handleSubmit = async (values: AddPlaceValues) => {
+        console.log('🚀 ~ handleSubmit ~ values:', values);
+        console.log('🚀 ~ handleSubmit ~ userId:', userId);
         if (!userId) return;
 
         const {

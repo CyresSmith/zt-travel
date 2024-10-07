@@ -1,13 +1,10 @@
 import { useQuery } from '@tanstack/react-query';
 
-import { DEFAULT_STALE_TIME } from '@lib/constants';
-import { QUERY_KEYS } from '@lib/keys';
-import prisma from '@lib/prisma';
-import type { PlaceCategory } from '@prisma/client';
+import { QUERY_KEYS } from '@keys';
 
-export const getPlaceCategories = async (): Promise<PlaceCategory[]> => {
-    return (await prisma.placeCategory.findMany()) || [];
-};
+import { DEFAULT_STALE_TIME } from '@constants';
+
+import getPlaceCategories from '@actions/place-categories/get-place-categiries';
 
 export const usePlaceCategories = () => {
     return useQuery({

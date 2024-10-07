@@ -1,13 +1,10 @@
 import { useQuery } from '@tanstack/react-query';
 
-import { DEFAULT_STALE_TIME } from '@lib/constants';
-import { QUERY_KEYS } from '@lib/keys';
-import prisma from '@lib/prisma';
-import type { Community } from '@prisma/client';
+import { QUERY_KEYS } from '@keys';
 
-export const getCommunities = async (): Promise<Community[]> => {
-    return (await prisma.community.findMany()) || [];
-};
+import { DEFAULT_STALE_TIME } from '@constants';
+
+import getCommunities from '@actions/communities/get-communities';
 
 export const useCommunities = () => {
     return useQuery({

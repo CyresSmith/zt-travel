@@ -2,8 +2,6 @@ import { NavigationMenu } from '@radix-ui/react-navigation-menu';
 
 import { getTranslations } from 'next-intl/server';
 
-import { NAV_KEYS } from '@lib/constants';
-import { namu } from '@lib/fonts';
 import clsx from 'clsx';
 
 import AuthButton from './auth-button/auth-button';
@@ -13,9 +11,13 @@ import Navigation from './navigation';
 import Container from '@components/container';
 import Icon from '@components/icon';
 
-import { Link } from '@i18n/routing';
+import { namu } from '@fonts';
+
+import { NAV_KEYS } from '@constants';
 
 import { auth } from '@auth';
+
+import { Link } from '@i18n/routing';
 
 type NavKeysType = (typeof NAV_KEYS)[number];
 

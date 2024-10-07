@@ -1,7 +1,8 @@
-import { THEME_TRANSITION } from '@lib/constants';
-import type { IconName } from '@lib/types/icon-names';
-
 import Icon from '@components/icon';
+
+import type { IconName } from '@icon-names';
+
+import { THEME_TRANSITION } from '@constants';
 
 import { Link } from '@i18n/routing';
 

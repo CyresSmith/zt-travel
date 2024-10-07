@@ -1,7 +1,8 @@
 'use server';
 
-import prisma from '@lib/prisma';
-import { filterUndefinedValues } from '@lib/utils';
+import prisma from '@prisma-util';
+
+import { filterUndefinedValues } from '@utils';
 
 import { EventBasicInfoSelector } from '@data/events/selectors';
 import type { EventBasicInfo, UpdateEventDto } from '@data/events/types';

@@ -23,6 +23,8 @@ import FormInputField from '@components/form-input-field';
 
 import { useToast } from '@hooks';
 
+import { ResponseStatus } from '@enums';
+
 import {
     filterUndefinedValues,
     getDateWithTime,
@@ -30,8 +32,6 @@ import {
     getHoursAndMinutesFromString,
     getSlug,
 } from '@utils';
-
-import { ResponseStatus } from '@enums';
 
 import { useEventAdd, useEventUpdate } from '@data/events/mutations';
 import { getEventBySlug } from '@data/events/queries';

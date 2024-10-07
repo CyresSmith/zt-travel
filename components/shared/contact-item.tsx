@@ -1,11 +1,14 @@
 import Link from 'next/link';
 
-import { THEME_TRANSITION } from '@lib/constants';
-import type { WithChildren } from '@lib/types';
-import type { IconName } from '@lib/types/icon-names';
 import clsx from 'clsx';
 
 import Icon from '@components/icon';
+
+import type { WithChildren } from '@types';
+
+import type { IconName } from '@icon-names';
+
+import { THEME_TRANSITION } from '@constants';
 
 type Props = { icon: IconName; href?: string; link?: boolean } & WithChildren;
 

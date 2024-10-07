@@ -1,5 +1,6 @@
 export const QUERY_KEYS = Object.freeze({
     PLACES: 'places',
+    POPULAR_PLACES: 'popular_places',
     ARTICLES: 'articles',
     EVENTS: 'events',
     PLACE_CATEGORIES: 'place_categories',

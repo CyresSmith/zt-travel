@@ -1,38 +1,38 @@
 import { HydrationBoundary, dehydrate } from '@tanstack/react-query';
 
-import { DEFAULT_STALE_TIME } from '@lib/constants';
-import { QUERY_KEYS } from '@lib/keys';
-import getQueryClient from '@lib/utils/get-query-client';
-
 import EventsSection from '@components/home/events';
 import Hero from '@components/home/hero';
 import NewsSection from '@components/home/news';
 import PlacesSection from '@components/home/places';
 
-import { getArticles } from '@data/articles';
-import { getEvents } from '@data/events/queries';
-import { getPlaces } from '@data/places/queries';
+import { QUERY_KEYS } from '@keys';
+
+import { DEFAULT_STALE_TIME } from '@constants';
+
+import getQueryClient from '@utils/get-query-client';
+
+import getArticles from '@actions/articles/get-articles';
+import getEvents from '@actions/events/get-events';
+import getPopularPlaces from '@actions/places/get-popular-places';
 
 export default async function Home() {
     const queryClient = getQueryClient();
 
-    const dto = { take: 6 };
-
     await queryClient.prefetchQuery({
-        queryKey: [QUERY_KEYS.PLACES, dto],
-        queryFn: async () => await getPlaces(dto),
+        queryKey: [QUERY_KEYS.POPULAR_PLACES],
+        queryFn: async () => await getPopularPlaces(),
         staleTime: DEFAULT_STALE_TIME,
     });
 
     await queryClient.prefetchQuery({
-        queryKey: [QUERY_KEYS.EVENTS, dto],
-        queryFn: async () => await getEvents(dto),
+        queryKey: [QUERY_KEYS.EVENTS],
+        queryFn: async () => await getEvents(),
         staleTime: DEFAULT_STALE_TIME,
     });
 
     await queryClient.prefetchQuery({
-        queryKey: [QUERY_KEYS.ARTICLES, dto],
-        queryFn: async () => await getArticles(dto),
+        queryKey: [QUERY_KEYS.ARTICLES],
+        queryFn: async () => await getArticles(),
         staleTime: DEFAULT_STALE_TIME,
     });
 

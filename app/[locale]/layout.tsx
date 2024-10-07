@@ -5,8 +5,6 @@ import { dir } from 'i18next';
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages, unstable_setRequestLocale } from 'next-intl/server';
 
-import { nunito } from '@lib/fonts';
-import type { WithLocaleParam } from '@lib/types';
 import clsx from 'clsx';
 import { setDefaultOptions } from 'date-fns';
 import { enIN, uk } from 'date-fns/locale';
@@ -17,6 +15,10 @@ import '../globals.css';
 import { Toaster } from '@ui/toaster';
 
 import QueryProvider from '@components/queryProvider';
+
+import { nunito } from '@fonts';
+
+import type { WithLocaleParam } from '@types';
 
 import { auth } from '@auth';
 
