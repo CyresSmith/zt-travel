@@ -1,8 +1,9 @@
 'use server';
 
-import prisma from '@lib/prisma';
 import type { Place, PlaceCategory } from '@prisma/client';
 import { UserRole } from '@prisma/client';
+
+import prisma from '@prisma-util';
 
 import { auth } from '@auth';
 

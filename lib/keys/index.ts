@@ -3,6 +3,7 @@ export const QUERY_KEYS = Object.freeze({
     POPULAR_PLACES: 'popular_places',
     ARTICLES: 'articles',
     EVENTS: 'events',
+    UPCOMING_EVENTS: 'upcoming_EVENTS',
     PLACE_CATEGORIES: 'place_categories',
     DISTRICTS: 'districts',
     COMMUNITIES: 'communities',

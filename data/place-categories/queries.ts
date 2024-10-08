@@ -4,7 +4,7 @@ import { QUERY_KEYS } from '@keys';
 
 import { DEFAULT_STALE_TIME } from '@constants';
 
-import getPlaceCategories from '@actions/place-categories/get-place-categiries';
+import getPlaceCategories from '@actions/place-categories/get-place-categories';
 
 export const usePlaceCategories = () => {
     return useQuery({

@@ -7,10 +7,6 @@ import { useForm } from 'react-hook-form';
 import { useTranslations } from 'next-intl';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import { ResponseStatus } from '@lib/enums';
-import { useToast } from '@lib/hooks/use-toast';
-import { AddArticleSchema } from '@lib/schemas';
-import { getFileUri } from '@lib/utils';
 import type { z } from 'zod';
 
 import MainImageLoad from '../main-image-load';
@@ -21,9 +17,16 @@ import { Form } from '@ui/form';
 import type { SelectItemType } from '@components/form-input-field';
 import FormInputField from '@components/form-input-field';
 
-import { getArticleBySlug } from '@data/articles/queries';
+import { AddArticleSchema } from '@schemas';
+
+import { useToast } from '@hooks';
+
+import { ResponseStatus } from '@enums';
+
+import { getFileUri } from '@utils';
 
 import addArticle from '@actions/articles/add-article';
+import getArticleBySlug from '@actions/articles/get-article-by-slug';
 import updateArticle from '@actions/articles/update-article';
 import uploadToCloudinary from '@actions/cloudinary/upload-image';
 

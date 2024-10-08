@@ -1,9 +1,10 @@
 import { useMutation } from '@tanstack/react-query';
 
-import { QUERY_KEYS } from '@lib/keys';
-import getQueryClient from '@lib/utils/get-query-client';
-
 import type { PlaceBasicInfo } from './types';
+
+import { QUERY_KEYS } from '@keys';
+
+import getQueryClient from '@utils/get-query-client';
 
 import addPlace from '@actions/places/add-place';
 import updatePlace from '@actions/places/update-place';

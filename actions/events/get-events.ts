@@ -6,28 +6,13 @@ import prisma from '@prisma-util';
 
 import { getPagination } from '@utils';
 
+import { EventBasicInfoSelector } from '@data/events/selectors';
 import type { EventBasicInfo } from '@data/events/types';
-import { TagBasicInfoSelector } from '@data/tags/selectors';
 
 const getEvents = async (dto?: PaginationDto): Promise<EventBasicInfo[]> => {
     const eventsData = await prisma.event.findMany({
         ...getPagination(dto),
-        select: {
-            id: true,
-            slug: true,
-            rating: true,
-            image: true,
-            address: true,
-            desc: true,
-            name: true,
-            start: true,
-            duration: true,
-            tags: {
-                select: {
-                    tag: { select: TagBasicInfoSelector },
-                },
-            },
-        },
+        select: EventBasicInfoSelector,
     });
 
     const events = eventsData.map(event => ({

@@ -1,9 +1,10 @@
 import { getLocale } from 'next-intl/server';
 
-import { getLocaleValue } from '@lib/utils';
 import { TagType } from '@prisma/client';
 
 import AddEventForm from '@components/dashboard/add-event';
+
+import { getLocaleValue } from '@utils';
 
 import { getEventCategories } from '@data/event-categories/queries';
 import { getTagsByType } from '@data/tags/queries';

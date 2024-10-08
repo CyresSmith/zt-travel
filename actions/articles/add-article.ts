@@ -1,11 +1,12 @@
 'use server';
 
-import prisma from '@lib/prisma';
 import { UserRole } from '@prisma/client';
 
 import type { ActionResponse } from '@types';
 
 import { ResponseStatus } from '@enums';
+
+import prisma from '@prisma-util';
 
 import { auth } from '@auth';
 

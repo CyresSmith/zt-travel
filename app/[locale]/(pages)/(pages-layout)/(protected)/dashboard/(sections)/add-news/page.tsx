@@ -1,9 +1,10 @@
 import { getLocale } from 'next-intl/server';
 
-import { getLocaleValue } from '@lib/utils';
 import { TagType } from '@prisma/client';
 
 import AddNewsForm from '@components/dashboard/add-news';
+
+import { getLocaleValue } from '@utils';
 
 import { getTagsByType } from '@data/tags/queries';
 

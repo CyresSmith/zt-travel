@@ -1,11 +1,12 @@
 'use server';
 
-import type { Community } from '@prisma/client';
-
 import prisma from '@prisma-util';
 
-const getCommunities = async (): Promise<Community[]> => {
-    return (await prisma.community.findMany()) || [];
+import { CommunityBasicInfoSelector } from '@data/community/selectors';
+import type { CommunityBasicInfo } from '@data/community/types';
+
+const getCommunities = async (): Promise<CommunityBasicInfo[]> => {
+    return (await prisma.community.findMany({ select: CommunityBasicInfoSelector })) || [];
 };
 
 export default getCommunities;

@@ -1,5 +1,6 @@
-import prisma from '@lib/prisma';
 import type { EventCategory } from '@prisma/client';
+
+import prisma from '@prisma-util';
 
 export const getEventCategories = async (): Promise<EventCategory[] | null> => {
     try {

@@ -8,7 +8,6 @@ import { useForm, useWatch } from 'react-hook-form';
 import { useTranslations } from 'next-intl';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import { AddEventSchema } from '@lib/schemas';
 import { hoursToMilliseconds, minutesToMilliseconds } from 'date-fns';
 import type { z } from 'zod';
 
@@ -20,6 +19,8 @@ import { Input } from '@ui/input';
 
 import type { SelectItemType } from '@components/form-input-field';
 import FormInputField from '@components/form-input-field';
+
+import { AddEventSchema } from '@schemas';
 
 import { useToast } from '@hooks';
 
@@ -34,9 +35,9 @@ import {
 } from '@utils';
 
 import { useEventAdd, useEventUpdate } from '@data/events/mutations';
-import { getEventBySlug } from '@data/events/queries';
 
 import uploadToCloudinary from '@actions/cloudinary/upload-image';
+import getEventBySlug from '@actions/events/get-event-by-slug';
 
 export type AddEventValues = z.infer<typeof AddEventSchema>;
 

@@ -21,10 +21,10 @@ const HomeSection = ({ title, children, href, linkLabel }: Props) => {
     return (
         <section
             className={clsx(
-                'relative bg-gradient-to-b from-transparent via-themePrimary to-transparent py-5'
+                'relative flex max-h-full flex-1 flex-col bg-gradient-to-b from-transparent via-themePrimary to-transparent py-5'
             )}
         >
-            <Container>
+            <Container className="flex flex-col">
                 {title && (
                     <h2 className={clsx(namu.className, 'mb-10 text-3xl text-themeBg')}>{title}</h2>
                 )}

@@ -9,5 +9,7 @@ export const PlaceBasicInfoSelector: Prisma.PlaceSelect = {
     name: true,
     address: true,
     desc: true,
+    districtId: true,
+    communityId: true,
     category: { select: { id: true, name: true, slug: true } },
 };

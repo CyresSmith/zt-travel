@@ -5,7 +5,16 @@ import type { CloudinaryUploadDto } from '@actions/cloudinary/upload-image';
 
 export type PlaceBasicInfo = Pick<
     Place,
-    'id' | 'image' | 'rating' | 'slug' | 'gmapsUrl' | 'name' | 'address' | 'desc'
+    | 'id'
+    | 'image'
+    | 'rating'
+    | 'slug'
+    | 'gmapsUrl'
+    | 'name'
+    | 'address'
+    | 'desc'
+    | 'communityId'
+    | 'districtId'
 > & { category: Pick<PlaceCategory, 'id' | 'name' | 'slug'> };
 
 export type AddPlaceDto = Partial<

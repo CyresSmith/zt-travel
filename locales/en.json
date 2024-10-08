@@ -120,6 +120,12 @@
         "places-page-metadata": {
             "title": "Interesting places of Zhytomyr region",
             "description": "A collection of places in the Zhytomyr region that will captivate both tourists visiting this enchanting land and local residents eager to explore their native land more deeply."
-        }
+        },
+        "select-category": "Select place categories",
+        "category-not-found": "Categories not found",
+        "select-district": "Select district",
+        "select-community": "Select community",
+        "places-not-found": "Places not found",
+        "filter-reset": "Reset filters"
     }
 }

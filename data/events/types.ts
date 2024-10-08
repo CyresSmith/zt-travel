@@ -19,7 +19,7 @@ export type AddEventDto = Partial<Pick<Event, 'url'>> & {
     slug: string;
     duration: number;
     periodic: boolean;
-    tags: string[];
+    tags: TagBasicInfo[];
     start: Date;
 };
 

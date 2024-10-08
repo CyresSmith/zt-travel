@@ -8,7 +8,7 @@ import getPlaceBySlug from '@actions/places/get-place-by-slug';
 import getPlacesList from '@actions/places/get-places';
 import getPopularPlaces from '@actions/places/get-popular-places';
 
-type GetPlacesListDto = { categories: string[]; districtId: string; communityId: string };
+type GetPlacesListDto = { categories: string[]; districtId?: string; communityId?: string };
 
 export const usePlacesList = (dto?: Partial<GetPlacesListDto>) => {
     return useInfiniteQuery({

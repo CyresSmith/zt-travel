@@ -1,10 +1,12 @@
 'use client';
 
-import { THEME_TRANSITION } from '@lib/constants';
-import type { IconName } from '@lib/types/icon-names';
 import clsx from 'clsx';
 
 import Icon from '@components/icon';
+
+import type { IconName } from '@icon-names';
+
+import { THEME_TRANSITION } from '@constants';
 
 import { Link, usePathname } from '@i18n/routing';
 

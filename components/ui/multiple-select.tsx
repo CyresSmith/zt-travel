@@ -446,7 +446,7 @@ const MultipleSelector = React.forwardRef<MultipleSelectorRef, MultipleSelectorP
             >
                 <div
                     className={cn(
-                        'flex min-h-[40px] rounded-full bg-themeBg px-4 py-2 text-m text-themeFg placeholder:text-themeFg/50 focus-within:shadow-inputActive hover:shadow-inputHover focus-visible:shadow-inputActive focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50',
+                        'flex min-h-[40px] rounded-full bg-themeBg px-4 py-2 text-m text-themeFg placeholder:text-themeFg focus-within:shadow-inputActive hover:shadow-inputHover focus-visible:shadow-inputActive focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50',
                         'rounded-3xl',
                         THEME_TRANSITION,
                         {
@@ -555,7 +555,9 @@ const MultipleSelector = React.forwardRef<MultipleSelectorRef, MultipleSelectorP
                 <div className="relative">
                     {open && (
                         <CommandList
-                            className={`absolute top-1 z-10 w-full rounded-3xl bg-themeBg text-themeFg shadow-main outline-none animate-in ${THEME_BORDER}`}
+                            className={cn(
+                                `absolute top-1 z-10 w-full rounded-3xl bg-themeBg text-themeFg shadow-main outline-none animate-in ${THEME_BORDER}`
+                            )}
                             onMouseLeave={() => {
                                 setOnScrollbar(false);
                             }}

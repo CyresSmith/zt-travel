@@ -1,6 +1,6 @@
 'use server';
 
-import prisma from '@lib/prisma';
+import prisma from '@prisma-util';
 
 import { PlaceBasicInfoSelector } from '@data/places/selectors';
 import type { AddPlaceDto, PlaceBasicInfo } from '@data/places/types';

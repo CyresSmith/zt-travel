@@ -29,7 +29,7 @@ const EventItem = ({ event: { address, image, name, start, tags, slug } }: Props
             image={image || ''}
             title={getLocaleValue(name, locale)}
             titleHref={`events/${slug}`}
-            tags={tags.map(tag => ({ ...tag, slug: `events/tag=${tag.slug}` }))}
+            tags={tags.map(tag => ({ ...tag, slug: `events?tag=${tag.slug}` }))}
             links={links}
             locale={locale as LocaleType}
         />

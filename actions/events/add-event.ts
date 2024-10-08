@@ -1,6 +1,6 @@
 'use server';
 
-import prisma from '@lib/prisma';
+import prisma from '@prisma-util';
 
 import { EventBasicInfoSelector } from '@data/events/selectors';
 import type { AddEventDto, EventBasicInfo } from '@data/events/types';

@@ -7,10 +7,6 @@ import { useForm, useWatch } from 'react-hook-form';
 import { useLocale, useTranslations } from 'next-intl';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import { ResponseStatus } from '@lib/enums';
-import { useToast } from '@lib/hooks/use-toast';
-import { AddPlaceSchema } from '@lib/schemas';
-import { filterUndefinedValues, getFileUri, getLocaleValue, getSlug } from '@lib/utils';
 import type { z } from 'zod';
 
 import MainImageLoad from '../main-image-load';
@@ -20,13 +16,21 @@ import { Form } from '@ui/form';
 
 import FormInputField from '@components/form-input-field';
 
+import { AddPlaceSchema } from '@schemas';
+
+import { useToast } from '@hooks';
+
+import { ResponseStatus } from '@enums';
+
+import { filterUndefinedValues, getFileUri, getLocaleValue, getSlug } from '@utils';
+
 import { useCommunities } from '@data/community/queries';
 import { useDistricts } from '@data/district/queries';
 import { usePlaceCategories } from '@data/place-categories/queries';
 import { usePlaceAdd, usePlaceUpdate } from '@data/places/mutations';
-import { getPlaceBySlug } from '@data/places/queries';
 
 import uploadToCloudinary from '@actions/cloudinary/upload-image';
+import getPlaceBySlug from '@actions/places/get-place-by-slug';
 
 export type AddPlaceValues = z.infer<typeof AddPlaceSchema>;
 
@@ -79,7 +83,6 @@ const defaultValues: AddPlaceValues = {
 const AddLocationForm = () => {
     const locale = useLocale();
     const { data: session } = useSession();
-    console.log('🚀 ~ AddLocationForm ~ session:', session);
     const t = useTranslations('dashboard.addLocation');
     const { toast } = useToast();
     const [fileData, setFileData] = useState<null | { file: File; fileName: string }>(null);

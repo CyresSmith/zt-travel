@@ -7,12 +7,10 @@ import PlacesSection from '@components/home/places';
 
 import { QUERY_KEYS } from '@keys';
 
-import { DEFAULT_STALE_TIME } from '@constants';
-
 import getQueryClient from '@utils/get-query-client';
 
 import getArticles from '@actions/articles/get-articles';
-import getEvents from '@actions/events/get-events';
+import getUpcomingEvents from '@actions/events/get-upcoming-events';
 import getPopularPlaces from '@actions/places/get-popular-places';
 
 export default async function Home() {
@@ -21,19 +19,16 @@ export default async function Home() {
     await queryClient.prefetchQuery({
         queryKey: [QUERY_KEYS.POPULAR_PLACES],
         queryFn: async () => await getPopularPlaces(),
-        staleTime: DEFAULT_STALE_TIME,
     });
 
     await queryClient.prefetchQuery({
-        queryKey: [QUERY_KEYS.EVENTS],
-        queryFn: async () => await getEvents(),
-        staleTime: DEFAULT_STALE_TIME,
+        queryKey: [QUERY_KEYS.UPCOMING_EVENTS],
+        queryFn: async () => await getUpcomingEvents(),
     });
 
     await queryClient.prefetchQuery({
         queryKey: [QUERY_KEYS.ARTICLES],
         queryFn: async () => await getArticles(),
-        staleTime: DEFAULT_STALE_TIME,
     });
 
     const dehydratedState = dehydrate(queryClient);

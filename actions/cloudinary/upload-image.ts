@@ -1,9 +1,12 @@
 'use server';
 
-import { ResponseStatus } from '@lib/enums';
-import type { ActionResponse } from '@lib/types';
-import cloudinary from '@lib/utils/cloudinary';
 import { UserRole } from '@prisma/client';
+
+import type { ActionResponse } from '@types';
+
+import { ResponseStatus } from '@enums';
+
+import cloudinary from '@utils/cloudinary';
 
 import { auth } from '@auth';
 

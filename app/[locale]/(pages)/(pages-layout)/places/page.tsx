@@ -11,7 +11,7 @@ import getQueryClient from '@utils/get-query-client';
 
 import getCommunities from '@actions/communities/get-communities';
 import getDistricts from '@actions/districts/get-districts';
-import getPlaceCategories from '@actions/place-categories/get-place-categiries';
+import getPlaceCategories from '@actions/place-categories/get-place-categories';
 import getPlacesList from '@actions/places/get-places';
 
 import { routing } from '@i18n/routing';

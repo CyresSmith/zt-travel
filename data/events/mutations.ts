@@ -1,9 +1,10 @@
 import { useMutation } from '@tanstack/react-query';
 
-import { QUERY_KEYS } from '@lib/keys';
-import getQueryClient from '@lib/utils/get-query-client';
-
 import type { EventBasicInfo } from './types';
+
+import { QUERY_KEYS } from '@keys';
+
+import getQueryClient from '@utils/get-query-client';
 
 import addEvent from '@actions/events/add-event';
 import updateEvent from '@actions/events/update-event';
@@ -15,7 +16,10 @@ export const useEventAdd = () => {
         mutationFn: addEvent,
         onSuccess: data => {
             queryClient.setQueryData([QUERY_KEYS.EVENTS], (prev: EventBasicInfo[]) =>
-                prev ? prev.concat(data) : [data]
+                prev ? [data, ...prev] : [data]
+            );
+            queryClient.setQueryData([QUERY_KEYS.UPCOMING_EVENTS], (prev: EventBasicInfo[]) =>
+                prev ? [data, ...prev] : [data]
             );
         },
     });

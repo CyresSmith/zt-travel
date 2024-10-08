@@ -7,12 +7,12 @@ import EventItem from './eventItem';
 import HomeSection from '../home-section';
 import SectionCarousel from '../section-carousel';
 
-import { useEvents } from '@data/events/queries';
+import { useUpcomingEvents } from '@data/events/queries';
 
 const EventsSection = () => {
     const t = useTranslations('homePage');
 
-    const { data: events } = useEvents();
+    const { data: events } = useUpcomingEvents();
 
     return (
         <HomeSection title={t('events-title')} href={`events`} linkLabel={t('events-link-label')}>

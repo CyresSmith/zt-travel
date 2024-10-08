@@ -1,5 +1,6 @@
-import prisma from '@lib/prisma';
 import type { Tag, TagType } from '@prisma/client';
+
+import prisma from '@prisma-util';
 
 export const getTagsByType = async (type: TagType): Promise<Tag[]> => {
     return (await prisma.tag.findMany({ where: { type } })) || [];

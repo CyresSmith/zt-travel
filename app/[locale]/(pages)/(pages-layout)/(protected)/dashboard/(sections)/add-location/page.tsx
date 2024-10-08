@@ -8,10 +8,9 @@ import { DEFAULT_STALE_TIME } from '@constants';
 
 import getQueryClient from '@utils/get-query-client';
 
-import { getCommunities } from '@data/community/queries';
-import { getDistricts } from '@data/district/queries';
-
-import getPlaceCategories from '@actions/place-categories/get-place-categiries';
+import getCommunities from '@actions/communities/get-communities';
+import getDistricts from '@actions/districts/get-districts';
+import getPlaceCategories from '@actions/place-categories/get-place-categories';
 
 const AddLocationPage = async () => {
     const queryClient = getQueryClient();

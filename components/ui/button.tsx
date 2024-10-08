@@ -81,7 +81,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
                     {iconName && (
                         <Icon
                             name={isLoading ? 'black-hole' : iconName}
-                            className={clsx(isLoading && 'animate-spin', '')}
+                            className={clsx(isLoading && 'animate-spin', 'fill-inherit')}
                         />
                     )}
                     {children}
