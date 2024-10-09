@@ -17,6 +17,8 @@ export type EventsListRes = { data: EventBasicInfo[] } & PaginationData;
 type GetEventsDto = {
     pagination: PaginationDto;
     tags?: string[];
+    districtId?: string;
+    communityId?: string;
 };
 
 const getEvents = async (dto?: GetEventsDto): Promise<EventsListRes> => {
@@ -24,6 +26,14 @@ const getEvents = async (dto?: GetEventsDto): Promise<EventsListRes> => {
 
     if (dto?.tags && dto.tags.length > 0) {
         where = Object.assign(where, { tags: { some: { tagId: { in: dto?.tags } } } });
+    }
+
+    if (dto?.districtId) {
+        where = Object.assign(where, { districtId: dto.districtId });
+    }
+
+    if (dto?.communityId) {
+        where = Object.assign(where, { communityId: dto.communityId });
     }
 
     const eventsData = await prisma.event.findMany({

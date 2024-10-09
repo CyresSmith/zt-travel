@@ -9,10 +9,10 @@ import { useSearchParams } from 'next/navigation';
 import clsx from 'clsx';
 
 import type { Option } from '@ui/multiple-select';
-import MultipleSelector from '@ui/multiple-select';
 
 import Icon from '@components/icon';
 import SectionCard from '@components/section-card/section-card';
+import ListFilterPanel from '@components/shared/list-filter-panel';
 
 import { getLocaleDate, getLocaleValue } from '@utils';
 
@@ -27,20 +27,23 @@ const EventsList = () => {
     const pathname = usePathname();
     const searchParams = useSearchParams();
     const router = useRouter();
-    const t = useTranslations('events');
+    const t = useTranslations('pages.events');
 
     const selectedTagsParam = searchParams.get('tags');
-
     const selectedTagsSlugs = selectedTagsParam?.split(',');
 
     const { data: tags } = useEventTags();
 
     const [selectedOptions, setSelectedOptions] = useState<Option[]>([]);
+    const [selectedDistrictId, setSelectedDistrictId] = useState<string | undefined>(undefined);
+    const [selectedCommunityId, setSelectedCommunityId] = useState<string | undefined>(undefined);
 
     const selectedTags = tags?.filter(({ slug }) => selectedTagsSlugs?.includes(slug));
 
     const { data, fetchNextPage, isFetching, isFetchingNextPage, hasNextPage } = useEventsList({
         tags: selectedTags?.map(({ id }) => id),
+        districtId: selectedDistrictId,
+        communityId: selectedCommunityId,
     });
 
     const isDataLoading = isFetching || isFetchingNextPage;
@@ -76,8 +79,30 @@ const EventsList = () => {
                 router.push(href);
             }
         } else {
-            return router.push(href);
+            if (selectedDistrictId || selectedCommunityId) {
+                handleRegionSelect(true);
+            } else {
+                return router.push(href);
+            }
         }
+    };
+
+    const handleRegionSelect = (skipCatTags?: boolean) => {
+        let href = pathname;
+
+        if (!skipCatTags && selectedTagsParam) {
+            href = `${href}${href.includes('district') || href.includes('community') ? '&' : '?'}tags=${selectedTagsParam}`;
+        }
+
+        if (selectedDistrictId) {
+            href = `${href}${href.includes('tags') ? '&' : '?'}district=${selectedDistrictId}`;
+        }
+
+        if (selectedCommunityId) {
+            href = `${href}&community=${selectedCommunityId}`;
+        }
+
+        router.push(href);
     };
 
     useEffect(() => {
@@ -87,39 +112,41 @@ const EventsList = () => {
     }, [fetchNextPage, inView]);
 
     useEffect(() => {
-        if (!selectedTagsParam) return;
+        if (!selectedTagsParam) {
+            if (selectedOptions) setSelectedOptions([]);
+            return;
+        }
 
         setSelectedOptions(
             selectedTags?.map(({ name }) => {
                 const value = getLocaleValue(name, locale);
-
                 return { value, label: value };
             }) || []
         );
     }, [selectedTagsParam]);
 
+    useEffect(() => {
+        handleRegionSelect();
+    }, [selectedCommunityId, selectedDistrictId]);
+
     return (
         <>
-            <div className="mb-10 flex flex-col gap-10">
-                <MultipleSelector
-                    placeholder={t('select-tag')}
-                    value={selectedOptions}
-                    onChange={handleTagSelect}
-                    defaultOptions={tags?.map(({ name }) => {
-                        const value = getLocaleValue(name, locale);
-
-                        return {
-                            label: value,
-                            value,
-                        };
-                    })}
-                    emptyIndicator={
-                        <p className="text-center text-lg leading-10 text-gray-600 dark:text-gray-400">
-                            {t('tag-not-found')}
-                        </p>
-                    }
-                />
-            </div>
+            <ListFilterPanel
+                optionsPlaceholder={t('select-tag')}
+                selectedOptions={selectedOptions}
+                onOptionChange={handleTagSelect}
+                options={
+                    tags?.map(({ name }) => ({
+                        label: getLocaleValue(name, locale),
+                        value: getLocaleValue(name, locale),
+                    })) || []
+                }
+                emptyOptionsLabel={t('tag-not-found')}
+                selectedDistrictId={selectedDistrictId || ''}
+                setSelectedDistrictId={setSelectedDistrictId}
+                selectedCommunityId={selectedCommunityId || ''}
+                setSelectedCommunityId={setSelectedCommunityId}
+            />
 
             {data && data?.pages[0] && data.pages[0].data.length > 0 ? (
                 <ul className="grid gap-8 mobile:grid-cols-1 tablet:grid-cols-2 desktop:grid-cols-3">

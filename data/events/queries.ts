@@ -5,7 +5,11 @@ import { QUERY_KEYS } from '@keys';
 import getEvents from '@actions/events/get-events';
 import getUpcomingEvents from '@actions/events/get-upcoming-events';
 
-type GetEventsListDto = { tags: string[] };
+type GetEventsListDto = {
+    tags: string[];
+    districtId?: string;
+    communityId?: string;
+};
 
 export const useEventsList = (dto?: Partial<GetEventsListDto>) => {
     return useInfiniteQuery({

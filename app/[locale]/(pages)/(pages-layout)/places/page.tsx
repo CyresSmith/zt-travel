@@ -21,7 +21,7 @@ export function generateStaticParams() {
 }
 
 export async function generateMetadata() {
-    const t = await getTranslations('places.places-page-metadata');
+    const t = await getTranslations('pages.places.places-page-metadata');
 
     return {
         title: t('title'),
@@ -33,7 +33,7 @@ const PlacesPage = async () => {
     const queryClient = getQueryClient();
 
     await queryClient.prefetchInfiniteQuery({
-        queryKey: [QUERY_KEYS.PLACES],
+        queryKey: [QUERY_KEYS.PLACES, { categories: [] }],
         queryFn: async ({ pageParam }) => await getPlacesList({ pagination: { page: pageParam } }),
         initialPageParam: 1,
         getNextPageParam: ({ page }) => page + 1,
