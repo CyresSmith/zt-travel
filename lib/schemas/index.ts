@@ -156,6 +156,8 @@ export const AddEventSchema = z.object({
         .min(10, { message: 'Min 10 characters' })
         .regex(enRegex, { message: 'Latin symbols required' }),
     categoryId: z.string().optional().or(z.literal('')),
+    districtId: z.string().min(1, { message: 'District required!' }),
+    communityId: z.string().min(1, { message: 'Community required!' }),
     email: z.string().email({ message: 'Not valid email!' }).optional().or(z.literal('')),
     phone: zPhone,
     url: z

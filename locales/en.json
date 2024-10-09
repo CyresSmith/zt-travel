@@ -102,7 +102,9 @@
             "start": "Event start",
             "duration": "Event duration",
             "tags": "Tags",
-            "periodic": "Periodic"
+            "periodic": "Periodic",
+            "districtId": "District",
+            "communityId": "Community"
         },
         "addNews": {
             "addImage": "Click to add or drag a file here",
