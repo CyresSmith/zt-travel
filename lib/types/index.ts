@@ -33,6 +33,11 @@ export type PaginationDto = {
     take?: number;
 };
 
+export type PaginationData = {
+    page: number;
+    pagesCount: number;
+};
+
 export type StringWithLocales = {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     [key in LocaleType]: string;

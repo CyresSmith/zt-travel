@@ -38,7 +38,9 @@ export default async function RootLayout({
     const messages = await getMessages();
     const session = await auth();
 
-    setDefaultOptions({ locale: locale === 'uk' ? uk : enIN });
+    const defaultLocale = locale === 'uk' ? uk : enIN;
+
+    setDefaultOptions({ locale: defaultLocale });
 
     return (
         <html lang={locale} dir={dir(locale)}>

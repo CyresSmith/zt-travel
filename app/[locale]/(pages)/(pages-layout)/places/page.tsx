@@ -34,7 +34,7 @@ const PlacesPage = async () => {
 
     await queryClient.prefetchInfiniteQuery({
         queryKey: [QUERY_KEYS.PLACES],
-        queryFn: async ({ pageParam }) => await getPlacesList({ page: pageParam }),
+        queryFn: async ({ pageParam }) => await getPlacesList({ pagination: { page: pageParam } }),
         initialPageParam: 1,
         getNextPageParam: ({ page }) => page + 1,
         pages: 1,

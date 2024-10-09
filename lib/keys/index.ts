@@ -7,4 +7,5 @@ export const QUERY_KEYS = Object.freeze({
     PLACE_CATEGORIES: 'place_categories',
     DISTRICTS: 'districts',
     COMMUNITIES: 'communities',
+    EVENT_TAGS: 'event_tags',
 });

@@ -1,6 +1,7 @@
 import type { JsonObject, JsonValue } from '@prisma/client/runtime/library';
 import { type ClassValue, clsx } from 'clsx';
-import { setHours, setMinutes } from 'date-fns';
+import { format, setHours, setMinutes } from 'date-fns';
+import { enIN, uk } from 'date-fns/locale';
 import { twMerge } from 'tailwind-merge';
 
 import type { PaginationDto } from '@types';
@@ -27,6 +28,12 @@ export function getPagination(dto?: PaginationDto) {
 
 export function getLocaleValue(value: JsonValue, locale: string): string {
     return value ? ((value as JsonObject)[locale] as string) : '';
+}
+
+export function getLocaleDate(date: Date, locale: LocaleType): string {
+    return format(date, 'HH:mm PPPP', {
+        locale: locale === 'uk' ? uk : enIN,
+    });
 }
 
 export const checkLanguage = (text: string): LocaleType | undefined => {
@@ -95,3 +102,14 @@ export const filterObjectBySelector = <T>(obj: T, selector: Selector<T>) => {
 };
 
 export const getSlug = (string: string) => string.split(' ').join('-').toLowerCase();
+
+export const createQueryString = (name: string, value: string, searchParams: string) => {
+    const params = new URLSearchParams(searchParams);
+    params.set(name, value);
+
+    if (name === 'district') {
+        params.delete('community');
+    }
+
+    return params.toString();
+};

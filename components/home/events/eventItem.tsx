@@ -3,6 +3,7 @@
 import { useLocale } from 'next-intl';
 
 import { format } from 'date-fns';
+import { enIN, uk } from 'date-fns/locale';
 
 import SectionCard from '../../section-card/section-card';
 
@@ -20,7 +21,11 @@ const EventItem = ({ event: { address, image, name, start, tags, slug } }: Props
     const locale = useLocale();
 
     const links = [
-        { href: '', icon: 'calendar-add' as IconName, label: format(start, 'PPPP') },
+        {
+            href: '',
+            icon: 'calendar-add' as IconName,
+            label: format(start, 'HH:mm, PPPP', { locale: locale === 'uk' ? uk : enIN }),
+        },
         { href: '', icon: 'map-point' as IconName, label: getLocaleValue(address, locale) },
     ];
 

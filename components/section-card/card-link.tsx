@@ -13,7 +13,7 @@ const CardLink = ({ label, icon, href = '' }: Props) => {
 
     return (
         <Slot
-            {...(href ? { href } : {})}
+            {...(href && Slot !== 'p' ? { href } : undefined)}
             className={`${THEME_TRANSITION} flex gap-1 fill-themeSecondary hover:fill-themeGreen hover:text-themeGreen`}
         >
             <Icon name={icon} />

@@ -127,5 +127,14 @@
         "select-community": "Select community",
         "places-not-found": "Places not found",
         "filter-reset": "Reset filters"
+    },
+    "events": {
+        "events-page-metadata": {
+            "title": "Interesting events of Zhytomyr region",
+            "description": "A list of interesting events that took place or will take place in the Zhytomyr region."
+        },
+        "events-not-found": "Events not found",
+        "select-tag": "Select tag",
+        "tag-not-found": "Tag not found"
     }
 }

@@ -1,6 +1,6 @@
 'use server';
 
-import type { PaginationDto } from '@types';
+import type { PaginationData, PaginationDto } from '@types';
 
 import { DEFAULT_TAKE } from '@constants';
 
@@ -11,7 +11,7 @@ import { getPagination } from '@utils';
 import { PlaceBasicInfoSelector } from '@data/places/selectors';
 import type { PlaceBasicInfo } from '@data/places/types';
 
-export type PlacesListRes = { data: PlaceBasicInfo[]; page: number; pagesCount: number };
+export type PlacesListRes = { data: PlaceBasicInfo[] } & PaginationData;
 
 type GetPlacesDto = {
     pagination: PaginationDto;
