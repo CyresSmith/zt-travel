@@ -3,10 +3,11 @@ import type { ReactNode } from 'react';
 
 import Image from 'next/image';
 
-import { THEME_TRANSITION } from '@lib/constants';
 import clsx from 'clsx';
 
 import Icon from '@components/icon';
+
+import { THEME_TRANSITION } from '@constants';
 
 type Props = {
     src?: string | null;

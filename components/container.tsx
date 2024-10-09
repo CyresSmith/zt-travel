@@ -8,11 +8,12 @@ const Container = ({ className, children }: Props) => {
     return (
         <div
             className={clsx(
-                className && className,
                 'mx-auto',
-                'mobile:px-3 mobile:w-[320px]',
-                'tablet:px-4 tablet:w-[768px]',
-                'desktop:px-6 desktop:w-[1280px]'
+                'mobile:w-[320px] mobile:px-3',
+                'tablet:w-[768px] tablet:px-4',
+                'desktop:w-[1280px] desktop:px-6',
+                'flex-1',
+                className && className
             )}
         >
             {children}

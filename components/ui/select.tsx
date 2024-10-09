@@ -4,10 +4,11 @@ import { CaretSortIcon, ChevronDownIcon, ChevronUpIcon } from '@radix-ui/react-i
 import * as SelectPrimitive from '@radix-ui/react-select';
 import * as React from 'react';
 
-import { THEME_TRANSITION } from '@lib/constants';
-import { cn } from '@lib/utils';
-
 import Icon from '@components/icon';
+
+import { THEME_TRANSITION } from '@constants';
+
+import { cn } from '@utils';
 
 const Select = SelectPrimitive.Root;
 
@@ -17,8 +18,8 @@ const SelectValue = SelectPrimitive.Value;
 
 const SelectTrigger = React.forwardRef<
     React.ElementRef<typeof SelectPrimitive.Trigger>,
-    React.ComponentPropsWithoutRef<typeof SelectPrimitive.Trigger>
->(({ className, children, ...props }, ref) => {
+    React.ComponentPropsWithoutRef<typeof SelectPrimitive.Trigger> & { reset?: () => void }
+>(({ className, children, reset, ...props }, ref) => {
     return (
         <SelectPrimitive.Trigger
             ref={ref}
@@ -32,7 +33,18 @@ const SelectTrigger = React.forwardRef<
         >
             {children}
             <SelectPrimitive.Icon asChild>
-                <CaretSortIcon className="h-4 w-4 opacity-50" />
+                {props.value && reset ? (
+                    <Icon
+                        onClick={(e: React.MouseEvent<SVGSVGElement, MouseEvent>) => {
+                            e.stopPropagation();
+                            reset();
+                        }}
+                        name="cross"
+                        className="pointer-events-auto h-4 w-4 fill-themeRed"
+                    />
+                ) : (
+                    <CaretSortIcon className="h-4 w-4 opacity-50" />
+                )}
             </SelectPrimitive.Icon>
         </SelectPrimitive.Trigger>
     );
@@ -83,7 +95,7 @@ const SelectContent = React.forwardRef<
             position={position}
             {...props}
         >
-            <SelectScrollUpButton />
+            <SelectPrimitive.SelectScrollUpButton />
             <SelectPrimitive.Viewport
                 className={cn(
                     'p-1',

@@ -2,12 +2,13 @@
 
 import { AuthError } from 'next-auth';
 
-import { signIn } from '@auth';
 import prisma from '@lib/prisma';
 import { DEFAULT_SIGN_IN_REDIRECT } from '@lib/routes/index.ts';
 import { SignInSchema } from '@lib/schemas';
 import { generateTwoFactorToken, generateVerificationToken } from '@lib/tokens/index';
 import { type z } from 'zod';
+
+import { signIn } from '@auth';
 
 import { sendTwoFactorTokenEmail, sendVerificationEmail } from '@data/mail';
 import { getTwoFactorConfirmationByUserId } from '@data/two-factor-confirmation';

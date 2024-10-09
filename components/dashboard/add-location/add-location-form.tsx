@@ -4,13 +4,9 @@ import { useSession } from 'next-auth/react';
 import { useEffect, useState, useTransition } from 'react';
 import { useForm, useWatch } from 'react-hook-form';
 
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import { ResponseStatus } from '@lib/enums';
-import { useToast } from '@lib/hooks/use-toast';
-import { AddPlaceSchema } from '@lib/schemas';
-import { getFileUri } from '@lib/utils';
 import type { z } from 'zod';
 
 import MainImageLoad from '../main-image-load';
@@ -18,14 +14,23 @@ import MainImageLoad from '../main-image-load';
 import { Button } from '@ui/button';
 import { Form } from '@ui/form';
 
-import type { SelectItemType } from '@components/form-input-field';
 import FormInputField from '@components/form-input-field';
 
-import { getPlaceBySlug } from '@data/places';
+import { AddPlaceSchema } from '@schemas';
+
+import { useToast } from '@hooks';
+
+import { ResponseStatus } from '@enums';
+
+import { filterUndefinedValues, getFileUri, getLocaleValue, getSlug } from '@utils';
+
+import { useCommunities } from '@data/community/queries';
+import { useDistricts } from '@data/district/queries';
+import { usePlaceCategories } from '@data/place-categories/queries';
+import { usePlaceAdd, usePlaceUpdate } from '@data/places/mutations';
 
 import uploadToCloudinary from '@actions/cloudinary/upload-image';
-import addPlace from '@actions/places/add-place';
-import updatePlace from '@actions/places/update-place';
+import getPlaceBySlug from '@actions/places/get-place-by-slug';
 
 export type AddPlaceValues = z.infer<typeof AddPlaceSchema>;
 
@@ -75,20 +80,41 @@ const defaultValues: AddPlaceValues = {
     longitude: '',
 };
 
-type CommunityType = SelectItemType & { districtId: string };
-
-type Props = {
-    categories: SelectItemType[];
-    districts: SelectItemType[];
-    communities: CommunityType[];
-};
-
-const AddLocationForm = ({ categories, districts, communities }: Props) => {
+const AddLocationForm = () => {
+    const locale = useLocale();
     const { data: session } = useSession();
     const t = useTranslations('dashboard.addLocation');
     const { toast } = useToast();
     const [fileData, setFileData] = useState<null | { file: File; fileName: string }>(null);
     const [isPending, startTransition] = useTransition();
+
+    const { mutateAsync: addPlace, isError, error } = usePlaceAdd();
+    const { mutateAsync: updatePlace } = usePlaceUpdate();
+
+    const { data: categoriesData } = usePlaceCategories();
+
+    const categories =
+        categoriesData?.map(({ name, id }) => ({
+            label: getLocaleValue(name, locale),
+            value: id,
+        })) || [];
+
+    const { data: districtsData } = useDistricts();
+
+    const districts =
+        districtsData?.map(({ id, name_uk, name_en = '' }) => ({
+            label: (locale === 'uk' ? name_uk : name_en) || name_uk,
+            value: id,
+        })) || [];
+
+    const { data: communitiesData } = useCommunities();
+
+    const communities =
+        communitiesData?.map(({ id, name_uk, name_en = '', districtId }) => ({
+            label: (locale === 'uk' ? name_uk : name_en) || name_uk,
+            value: id,
+            districtId,
+        })) || [];
 
     const userId = session?.user?.id;
 
@@ -105,6 +131,11 @@ const AddLocationForm = ({ categories, districts, communities }: Props) => {
         name: 'districtId',
     });
 
+    const communitiesForSelect =
+        communities
+            ?.filter(({ districtId }) => districtId === districtIdState)
+            .map(({ label, value }) => ({ label, value })) || [];
+
     const { isValid, errors } = form.formState;
 
     const getSelectItemTypes = (name: string) => {
@@ -114,16 +145,20 @@ const AddLocationForm = ({ categories, districts, communities }: Props) => {
 
             case 'districtId':
                 return districts;
+
             default:
                 return undefined;
         }
     };
 
-    const communitiesForSelect = communities
-        .filter(({ districtId }) => districtId === districtIdState)
-        .map(({ label, value }) => ({ label, value }));
+    const resetState = () => {
+        form.reset();
+        setFileData(null);
+    };
 
     const handleSubmit = async (values: AddPlaceValues) => {
+        console.log('🚀 ~ handleSubmit ~ values:', values);
+        console.log('🚀 ~ handleSubmit ~ userId:', userId);
         if (!userId) return;
 
         const {
@@ -140,20 +175,7 @@ const AddLocationForm = ({ categories, districts, communities }: Props) => {
             ...rest
         } = values;
 
-        const restValues = Object.entries(rest).reduce(
-            (acc: Record<string, string>, [key, value]) => {
-                if (value) acc[key] = value;
-                return acc;
-            },
-            {}
-        );
-
-        const slug = nameEn.split(' ').join('-').toLowerCase();
-
-        const resetState = () => {
-            form.reset();
-            setFileData(null);
-        };
+        const slug = getSlug(nameEn);
 
         startTransition(async () => {
             const slugExist = await getPlaceBySlug(slug);
@@ -178,20 +200,12 @@ const AddLocationForm = ({ categories, districts, communities }: Props) => {
                 phone,
                 slug,
                 userId,
-                ...restValues,
+                ...filterUndefinedValues(rest),
             };
 
-            const { status, message, data: place } = await addPlace(data);
+            const place = await addPlace(data);
 
-            if (status === ResponseStatus.ERROR) {
-                toast({
-                    title: 'Error acquired!',
-                    description: message,
-                    variant: 'destructive',
-                });
-            }
-
-            if (status === ResponseStatus.SUCCESS && place) {
+            if (place) {
                 const successMessage = 'Place created successfully';
 
                 if (fileData) {
@@ -207,18 +221,21 @@ const AddLocationForm = ({ categories, districts, communities }: Props) => {
                         toast({
                             title: String(status),
                             description: 'Place created, but image load failed!',
+                            variant: 'destructive',
                         });
+
+                        return;
                     }
 
                     if (url) {
                         const data = { image: url };
 
-                        const { status } = await updatePlace({
-                            id: (place as { id: string }).id,
+                        const updatedPlace = await updatePlace({
+                            id: place.id,
                             data,
                         });
 
-                        if (status === ResponseStatus.SUCCESS) {
+                        if (updatedPlace) {
                             toast({
                                 title: 'Success',
                                 description: successMessage,
@@ -228,13 +245,6 @@ const AddLocationForm = ({ categories, districts, communities }: Props) => {
                             resetState();
                         }
 
-                        if (status === ResponseStatus.ERROR) {
-                            toast({
-                                title: 'Failed',
-                                description: 'Place update failed',
-                                variant: 'destructive',
-                            });
-                        }
                         return;
                     }
                 }
@@ -254,6 +264,20 @@ const AddLocationForm = ({ categories, districts, communities }: Props) => {
         if (!districtIdState) return;
         form.trigger('districtId');
     }, [districtIdState]);
+
+    useEffect(() => {
+        if (!isError) {
+            return;
+        }
+
+        toast({
+            title: 'Error',
+            description: error.message,
+            variant: 'destructive',
+        });
+
+        console.error(error.message);
+    }, [isError]);
 
     return (
         <div>

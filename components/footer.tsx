@@ -1,10 +1,11 @@
 import { getTranslations } from 'next-intl/server';
 
-import type { IconName } from '@icon-names';
 import clsx from 'clsx';
 
 import Container from './container';
 import Icon from './icon';
+
+import type { IconName } from '@icon-names';
 
 import { EMAIL, PHONE, THEME_TRANSITION } from '@constants';
 

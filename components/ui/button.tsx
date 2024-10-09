@@ -1,13 +1,16 @@
 import { Slot } from '@radix-ui/react-slot';
 import * as React from 'react';
 
-import { THEME_TRANSITION } from '@lib/constants';
-import type { IconName } from '@lib/types/icon-names';
-import { cn } from '@lib/utils';
 import { type VariantProps, cva } from 'class-variance-authority';
 import clsx from 'clsx';
 
 import Icon from '@components/icon';
+
+import type { IconName } from '@icon-names';
+
+import { THEME_TRANSITION } from '@constants';
+
+import { cn } from '@utils';
 
 const buttonVariants = cva(
     `${THEME_TRANSITION} inline-flex items-center hover:shadow-button justify-center gap-2 whitespace-nowrap rounded-full text-m font-medium focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50`,
@@ -78,7 +81,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
                     {iconName && (
                         <Icon
                             name={isLoading ? 'black-hole' : iconName}
-                            className={clsx(isLoading && 'animate-spin', '')}
+                            className={clsx(isLoading && 'animate-spin', 'fill-inherit')}
                         />
                     )}
                     {children}

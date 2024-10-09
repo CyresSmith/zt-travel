@@ -1,7 +1,7 @@
-import type { WithChildren } from '@lib/types';
-
 import Container from '@components/container';
 import DashboardMenu from '@components/dashboard/dashboard-menu';
+
+import type { WithChildren } from '@types';
 
 const DashboardLayout = ({ children }: WithChildren) => {
     return (

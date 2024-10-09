@@ -1,11 +1,12 @@
 import type { ReactNode } from 'react';
 
-import { namu } from '@lib/fonts';
 import clsx from 'clsx';
 
 import { buttonVariants } from '@ui/button';
 
 import Container from '@components/container';
+
+import { namu } from '@fonts';
 
 import { Link } from '@i18n/routing';
 
@@ -20,10 +21,10 @@ const HomeSection = ({ title, children, href, linkLabel }: Props) => {
     return (
         <section
             className={clsx(
-                'relative bg-gradient-to-b from-transparent via-themePrimary to-transparent py-5'
+                'relative flex max-h-full flex-1 flex-col bg-gradient-to-b from-transparent via-themePrimary to-transparent py-5'
             )}
         >
-            <Container>
+            <Container className="flex flex-col">
                 {title && (
                     <h2 className={clsx(namu.className, 'mb-10 text-3xl text-themeBg')}>{title}</h2>
                 )}

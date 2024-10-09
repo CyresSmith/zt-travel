@@ -1,30 +1,34 @@
 import Image from 'next/image';
 
-import { THEME_TRANSITION } from '@lib/constants';
-import type { IconName } from '@lib/types/icon-names';
-import { getLocaleValue } from '@lib/utils';
+import { JsonValue } from '@prisma/client/runtime/library';
 import clsx from 'clsx';
 
 import CardLink from './card-link';
 
 import Icon from '@components/icon';
 
-import type { LocaleType } from '@i18n/routing';
-import { Link } from '@i18n/routing';
+import type { IconName } from '@icon-names';
+
+import { THEME_TRANSITION } from '@constants';
+
+import { getLocaleValue } from '@utils';
 
 import type { TagBasicInfo } from '@data/tags/types';
+
+import type { LocaleType } from '@i18n/routing';
+import { Link } from '@i18n/routing';
 
 type Props = {
     image: string;
     title: string;
     titleHref: string;
-    tags?: TagBasicInfo[];
+    tags?: Partial<TagBasicInfo>[];
     links: { label: string; href?: string; icon: IconName }[];
     locale: LocaleType;
     desc?: string;
 };
 
-const SectionCard = async ({ image, title, titleHref, tags = [], links, locale, desc }: Props) => {
+const SectionCard = ({ image, title, titleHref, tags = [], links, locale, desc }: Props) => {
     return (
         <li
             className={clsx(
@@ -49,14 +53,22 @@ const SectionCard = async ({ image, title, titleHref, tags = [], links, locale, 
 
                 {tags && tags.length > 0 && (
                     <ul className="absolute left-5 top-5 flex flex-col items-start gap-2">
-                        {tags.map(({ id, name, slug }) => (
-                            <li
-                                key={id}
-                                className={`rounded-full bg-themeYellow/80 px-2 py-1 text-m text-themeFg hover:bg-themeYellow ${THEME_TRANSITION}`}
-                            >
-                                <Link href={slug}>{getLocaleValue(name, locale)}</Link>
-                            </li>
-                        ))}
+                        {tags.map(({ id, name, slug }) => {
+                            const label = getLocaleValue(name as JsonValue, locale);
+
+                            return (
+                                <li
+                                    key={id}
+                                    className={`rounded-full bg-themeYellow/80 px-2 py-1 text-m text-themeFg hover:bg-themeYellow ${THEME_TRANSITION}`}
+                                >
+                                    {slug ? (
+                                        <Link href={String(slug)}>{label}</Link>
+                                    ) : (
+                                        <p>{label}</p>
+                                    )}
+                                </li>
+                            );
+                        })}
                     </ul>
                 )}
             </div>

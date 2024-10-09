@@ -1,1 +1,1 @@
-export { default } from './placesSection';
+export { default } from './places-section';

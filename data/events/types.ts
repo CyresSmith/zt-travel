@@ -1,5 +1,6 @@
-import type { StringWithLocales } from '@lib/types';
 import type { Event } from '@prisma/client';
+
+import type { StringWithLocales } from '@types';
 
 import type { TagBasicInfo } from '@data/tags/types';
 
@@ -18,7 +19,7 @@ export type AddEventDto = Partial<Pick<Event, 'url'>> & {
     slug: string;
     duration: number;
     periodic: boolean;
-    tags: string[];
+    tags: TagBasicInfo[];
     start: Date;
 };
 

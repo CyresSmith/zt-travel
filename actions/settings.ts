@@ -1,11 +1,13 @@
 'use server';
 
+import { revalidatePath } from 'next/cache';
+
+import { z } from 'zod';
+
 import { getUserById } from '@/data/user';
 import { currentUser } from '@/lib/auth';
 import { db } from '@/lib/db';
 import { SettingsSchema } from '@/schemas';
-import { revalidatePath } from 'next/cache';
-import { z } from 'zod';
 
 export const settings = async (values: z.infer<typeof SettingsSchema>) => {
     const user = await currentUser();

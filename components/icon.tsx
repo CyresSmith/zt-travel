@@ -1,7 +1,8 @@
 import { type SVGProps } from 'react';
 
-import type { IconName } from '@icon-names';
 import clsx from 'clsx';
+
+import type { IconName } from '@icon-names';
 
 type Props = SVGProps<SVGSVGElement> & {
     name: IconName;

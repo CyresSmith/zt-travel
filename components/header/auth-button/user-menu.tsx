@@ -12,14 +12,17 @@ import { signOut } from 'next-auth/react';
 import type { User } from 'next-auth';
 import { useTranslations } from 'next-intl';
 
-import { THEME_BORDER, THEME_TRANSITION } from '@lib/constants';
-import type { WithChildren } from '@lib/types';
-import type { IconName } from '@lib/types/icon-names';
 import { UserRole } from '@prisma/client';
 
 import { Button } from '@ui/button';
 
 import Icon from '@components/icon';
+
+import type { WithChildren } from '@types';
+
+import type { IconName } from '@icon-names';
+
+import { THEME_BORDER, THEME_TRANSITION } from '@constants';
 
 import { Link } from '@i18n/routing';
 

@@ -2,8 +2,9 @@ import type { ReactNode } from 'react';
 
 import type { Session } from 'next-auth';
 
-import type { ResponseStatus } from '@lib/enums';
 import type uk from '@locales/uk.json';
+
+import type { ResponseStatus } from '@enums';
 
 import type { LocaleType } from '@i18n/routing';
 
@@ -30,6 +31,11 @@ export type WithLocale = {
 export type PaginationDto = {
     page?: number;
     take?: number;
+};
+
+export type PaginationData = {
+    page: number;
+    pagesCount: number;
 };
 
 export type StringWithLocales = {

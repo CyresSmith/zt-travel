@@ -1,17 +1,17 @@
-import { getLocale } from 'next-intl/server';
+import { useLocale } from 'next-intl';
 
-import { getLocaleValue } from '@lib/utils';
+import SectionCard from '../../section-card/section-card';
 
-import SectionCard from '../section-card/section-card';
-
-import type { LocaleType } from '@i18n/routing';
+import { getLocaleValue } from '@utils';
 
 import type { PlaceBasicInfo } from '@data/places/types';
 
+import type { LocaleType } from '@i18n/routing';
+
 type Props = { place: PlaceBasicInfo };
 
-const PlaceItem = async ({ place }: Props) => {
-    const locale = await getLocale();
+const PlaceItem = ({ place }: Props) => {
+    const locale = useLocale();
     const name = getLocaleValue(place.name, locale);
     const address = getLocaleValue(place.address, locale);
 

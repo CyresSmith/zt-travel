@@ -1,10 +1,14 @@
-import { PER_PAGE } from '@lib/constants';
-import { enRegex, ukRegex } from '@lib/regexps';
-import type { PaginationDto } from '@lib/types';
 import type { JsonObject, JsonValue } from '@prisma/client/runtime/library';
 import { type ClassValue, clsx } from 'clsx';
-import { setHours, setMinutes } from 'date-fns';
+import { format, setHours, setMinutes } from 'date-fns';
+import { enIN, uk } from 'date-fns/locale';
 import { twMerge } from 'tailwind-merge';
+
+import type { PaginationDto } from '@types';
+
+import { DEFAULT_TAKE } from '@constants';
+
+import { enRegex, ukRegex } from '@regexps';
 
 import type { LocaleType } from '@i18n/routing';
 
@@ -14,9 +18,9 @@ export function cn(...inputs: ClassValue[]) {
 
 // export const cn = (...inputs: ClassValue[]) => clsx(inputs);
 
-export function getPagination(dto: PaginationDto) {
-    const page = dto.page || 1;
-    const take = dto.take || PER_PAGE;
+export function getPagination(dto?: PaginationDto) {
+    const page = dto?.page || 1;
+    const take = dto?.take || DEFAULT_TAKE;
     const skip = (page - 1) * take;
 
     return { take, skip };
@@ -24,6 +28,12 @@ export function getPagination(dto: PaginationDto) {
 
 export function getLocaleValue(value: JsonValue, locale: string): string {
     return value ? ((value as JsonObject)[locale] as string) : '';
+}
+
+export function getLocaleDate(date: Date, locale: LocaleType): string {
+    return format(date, 'HH:mm PPPP', {
+        locale: locale === 'uk' ? uk : enIN,
+    });
 }
 
 export const checkLanguage = (text: string): LocaleType | undefined => {
@@ -61,4 +71,45 @@ export const filterUndefinedValues = (object: object) => {
         if (value) acc[key] = value;
         return acc;
     }, {});
+};
+
+type Selector<T> = {
+    [K in keyof T]?: boolean | (T[K] extends object ? { select: Selector<T[K]> } : never);
+};
+
+export const filterObjectBySelector = <T>(obj: T, selector: Selector<T>) => {
+    const result: Partial<T> = {};
+
+    Object.keys(selector).forEach(key => {
+        const typedKey = key as keyof T;
+        const value = obj[typedKey];
+
+        if (typeof selector[typedKey] === 'boolean' && selector[typedKey]) {
+            result[typedKey] = value;
+        } else if (
+            typeof selector[typedKey] === 'object' &&
+            selector[typedKey] !== null &&
+            'select' in (selector[typedKey] as any)
+        ) {
+            result[typedKey] = filterObjectBySelector(
+                value as T[keyof T],
+                (selector[typedKey] as { select: Selector<T[keyof T]> }).select
+            ) as T[keyof T];
+        }
+    });
+
+    return result;
+};
+
+export const getSlug = (string: string) => string.split(' ').join('-').toLowerCase();
+
+export const createQueryString = (name: string, value: string, searchParams: string) => {
+    const params = new URLSearchParams(searchParams);
+    params.set(name, value);
+
+    if (name === 'district') {
+        params.delete('community');
+    }
+
+    return params.toString();
 };

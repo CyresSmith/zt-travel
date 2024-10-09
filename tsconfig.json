@@ -1,11 +1,7 @@
 {
     "compilerOptions": {
         "target": "esnext",
-        "lib": [
-            "dom",
-            "dom.iterable",
-            "esnext"
-        ],
+        "lib": ["dom", "dom.iterable", "esnext"],
         "allowJs": true,
         "skipLibCheck": true,
         "strict": true,
@@ -24,72 +20,34 @@
         ],
         "baseUrl": "./",
         "paths": {
-            "@i18n/*": [
-                "i18n/*"
-            ],
-            "@api/*": [
-                "app/api/*"
-            ],
-            "@assets/*": [
-                "assets/*"
-            ],
-            "@ui/*": [
-                "components/ui/*"
-            ],
-            "@components/*": [
-                "components/*"
-            ],
-            "@lib/*": [
-                "lib/*"
-            ],
-            "@types": [
-                "lib/types"
-            ],
-            "@icon-names": [
-                "lib/types/icon-names.ts"
-            ],
-            "@enums": [
-                "lib/enums"
-            ],
-            "@hooks/*": [
-                "lib/hooks/*"
-            ],
-            "@constants": [
-                "lib/constants"
-            ],
-            "@config": [
-                "lib/config"
-            ],
-            "@locales/*": [
-                "./locales/*"
-            ],
-            "@regexp": [
-                "lib/regexps"
-            ],
-            "@data/*": [
-                "data/*"
-            ],
-            "@auth": [
-                "./auth.ts"
-            ],
-            "@schemas": [
-                "lib/schemas"
-            ],
-            "@actions/*": [
-                "actions/*"
-            ],
+            "@i18n/*": ["i18n/*"],
+            "@api/*": ["app/api/*"],
+            "@assets/*": ["assets/*"],
+            "@ui/*": ["components/ui/*"],
+            "@components/*": ["components/*"],
+            "@config": ["lib/config"],
+            "@constants": ["lib/constants"],
+            "@enums": ["lib/enums"],
+            "@fonts": ["lib/fonts"],
+            "@hooks": ["lib/hooks"],
+            "@keys": ["lib/keys"],
+            "@prisma-util": ["lib/prisma"],
+            "@regexps": ["lib/regexps"],
+            "@routes": ["lib/routes"],
+            "@schemas": ["lib/schemas"],
+            "@tokens": ["lib/tokens"],
+            "@types": ["lib/types"],
+            "@icon-names": ["lib/types/icon-names.ts"],
+            "@utils": ["lib/utils"],
+            "@utils/*": ["lib/utils/*"],
+            "@data/*": ["data/*"],
+            "@auth": ["./auth.ts"],
+            "@locales/*": ["./locales/*"],
+            "@actions/*": ["actions/*"]
         }
     },
-    "include": [
-        "svgr.d.ts",
-        "next-env.d.ts",
-        "**/*.ts",
-        "**/*.tsx",
-        ".next/types/**/*.ts"
-    ],
-    "exclude": [
-        "node_modules"
-    ],
+    "include": ["svgr.d.ts", "next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+    "exclude": ["node_modules"],
     "ts-node": {
         "compilerOptions": {
             "module": "CommonJS"

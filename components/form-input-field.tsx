@@ -4,7 +4,6 @@ import { CalendarIcon } from '@radix-ui/react-icons';
 import { Popover, PopoverContent, PopoverTrigger } from '@radix-ui/react-popover';
 import type { Control, FieldValues, Path } from 'react-hook-form';
 
-import { INPUT_STYLES, THEME_BORDER } from '@lib/constants';
 import { format } from 'date-fns';
 
 import { Button } from '@ui/button';
@@ -16,6 +15,8 @@ import { Input } from '@ui/input';
 import MultipleSelector from '@ui/multiple-select';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@ui/select';
 import { Textarea } from '@ui/textarea';
+
+import { INPUT_STYLES, THEME_BORDER } from '@constants';
 
 export type SelectItemType = {
     label: string;

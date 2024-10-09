@@ -3,11 +3,13 @@
 import * as ToastPrimitives from '@radix-ui/react-toast';
 import * as React from 'react';
 
-import { THEME_BORDER, THEME_TRANSITION } from '@lib/constants';
-import { cn } from '@lib/utils';
 import { type VariantProps, cva } from 'class-variance-authority';
 
 import Icon from '@components/icon';
+
+import { THEME_BORDER, THEME_TRANSITION } from '@constants';
+
+import { cn } from '@utils';
 
 const ToastProvider = ToastPrimitives.Provider;
 

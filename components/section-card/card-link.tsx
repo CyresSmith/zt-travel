@@ -1,7 +1,8 @@
-import { THEME_TRANSITION } from '@lib/constants';
-import type { IconName } from '@lib/types/icon-names';
-
 import Icon from '@components/icon';
+
+import type { IconName } from '@icon-names';
+
+import { THEME_TRANSITION } from '@constants';
 
 import { Link } from '@i18n/routing';
 
@@ -12,7 +13,7 @@ const CardLink = ({ label, icon, href = '' }: Props) => {
 
     return (
         <Slot
-            {...(href ? { href } : {})}
+            {...(href && Slot !== 'p' ? { href } : undefined)}
             className={`${THEME_TRANSITION} flex gap-1 fill-themeSecondary hover:fill-themeGreen hover:text-themeGreen`}
         >
             <Icon name={icon} />

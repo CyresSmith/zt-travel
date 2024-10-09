@@ -1,11 +1,16 @@
 'use server';
 
-import { auth } from '@auth';
-import { ResponseStatus } from '@lib/enums';
-import prisma from '@lib/prisma';
-import type { ActionResponse } from '@lib/types';
-import { filterUndefinedValues } from '@lib/utils';
 import { UserRole } from '@prisma/client';
+
+import type { ActionResponse } from '@types';
+
+import { ResponseStatus } from '@enums';
+
+import prisma from '@prisma-util';
+
+import { filterUndefinedValues } from '@utils';
+
+import { auth } from '@auth';
 
 import type { UpdateArticleDto } from '@data/articles/types';
 

@@ -1,6 +1,7 @@
-import { enRegex, ukRegex } from '@lib/regexps';
 import { parsePhoneNumberFromString } from 'libphonenumber-js';
 import { z } from 'zod';
+
+import { enRegex, ukRegex } from '@regexps';
 
 export const SettingsSchema = z.object({
     name: z.string().min(3, 'Minimum 3 characters required!'),

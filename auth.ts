@@ -1,8 +1,9 @@
 import NextAuth from 'next-auth';
 
-import prisma from '@lib/prisma';
 import type { UserRole } from '@prisma/client';
 import authConfig from 'auth.config';
+
+import prisma from '@prisma-util';
 
 import { getAccountByUserId } from '@data/accaunt';
 import { getTwoFactorConfirmationByUserId } from '@data/two-factor-confirmation';

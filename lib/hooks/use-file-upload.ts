@@ -13,7 +13,7 @@ interface ImageUploadHookResult {
     reset: () => void;
 }
 
-const useFileUpload = (): ImageUploadHookResult => {
+export const useFileUpload = (): ImageUploadHookResult => {
     const [file, setFile] = useState<File | undefined>();
     const [previewImage, setPreviewImage] = useState<string | undefined>();
     const [fileName, setFileName] = useState<string | undefined>();
@@ -68,5 +68,3 @@ const useFileUpload = (): ImageUploadHookResult => {
         reset,
     };
 };
-
-export default useFileUpload;
