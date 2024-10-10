@@ -29,7 +29,10 @@ const EventsList = () => {
     const router = useRouter();
     const t = useTranslations('pages.events');
 
+    const selectedDistrictIdParam = searchParams.get('district');
+    const selectedCommunityIdParam = searchParams.get('community');
     const selectedTagsParam = searchParams.get('tags');
+
     const selectedTagsSlugs = selectedTagsParam?.split(',');
 
     const { data: tags } = useEventTags();
@@ -128,6 +131,11 @@ const EventsList = () => {
     useEffect(() => {
         handleRegionSelect();
     }, [selectedCommunityId, selectedDistrictId]);
+
+    useEffect(() => {
+        if (!selectedDistrictIdParam) setSelectedDistrictId(undefined);
+        if (!selectedCommunityIdParam) setSelectedCommunityId(undefined);
+    }, [selectedDistrictIdParam, selectedCommunityIdParam]);
 
     return (
         <>

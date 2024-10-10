@@ -138,6 +138,11 @@ const PlacesList = () => {
         handleRegionSelect();
     }, [selectedCommunityId, selectedDistrictId]);
 
+    useEffect(() => {
+        if (!selectedDistrictIdParam) setSelectedDistrictId(undefined);
+        if (!selectedCommunityIdParam) setSelectedCommunityId(undefined);
+    }, [selectedDistrictIdParam, selectedCommunityIdParam]);
+
     return (
         <>
             <ListFilterPanel
