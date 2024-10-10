@@ -1,10 +1,21 @@
 import type { JsonObject, JsonValue } from '@prisma/client/runtime/library';
 import { type ClassValue, clsx } from 'clsx';
-import { format, setHours, setMinutes } from 'date-fns';
+import {
+    format,
+    isDate,
+    millisecondsToHours,
+    setDefaultOptions,
+    setHours,
+    setMinutes,
+} from 'date-fns';
 import { enIN, uk } from 'date-fns/locale';
 import { twMerge } from 'tailwind-merge';
 
-import type { PaginationDto } from '@types';
+import { InfoItem } from '@components/shared/single-item-page';
+
+import { INFO_KEYS } from '@keys';
+
+import type { PaginationDto, PrismaModel } from '@types';
 
 import { DEFAULT_TAKE } from '@constants';
 
@@ -119,4 +130,92 @@ export const createQueryString = (name: string, value: string, searchParams: str
     }
 
     return params.toString();
+};
+
+export const getInfo = <T extends PrismaModel>(object: T, locale: LocaleType) => {
+    setDefaultOptions({ locale: locale === 'uk' ? uk : enIN });
+
+    const objectKeys = Object.keys(object);
+
+    return INFO_KEYS.reduce((acc: InfoItem[], key) => {
+        if (objectKeys.includes(key)) {
+            const value: unknown = object[key as keyof object];
+
+            if (value) {
+                if (Array.isArray(value) && value.length > 0) {
+                    acc.push({ icon: 'point-on-map', text: value.join(', ') });
+                    return acc;
+                }
+
+                if (isDate(value)) {
+                    acc.push({ icon: 'calendar-add', text: format(value, 'HH:mm, PPPP') });
+                    return acc;
+                }
+
+                if (key === 'duration') {
+                    acc.push({
+                        icon: 'hourglass-line',
+                        text: `${String(millisecondsToHours(+value))} ${locale === 'uk' ? 'год.' : 'h.'}`,
+                    });
+                    return acc;
+                }
+
+                if (key === 'phone') {
+                    acc.push({
+                        icon: 'phone-calling',
+                        text: String(value),
+                        href: `tel:${String(value).split(' ').join('')}`,
+                    });
+                    return acc;
+                }
+
+                if (key === 'email') {
+                    acc.push({
+                        icon: 'mailbox',
+                        text: String(value),
+                        href: `mailto:${String(value)}`,
+                    });
+                    return acc;
+                }
+
+                if (key === 'address') {
+                    acc.push({
+                        icon: 'streets-map-point',
+                        text: getLocaleValue(value, locale),
+                        href: object['gmapsUrl' as keyof object] || undefined,
+                    });
+                    return acc;
+                }
+
+                if (key === 'url') {
+                    acc.push({
+                        icon: 'feed',
+                        text: String(value),
+                        href: String(value),
+                    });
+                    return acc;
+                }
+
+                if (key === 'facebook') {
+                    acc.push({
+                        icon: 'facebook',
+                        text: 'Facebook',
+                        href: String(value),
+                    });
+                    return acc;
+                }
+
+                if (key === 'instagram') {
+                    acc.push({
+                        icon: 'instagram',
+                        text: 'Instagram',
+                        href: String(value),
+                    });
+                    return acc;
+                }
+            }
+        }
+
+        return acc;
+    }, []);
 };

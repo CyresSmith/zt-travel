@@ -133,7 +133,9 @@
             "select-district": "Оберіть район",
             "select-community": "Оберіть громаду",
             "places-not-found": "Місця не знайдені",
-            "filter-reset": "Скинути фільтри"
+            "filter-reset": "Скинути фільтри",
+            "about": "Про місце",
+            "similar": "Схожі місця"
         },
         "events": {
             "events-page-metadata": {
@@ -143,7 +145,9 @@
             "events-not-found": "Події не знайдено",
             "select-tag": "Оберіть мітки",
             "tag-not-found": "Мітки не знайдено",
-            "duration": "{count} години"
+            "duration": "{count} години",
+            "about": "Про подію",
+            "similar": "Схожі події"
         },
         "news": {
             "news-page-metadata": {
@@ -152,7 +156,8 @@
             },
             "news-not-found": "Новини не знайдено",
             "select-tag": "Оберіть мітки",
-            "tag-not-found": "Мітки не знайдено"
+            "tag-not-found": "Мітки не знайдено",
+            "similar": "Схожі новини"
         }
     }
 }

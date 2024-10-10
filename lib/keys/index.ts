@@ -11,3 +11,15 @@ export const QUERY_KEYS = Object.freeze({
     EVENT_TAGS: 'event_tags',
     ARTICLE_TAGS: 'article_tags',
 });
+
+export const INFO_KEYS = [
+    'phone',
+    'address',
+    'email',
+    'url',
+    'facebook',
+    'instagram',
+    'latLang',
+    'start',
+    'duration',
+];

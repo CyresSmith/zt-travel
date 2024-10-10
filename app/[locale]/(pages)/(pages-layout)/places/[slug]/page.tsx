@@ -1,19 +1,15 @@
+import { getTranslations } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 
-import clsx from 'clsx';
+import { Place } from '@prisma/client';
 
-import Container from '@components/container';
-import HomeSection from '@components/home/home-section';
-import PlaceImage from '@components/place-page/place-image';
-import ContactItem from '@components/shared/contact-item';
-
-import { namu } from '@fonts';
+import SingleItemPage from '@components/shared/single-item-page';
 
 import type { StringWithLocales, WithLocale } from '@types';
 
 import prisma from '@prisma-util';
 
-import { getLocaleValue } from '@utils';
+import { getInfo, getLocaleValue } from '@utils';
 
 import getPlaceBySlug from '@actions/places/get-place-by-slug';
 
@@ -25,6 +21,7 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params: { slug, locale } }: Props) {
+    const t = await getTranslations('pages.places');
     const place = await getPlaceBySlug(slug);
 
     const title = (place?.name as StringWithLocales)[locale] || 'Some place';
@@ -37,82 +34,44 @@ export async function generateMetadata({ params: { slug, locale } }: Props) {
 }
 
 const PlacesPage = async ({ params: { slug, locale } }: Props) => {
+    const t = await getTranslations('pages.places');
     const place = await getPlaceBySlug(slug);
 
     if (!place) notFound();
 
-    const placeTitle = getLocaleValue(place.name, locale);
-    const placeDesc = getLocaleValue(place.desc, locale);
-    const placeAddress = getLocaleValue(place.address, locale);
-    const placePhone = getLocaleValue(place.phone, locale);
-
     return (
-        <>
-            <Container>
-                {place.image && <PlaceImage src={place.image} alt={placeTitle} />}
-
-                <h1 className={clsx(namu.className, 'mb-5 mt-10 text-4xl text-themeBg')}>
-                    {placeTitle}
-                </h1>
-            </Container>
-
-            <HomeSection>
-                <div className="relative z-10 grid grid-cols-2 gap-10 rounded-3xl bg-themeSecondary p-6 shadow-main">
-                    <ul className="flex flex-col gap-3">
-                        <li>
-                            <ContactItem icon="streets-map-point">{placeAddress}</ContactItem>
-                        </li>
-
-                        {placePhone && (
-                            <li>
-                                <ContactItem
-                                    link
-                                    icon="phone-calling"
-                                    href={`tel:${placePhone.split(' ').join('')}`}
-                                >
-                                    {placePhone}
-                                </ContactItem>
-                            </li>
-                        )}
-                    </ul>
-
-                    <ul className="flex flex-col gap-3">
-                        {place.url && (
-                            <li>
-                                <ContactItem link icon="feed" href={place.url}>
-                                    Сайт
-                                </ContactItem>
-                            </li>
-                        )}
-                        {place.gmapsUrl && (
-                            <li>
-                                <ContactItem link icon="point-on-map" href={place.gmapsUrl}>
-                                    Google
-                                </ContactItem>
-                            </li>
-                        )}
-                        {place.facebook && (
-                            <li>
-                                <ContactItem link icon="facebook" href={place.facebook}>
-                                    Facebook
-                                </ContactItem>
-                            </li>
-                        )}
-                        {place.instagram && (
-                            <li>
-                                <ContactItem link icon="instagram" href={place.instagram}>
-                                    Instagramm
-                                </ContactItem>
-                            </li>
-                        )}
-                    </ul>
-                </div>
-            </HomeSection>
-
-            <HomeSection title={'Про місце'}>
-                <p className="relative z-10 text-justify">{placeDesc}</p>
-            </HomeSection>
-        </>
+        <SingleItemPage
+            title={getLocaleValue(place.name, locale)}
+            image={place?.image || undefined}
+            desc={getLocaleValue(place.desc, locale)}
+            descTitle={t('about')}
+            info={getInfo<Place>(place, locale)}
+            similarTitle={t('similar')}
+            similarPrefix="places"
+            similarItems={place.similar?.map(
+                ({ address, category, desc, image, name, slug, gmapsUrl }) => ({
+                    image,
+                    title: getLocaleValue(name, locale),
+                    titleHref: `${slug}`,
+                    desc: getLocaleValue(desc, locale),
+                    locale,
+                    links: [
+                        {
+                            icon: 'streets-map-point',
+                            label: getLocaleValue(address, locale),
+                            href: gmapsUrl || undefined,
+                        },
+                    ],
+                    tags: [
+                        {
+                            id: category.id,
+                            name: category.name,
+                            slug: category.slug,
+                        },
+                    ],
+                })
+            )}
+        />
     );
 };
 

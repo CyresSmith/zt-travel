@@ -44,7 +44,7 @@ const EventsPage = async () => {
 
     await queryClient.prefetchQuery({
         queryKey: [QUERY_KEYS.EVENT_TAGS],
-        queryFn: async () => await getTagsByType(TagType.ARTICLE),
+        queryFn: async () => await getTagsByType(TagType.EVENT),
     });
 
     await queryClient.prefetchQuery({

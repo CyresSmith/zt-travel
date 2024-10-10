@@ -128,12 +128,12 @@ const NewsList = () => {
                                     key={id}
                                     image={image || ''}
                                     title={getLocaleValue(name, locale)}
-                                    titleHref={`events/${slug}`}
+                                    titleHref={`news/${slug}`}
                                     locale={locale as LocaleType}
                                     desc={getLocaleValue(desc, locale)}
                                     tags={tags.map(({ slug, ...tag }) => ({
                                         ...tag,
-                                        slug: `events?tags=${slug}`,
+                                        slug: `news?tags=${slug}`,
                                     }))}
                                 />
                             ))}

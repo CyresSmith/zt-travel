@@ -48,3 +48,9 @@ export type ActionResponse = {
     message?: string;
     data?: unknown;
 };
+
+export type PrismaModel = {
+    id: string;
+    createdAt: Date;
+    updatedAt: Date;
+};

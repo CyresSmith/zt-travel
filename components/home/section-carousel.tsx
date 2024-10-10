@@ -33,7 +33,12 @@ const SectionCarousel = ({ items = [], href, linkLabel }: Props) => {
                 </CarouselContent>
             </div>
 
-            <div className="mt-5 flex justify-between gap-10">
+            <div
+                className={clsx(
+                    'mt-5 flex gap-10',
+                    href && linkLabel ? 'justify-between' : 'justify-end'
+                )}
+            >
                 {href && linkLabel && (
                     <Link
                         href={href}
@@ -48,16 +53,18 @@ const SectionCarousel = ({ items = [], href, linkLabel }: Props) => {
                     </Link>
                 )}
 
-                <div className="flex gap-5">
-                    <CarouselPrevious
-                        variant={'yellow'}
-                        className="relative left-0 top-0 h-[42px] w-[42px] translate-x-0 translate-y-0"
-                    />
-                    <CarouselNext
-                        variant={'yellow'}
-                        className="relative left-0 top-0 h-[42px] w-[42px] translate-x-0 translate-y-0"
-                    />
-                </div>
+                {items.length > 3 && (
+                    <div className="flex gap-5">
+                        <CarouselPrevious
+                            variant={'yellow'}
+                            className="relative left-0 top-0 h-[42px] w-[42px] translate-x-0 translate-y-0"
+                        />
+                        <CarouselNext
+                            variant={'yellow'}
+                            className="relative left-0 top-0 h-[42px] w-[42px] translate-x-0 translate-y-0"
+                        />
+                    </div>
+                )}
             </div>
         </Carousel>
     );
