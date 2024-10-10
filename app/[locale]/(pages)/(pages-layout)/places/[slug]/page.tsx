@@ -1,5 +1,3 @@
-import { cache } from 'react';
-
 import { notFound } from 'next/navigation';
 
 import clsx from 'clsx';
@@ -21,15 +19,13 @@ import getPlaceBySlug from '@actions/places/get-place-by-slug';
 
 type Props = { params: { slug: string } & WithLocale };
 
-const getPagePlace = cache(async (slug: string) => getPlaceBySlug(slug));
-
 export async function generateStaticParams() {
     const allPlaces = await prisma.place.findMany();
     return allPlaces.map(({ slug }) => ({ slug }));
 }
 
 export async function generateMetadata({ params: { slug, locale } }: Props) {
-    const place = await getPagePlace(slug);
+    const place = await getPlaceBySlug(slug);
 
     const title = (place?.name as StringWithLocales)[locale] || 'Some place';
     const description = (place?.desc as StringWithLocales)[locale] || 'Some description';
@@ -41,7 +37,7 @@ export async function generateMetadata({ params: { slug, locale } }: Props) {
 }
 
 const PlacesPage = async ({ params: { slug, locale } }: Props) => {
-    const place = await getPagePlace(slug);
+    const place = await getPlaceBySlug(slug);
 
     if (!place) notFound();
 
@@ -113,7 +109,7 @@ const PlacesPage = async ({ params: { slug, locale } }: Props) => {
                 </div>
             </HomeSection>
 
-            <HomeSection title={'Про місце'} light>
+            <HomeSection title={'Про місце'}>
                 <p className="relative z-10 text-justify">{placeDesc}</p>
             </HomeSection>
         </>

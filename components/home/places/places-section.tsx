@@ -15,9 +15,11 @@ const PlacesSection = () => {
     const { data: places } = usePopularPlaces();
 
     return (
-        <HomeSection title={t('places-title')} href={`places`} linkLabel={t('places-link-label')}>
+        <HomeSection title={t('places-title')}>
             <SectionCarousel
                 items={places?.map(place => <PlaceItem key={place.id} place={place} />)}
+                href={`places`}
+                linkLabel={t('places-link-label')}
             />
         </HomeSection>
     );

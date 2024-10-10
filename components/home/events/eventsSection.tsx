@@ -15,9 +15,11 @@ const EventsSection = () => {
     const { data: events } = useUpcomingEvents();
 
     return (
-        <HomeSection title={t('events-title')} href={`events`} linkLabel={t('events-link-label')}>
+        <HomeSection title={t('events-title')}>
             <SectionCarousel
                 items={events?.map((event, i) => <EventItem key={i} event={event} />)}
+                href={`events`}
+                linkLabel={t('events-link-label')}
             />
         </HomeSection>
     );

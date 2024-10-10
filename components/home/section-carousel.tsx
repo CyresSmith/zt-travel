@@ -1,5 +1,8 @@
 import type { ReactNode } from 'react';
 
+import clsx from 'clsx';
+
+import { buttonVariants } from '@ui/button';
 import {
     Carousel,
     CarouselContent,
@@ -8,9 +11,11 @@ import {
     CarouselPrevious,
 } from '@ui/carousel';
 
-type Props = { items?: ReactNode[] };
+import { Link } from '@i18n/routing';
 
-const SectionCarousel = ({ items = [] }: Props) => {
+type Props = { items?: ReactNode[]; href?: string; linkLabel?: string };
+
+const SectionCarousel = ({ items = [], href, linkLabel }: Props) => {
     return (
         <Carousel
             opts={{
@@ -27,8 +32,33 @@ const SectionCarousel = ({ items = [] }: Props) => {
                     ))}
                 </CarouselContent>
             </div>
-            <CarouselPrevious variant={'yellow'} />
-            <CarouselNext variant={'yellow'} />
+
+            <div className="mt-5 flex justify-between gap-10">
+                {href && linkLabel && (
+                    <Link
+                        href={href}
+                        className={clsx(
+                            buttonVariants({
+                                variant: 'outlineLight',
+                            }),
+                            'z-10'
+                        )}
+                    >
+                        {linkLabel}
+                    </Link>
+                )}
+
+                <div className="flex gap-5">
+                    <CarouselPrevious
+                        variant={'yellow'}
+                        className="relative left-0 top-0 h-[42px] w-[42px] translate-x-0 translate-y-0"
+                    />
+                    <CarouselNext
+                        variant={'yellow'}
+                        className="relative left-0 top-0 h-[42px] w-[42px] translate-x-0 translate-y-0"
+                    />
+                </div>
+            </div>
         </Carousel>
     );
 };

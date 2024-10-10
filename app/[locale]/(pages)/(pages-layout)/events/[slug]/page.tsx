@@ -1,8 +1,10 @@
-import { cache } from 'react';
-
+import { getTranslations } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 
 import clsx from 'clsx';
+import { format, millisecondsToHours } from 'date-fns';
+import { enIN, uk } from 'date-fns/locale';
+import { setDefaultOptions } from 'node_modules/date-fns/_lib/defaultOptions';
 
 import Container from '@components/container';
 import HomeSection from '@components/home/home-section';
@@ -17,22 +19,20 @@ import prisma from '@prisma-util';
 
 import { getLocaleValue } from '@utils';
 
-import getPlaceBySlug from '@actions/places/get-place-by-slug';
+import getEventBySlug from '@actions/events/get-event-by-slug';
 
 type Props = { params: { slug: string } & WithLocale };
 
-const getPagePlace = cache(async (slug: string) => getPlaceBySlug(slug));
-
 export async function generateStaticParams() {
-    const allPlaces = await prisma.place.findMany();
-    return allPlaces.map(({ slug }) => ({ slug }));
+    const allEvents = await prisma.event.findMany();
+    return allEvents.map(({ slug }) => ({ slug }));
 }
 
 export async function generateMetadata({ params: { slug, locale } }: Props) {
-    const place = await getPagePlace(slug);
+    const event = await getEventBySlug(slug);
 
-    const title = (place?.name as StringWithLocales)[locale] || 'Some place';
-    const description = (place?.desc as StringWithLocales)[locale] || 'Some description';
+    const title = (event?.name as StringWithLocales)[locale] || 'Some event';
+    const description = (event?.desc as StringWithLocales)[locale] || 'Some description';
 
     return {
         title,
@@ -40,23 +40,24 @@ export async function generateMetadata({ params: { slug, locale } }: Props) {
     };
 }
 
-const PlacesPage = async ({ params: { slug, locale } }: Props) => {
-    const place = await getPagePlace(slug);
+const EventsPage = async ({ params: { slug, locale } }: Props) => {
+    setDefaultOptions({ locale: locale === 'uk' ? uk : enIN });
+    const t = await getTranslations('pages.events');
+    const event = await getEventBySlug(slug);
 
-    if (!place) notFound();
+    if (!event) notFound();
 
-    const placeTitle = getLocaleValue(place.name, locale);
-    const placeDesc = getLocaleValue(place.desc, locale);
-    const placeAddress = getLocaleValue(place.address, locale);
-    const placePhone = getLocaleValue(place.phone, locale);
+    const eventTitle = getLocaleValue(event.name, locale);
+    const eventDesc = getLocaleValue(event.desc, locale);
+    const eventAddress = getLocaleValue(event.address, locale);
 
     return (
         <>
             <Container>
-                {place.image && <PlaceImage src={place.image} alt={placeTitle} />}
+                {event.image && <PlaceImage src={event.image} alt={eventTitle} />}
 
                 <h1 className={clsx(namu.className, 'mb-5 mt-10 text-4xl text-themeBg')}>
-                    {placeTitle}
+                    {eventTitle}
                 </h1>
             </Container>
 
@@ -64,60 +65,59 @@ const PlacesPage = async ({ params: { slug, locale } }: Props) => {
                 <div className="relative z-10 grid grid-cols-2 gap-10 rounded-3xl bg-themeSecondary p-6 shadow-main">
                     <ul className="flex flex-col gap-3">
                         <li>
-                            <ContactItem icon="streets-map-point">{placeAddress}</ContactItem>
+                            <ContactItem icon="streets-map-point">{eventAddress}</ContactItem>
                         </li>
 
-                        {placePhone && (
+                        {event.phone && (
                             <li>
                                 <ContactItem
                                     link
                                     icon="phone-calling"
-                                    href={`tel:${placePhone.split(' ').join('')}`}
+                                    href={`tel:${event.phone.split(' ').join('')}`}
                                 >
-                                    {placePhone}
+                                    {event.phone}
+                                </ContactItem>
+                            </li>
+                        )}
+
+                        {event.email && (
+                            <li>
+                                <ContactItem link icon="mailbox" href={`email:${event.email}`}>
+                                    {event.email}
                                 </ContactItem>
                             </li>
                         )}
                     </ul>
 
                     <ul className="flex flex-col gap-3">
-                        {place.url && (
+                        {event.url && (
                             <li>
-                                <ContactItem link icon="feed" href={place.url}>
+                                <ContactItem link icon="feed" href={event.url}>
                                     Сайт
                                 </ContactItem>
                             </li>
                         )}
-                        {place.gmapsUrl && (
-                            <li>
-                                <ContactItem link icon="point-on-map" href={place.gmapsUrl}>
-                                    Google
-                                </ContactItem>
-                            </li>
-                        )}
-                        {place.facebook && (
-                            <li>
-                                <ContactItem link icon="facebook" href={place.facebook}>
-                                    Facebook
-                                </ContactItem>
-                            </li>
-                        )}
-                        {place.instagram && (
-                            <li>
-                                <ContactItem link icon="instagram" href={place.instagram}>
-                                    Instagramm
-                                </ContactItem>
-                            </li>
-                        )}
+
+                        <li>
+                            <ContactItem icon="calendar-add">
+                                {format(event.start, 'HH:mm, PPPP')}
+                            </ContactItem>
+                        </li>
+
+                        <li>
+                            <ContactItem icon="hourglass-line">
+                                {t('duration', { count: millisecondsToHours(event.duration) })}
+                            </ContactItem>
+                        </li>
                     </ul>
                 </div>
             </HomeSection>
 
-            <HomeSection title={'Про місце'} light>
-                <p className="relative z-10 text-justify">{placeDesc}</p>
+            <HomeSection title={'Про місце'}>
+                <p className="relative z-10 text-justify">{eventDesc}</p>
             </HomeSection>
         </>
     );
 };
 
-export default PlacesPage;
+export default EventsPage;

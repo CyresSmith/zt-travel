@@ -2,6 +2,8 @@ import { HydrationBoundary, dehydrate } from '@tanstack/react-query';
 
 import { getTranslations } from 'next-intl/server';
 
+import { TagType } from '@prisma/client';
+
 import EventsList from '@components/events/events-list';
 import HomeSection from '@components/home/home-section';
 
@@ -42,7 +44,7 @@ const EventsPage = async () => {
 
     await queryClient.prefetchQuery({
         queryKey: [QUERY_KEYS.EVENT_TAGS],
-        queryFn: async () => await getTagsByType('EVENT'),
+        queryFn: async () => await getTagsByType(TagType.ARTICLE),
     });
 
     await queryClient.prefetchQuery({

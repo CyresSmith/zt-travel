@@ -1,5 +1,7 @@
 import { HydrationBoundary, dehydrate } from '@tanstack/react-query';
 
+import { TagType } from '@prisma/client';
+
 import AddEventForm from '@components/dashboard/add-event';
 
 import { QUERY_KEYS } from '@keys';
@@ -29,7 +31,7 @@ const AddEventPage = async () => {
 
     await queryClient.prefetchQuery({
         queryKey: [QUERY_KEYS.EVENT_TAGS],
-        queryFn: async () => await getTagsByType('EVENT'),
+        queryFn: async () => await getTagsByType(TagType.EVENT),
     });
 
     const dehydratedState = dehydrate(queryClient);

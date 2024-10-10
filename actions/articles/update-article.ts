@@ -1,62 +1,42 @@
 'use server';
 
-import { UserRole } from '@prisma/client';
-
-import type { ActionResponse } from '@types';
-
-import { ResponseStatus } from '@enums';
-
 import prisma from '@prisma-util';
 
 import { filterUndefinedValues } from '@utils';
 
-import { auth } from '@auth';
-
-import type { UpdateArticleDto } from '@data/articles/types';
+import { articleBasicInfoSelector } from '@data/articles/selectors';
+import type { ArticleBasicInfo, UpdateArticleDto } from '@data/articles/types';
 
 type UpdateArticleData = { id: string; data: UpdateArticleDto };
 
 const updateArticle = async ({
     id,
     data: articleData,
-}: UpdateArticleData): Promise<ActionResponse> => {
-    try {
-        const session = await auth();
-        const user = session?.user;
-        const role = user?.role;
+}: UpdateArticleData): Promise<ArticleBasicInfo> => {
+    const { tags, ...rest } = articleData;
 
-        if (!user || !role || role !== UserRole.ADMIN) {
-            return { status: ResponseStatus.ERROR, message: 'Forbidden' };
-        }
+    let data = filterUndefinedValues(rest);
 
-        const { tags, ...rest } = articleData;
+    if (tags && tags.length > 0) {
+        await prisma.tagsOnArticles.deleteMany({ where: { articleId: id } });
 
-        let data = filterUndefinedValues(rest);
-
-        if (tags && tags.length > 0) {
-            await prisma.tagsOnArticles.deleteMany({ where: { articleId: id } });
-
-            data = Object.assign(data, {
-                tags: {
-                    create: articleData.tags?.map(id => ({
-                        createdAt: new Date(),
-                        tag: { connect: { id } },
-                    })),
-                },
-            });
-        }
-
-        const result = await prisma.article.update({ where: { id }, data });
-
-        if (result) {
-            return { status: ResponseStatus.SUCCESS, message: 'Updated' };
-        } else {
-            return { status: ResponseStatus.ERROR, message: 'Failed' };
-        }
-    } catch (error) {
-        console.error('🚀 ~ addArticle ~ error:', error);
-        return { status: ResponseStatus.ERROR, message: 'Something went wrong!' };
+        data = Object.assign(data, {
+            tags: {
+                create: articleData.tags?.map(id => ({
+                    createdAt: new Date(),
+                    tag: { connect: { id } },
+                })),
+            },
+        });
     }
+
+    const result = await prisma.article.update({
+        where: { id },
+        data,
+        select: articleBasicInfoSelector,
+    });
+
+    return result as unknown as ArticleBasicInfo;
 };
 
 export default updateArticle;

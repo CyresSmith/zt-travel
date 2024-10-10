@@ -142,6 +142,16 @@
             },
             "events-not-found": "Events not found",
             "select-tag": "Select tag",
+            "tag-not-found": "Tag not found",
+            "duration": "{count} hours"
+        },
+        "news": {
+            "news-page-metadata": {
+                "title": "Tourist news of Zhytomyr region",
+                "description": "News of the Zhytomyr region in the field of tourism."
+            },
+            "news-not-found": "News not found",
+            "select-tag": "Select tag",
             "tag-not-found": "Tag not found"
         }
     }

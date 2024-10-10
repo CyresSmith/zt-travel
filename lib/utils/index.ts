@@ -101,7 +101,14 @@ export const filterObjectBySelector = <T>(obj: T, selector: Selector<T>) => {
     return result;
 };
 
-export const getSlug = (string: string) => string.split(' ').join('-').toLowerCase();
+export const getSlug = (string: string) => {
+    return string
+        .replace(/[^a-zA-Z0-9\s]/g, '')
+        .split(' ')
+        .filter(Boolean)
+        .join('-')
+        .toLowerCase();
+};
 
 export const createQueryString = (name: string, value: string, searchParams: string) => {
     const params = new URLSearchParams(searchParams);

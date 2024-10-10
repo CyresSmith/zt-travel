@@ -21,7 +21,7 @@ const ContactItem = ({ href = '', icon, link, children }: Props) => {
             rel="noopener noreferrer nofollow"
             target="_blank"
             className={clsx(
-                `flex items-center gap-2 fill-white ${THEME_TRANSITION}`,
+                `flex items-start gap-2 fill-white ${THEME_TRANSITION}`,
                 link && 'hover:fill-themeYellow hover:text-themeYellow'
             )}
         >

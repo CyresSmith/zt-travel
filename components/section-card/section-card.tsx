@@ -23,7 +23,7 @@ type Props = {
     title: string;
     titleHref: string;
     tags?: Partial<TagBasicInfo>[];
-    links: { label: string; href?: string; icon: IconName }[];
+    links?: { label: string; href?: string; icon: IconName }[];
     locale: LocaleType;
     desc?: string;
 };
