@@ -1,3 +1,6 @@
 {
-    "cSpell.words": ["namu"]
+    "cSpell.words": [
+        "namu"
+    ],
+    "typescript.tsdk": "node_modules\\typescript\\lib"
 }
