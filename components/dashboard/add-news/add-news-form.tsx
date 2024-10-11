@@ -4,7 +4,7 @@ import { useSession } from 'next-auth/react';
 import { useState, useTransition } from 'react';
 import { useForm } from 'react-hook-form';
 
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import type { z } from 'zod';
@@ -14,7 +14,6 @@ import MainImageLoad from '../main-image-load';
 import { Button } from '@ui/button';
 import { Form } from '@ui/form';
 
-import type { SelectItemType } from '@components/form-input-field';
 import FormInputField from '@components/form-input-field';
 
 import { AddArticleSchema } from '@schemas';
@@ -23,7 +22,9 @@ import { useToast } from '@hooks';
 
 import { ResponseStatus } from '@enums';
 
-import { getFileUri } from '@utils';
+import { getFileUri, getLocaleValue, getSlug } from '@utils';
+
+import { useArticleTags } from '@data/tags/queries';
 
 import addArticle from '@actions/articles/add-article';
 import getArticleBySlug from '@actions/articles/get-article-by-slug';
@@ -52,15 +53,15 @@ const defaultValues = {
     tags: [],
 };
 
-type Props = {
-    tags: SelectItemType[];
-};
-
-const AddNewsForm = ({ tags }: Props) => {
+const AddNewsForm = () => {
+    const locale = useLocale();
     const { data: session } = useSession();
     const t = useTranslations('dashboard.addNews');
     const { toast } = useToast();
     const [fileData, setFileData] = useState<null | { file: File; fileName: string }>(null);
+
+    const { data: tags } = useArticleTags();
+
     const [isPending, startTransition] = useTransition();
 
     const userId = session?.user?.id;
@@ -75,17 +76,17 @@ const AddNewsForm = ({ tags }: Props) => {
 
     const { isValid, errors } = form.formState;
 
+    const resetState = () => {
+        form.reset();
+        setFileData(null);
+    };
+
     const handleSubmit = async (values: AddArticleValues) => {
         if (!userId) return;
 
         const { nameEn, nameUk, textEn, textUk, descEn, descUk, tags: tagsValues } = values;
 
-        const slug = nameEn.split(' ').join('-').toLowerCase();
-
-        const resetState = () => {
-            form.reset();
-            setFileData(null);
-        };
+        const slug = getSlug(nameEn);
 
         startTransition(async () => {
             const slugExist = await getArticleBySlug(slug);
@@ -101,8 +102,9 @@ const AddNewsForm = ({ tags }: Props) => {
             }
 
             const tagsData = tagsValues.reduce((acc: string[], { value }) => {
-                const exist = tags.find(tag => tag.label === value);
-                if (exist) acc.push(exist.value);
+                const exist = tags?.find(tag => getLocaleValue(tag.name, locale) === value);
+
+                if (exist) acc.push(exist.id);
                 return acc;
             }, []);
 
@@ -115,17 +117,9 @@ const AddNewsForm = ({ tags }: Props) => {
                 tags: tagsData,
             };
 
-            const { status, message, data: article } = await addArticle(data);
+            const article = await addArticle(data);
 
-            if (status === ResponseStatus.ERROR) {
-                toast({
-                    title: 'Error acquired!',
-                    description: message,
-                    variant: 'destructive',
-                });
-            }
-
-            if (status === ResponseStatus.SUCCESS && article) {
+            if (article) {
                 const successMessage = 'Article created successfully';
 
                 if (fileData) {
@@ -147,29 +141,26 @@ const AddNewsForm = ({ tags }: Props) => {
                     if (url) {
                         const data = { image: url };
 
-                        const { status } = await updateArticle({
-                            id: (article as { id: string }).id,
+                        const update = await updateArticle({
+                            id: article.id,
                             data,
                         });
 
-                        if (status === ResponseStatus.SUCCESS) {
+                        if (update) {
                             toast({
                                 title: 'Success',
                                 description: successMessage,
                                 variant: 'success',
                             });
 
-                            resetState();
+                            return resetState();
                         }
 
-                        if (status === ResponseStatus.ERROR) {
-                            toast({
-                                title: 'Failed',
-                                description: 'Place update failed',
-                                variant: 'destructive',
-                            });
-                        }
-                        return;
+                        toast({
+                            title: 'Failed',
+                            description: 'Place update failed',
+                            variant: 'destructive',
+                        });
                     }
                 }
 
@@ -206,14 +197,18 @@ const AddNewsForm = ({ tags }: Props) => {
                                 disabled={isPending}
                                 error={!!errors[item.name as keyof AddArticleValues]}
                                 name={item.name as keyof AddArticleValues}
-                                {...(item.name === 'tags'
-                                    ? {
-                                          selectItems: tags.map(({ label }) => ({
-                                              label,
-                                              value: label,
-                                          })),
-                                      }
-                                    : {})}
+                                selectItems={
+                                    item.name === 'tags'
+                                        ? tags?.map(({ name }) => {
+                                              const value = getLocaleValue(name, locale);
+
+                                              return {
+                                                  label: value,
+                                                  value,
+                                              };
+                                          }) || []
+                                        : undefined
+                                }
                             />
                         ))}
 

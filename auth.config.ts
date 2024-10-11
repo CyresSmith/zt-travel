@@ -7,6 +7,14 @@ import bcrypt from 'bcryptjs';
 
 import { getUserByEmail } from './data/user';
 
+import {
+    AUTH_FACEBOOK_ID,
+    AUTH_FACEBOOK_SECRET,
+    AUTH_SECRET,
+    GOOGLE_CLIENT_ID,
+    GOOGLE_CLIENT_SECRET,
+} from '@config';
+
 import { SignInSchema } from '@schemas';
 
 import prisma from '@prisma-util';
@@ -15,16 +23,16 @@ import { PrismaAdapter } from '@auth/prisma-adapter';
 
 export default {
     adapter: PrismaAdapter(prisma),
-    secret: process.env.AUTH_SECRET,
+    secret: AUTH_SECRET,
     session: { strategy: 'jwt' },
     providers: [
         Facebook({
-            clientId: process.env.AUTH_FACEBOOK_ID,
-            clientSecret: process.env.AUTH_FACEBOOK_SECRET,
+            clientId: AUTH_FACEBOOK_ID,
+            clientSecret: AUTH_FACEBOOK_SECRET,
         }),
         Google({
-            clientId: process.env.GOOGLE_CLIENT_ID,
-            clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+            clientId: GOOGLE_CLIENT_ID,
+            clientSecret: GOOGLE_CLIENT_SECRET,
             authorization: {
                 params: {
                     scope: 'openid email profile',

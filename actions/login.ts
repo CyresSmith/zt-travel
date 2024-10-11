@@ -2,11 +2,15 @@
 
 import { AuthError } from 'next-auth';
 
-import prisma from '@lib/prisma';
-import { DEFAULT_SIGN_IN_REDIRECT } from '@lib/routes/index.ts';
-import { SignInSchema } from '@lib/schemas';
-import { generateTwoFactorToken, generateVerificationToken } from '@lib/tokens/index';
 import { type z } from 'zod';
+
+import { DEFAULT_SIGN_IN_REDIRECT } from '@routes';
+
+import { generateTwoFactorToken, generateVerificationToken } from '@tokens';
+
+import { SignInSchema } from '@schemas';
+
+import prisma from '@prisma-util';
 
 import { signIn } from '@auth';
 

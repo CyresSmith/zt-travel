@@ -9,16 +9,13 @@ import { useSearchParams } from 'next/navigation';
 import clsx from 'clsx';
 
 import type { Option } from '@ui/multiple-select';
-import MultipleSelector from '@ui/multiple-select';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@ui/select';
 
 import Icon from '@components/icon';
 import SectionCard from '@components/section-card/section-card';
+import ListFilterPanel from '@components/shared/list-filter-panel';
 
 import { getLocaleValue } from '@utils';
 
-import { useCommunities } from '@data/community/queries';
-import { useDistricts } from '@data/district/queries';
 import { usePlaceCategories } from '@data/place-categories/queries';
 import { usePlacesList } from '@data/places/queries';
 
@@ -30,20 +27,19 @@ const PlacesList = () => {
     const pathname = usePathname();
     const searchParams = useSearchParams();
     const router = useRouter();
-    const t = useTranslations('places');
+    const t = useTranslations('pages.places');
 
     const selectedCategoriesParam = searchParams.get('category');
-    const selectedDistrictParam = searchParams.get('district');
-    const selectedCommunityParam = searchParams.get('community');
+    const selectedDistrictIdParam = searchParams.get('district');
+    const selectedCommunityIdParam = searchParams.get('community');
+
     const selectedCategoriesSlugs = selectedCategoriesParam?.split(',') || [];
 
     const { data: categories } = usePlaceCategories();
-    const { data: districts } = useDistricts();
-    const { data: communities } = useCommunities();
 
     const [selectedOptions, setSelectedOptions] = useState<Option[]>([]);
-    const [selectedCommunity, setSelectedCommunity] = useState<string | undefined>(undefined);
-    const [selectedDistrict, setSelectedDistrict] = useState<string | undefined>(undefined);
+    const [selectedDistrictId, setSelectedDistrictId] = useState<string | undefined>(undefined);
+    const [selectedCommunityId, setSelectedCommunityId] = useState<string | undefined>(undefined);
 
     const selectedCategories = categories?.filter(({ slug }) =>
         selectedCategoriesSlugs.includes(slug)
@@ -51,8 +47,8 @@ const PlacesList = () => {
 
     const { data, fetchNextPage, isFetching, isFetchingNextPage, hasNextPage } = usePlacesList({
         categories: selectedCategories?.map(({ id }) => id),
-        districtId: selectedDistrictParam || undefined,
-        communityId: selectedCommunityParam || undefined,
+        districtId: selectedDistrictIdParam || undefined,
+        communityId: selectedCommunityIdParam || undefined,
     });
 
     const isDataLoading = isFetching || isFetchingNextPage;
@@ -92,47 +88,27 @@ const PlacesList = () => {
                 router.push(href);
             }
         } else {
-            if (selectedDistrictParam) {
-                href = `${href}${href.includes('community') || href.includes('category') ? '&' : '?'}district=${selectedDistrictParam}`;
+            if (selectedDistrictId || selectedCommunityId) {
+                handleRegionSelect(true);
+            } else {
+                return router.push(href);
             }
-
-            if (selectedCommunityParam) {
-                href = `${href}${href.includes('district') || href.includes('category') ? '&' : '?'}community=${selectedCommunityParam}`;
-            }
-
-            return router.push(href);
         }
     };
 
-    const handleRegionSelect = (value: string, type: 'district' | 'community') => {
-        if (type === 'district') setSelectedCommunity('');
-
-        let href = pathname;
-        href = `${href}?${createQueryString(type, value)}`;
-        router.push(href);
-    };
-
-    const handleRegionReset = (type: 'district' | 'community') => {
+    const handleRegionSelect = (skipCategories?: boolean) => {
         let href = pathname;
 
-        if (selectedCategoriesParam) {
+        if (!skipCategories && selectedCategoriesParam) {
             href = `${href}${href.includes('district') || href.includes('community') ? '&' : '?'}category=${selectedCategoriesParam}`;
         }
 
-        if (type === 'community') {
-            setSelectedCommunity('');
-
-            if (selectedDistrictParam) {
-                href = `${href}${href.includes('community') || href.includes('category') ? '&' : '?'}district=${selectedDistrictParam}`;
-            }
+        if (selectedDistrictId) {
+            href = `${href}${href.includes('category') ? '&' : '?'}district=${selectedDistrictId}`;
         }
 
-        if (type === 'district') {
-            setSelectedDistrict('');
-
-            if (selectedCommunityParam) {
-                href = `${href.includes('district') || href.includes('category') ? '&' : '?'}community=${selectedCommunityParam}`;
-            }
+        if (selectedCommunityId) {
+            href = `${href}&community=${selectedCommunityId}`;
         }
 
         router.push(href);
@@ -159,86 +135,35 @@ const PlacesList = () => {
     }, [selectedCategoriesParam]);
 
     useEffect(() => {
-        if (!selectedCommunityParam) return;
-
-        setSelectedCommunity(selectedCommunityParam);
-    }, [selectedCommunityParam]);
+        handleRegionSelect();
+    }, [selectedCommunityId, selectedDistrictId]);
 
     useEffect(() => {
-        if (!selectedDistrictParam) return;
-
-        setSelectedDistrict(selectedDistrictParam);
-    }, [selectedDistrictParam]);
+        if (!selectedDistrictIdParam) setSelectedDistrictId(undefined);
+        if (!selectedCommunityIdParam) setSelectedCommunityId(undefined);
+    }, [selectedDistrictIdParam, selectedCommunityIdParam]);
 
     return (
         <>
-            <div className="flex flex-col gap-10">
-                <MultipleSelector
-                    placeholder={t('select-category')}
-                    value={selectedOptions}
-                    onChange={handleCategorySelect}
-                    defaultOptions={categories?.map(({ name }) => ({
+            <ListFilterPanel
+                optionsPlaceholder={t('select-category')}
+                selectedOptions={selectedOptions}
+                onOptionChange={handleCategorySelect}
+                options={
+                    categories?.map(({ name }) => ({
                         label: getLocaleValue(name, locale),
                         value: getLocaleValue(name, locale),
-                    }))}
-                    emptyIndicator={
-                        <p className="text-center text-lg leading-10 text-gray-600 dark:text-gray-400">
-                            {t('category-not-found')}
-                        </p>
-                    }
-                />
-
-                <div className="mb-10 grid grid-cols-2 gap-8">
-                    <Select
-                        value={selectedDistrict}
-                        onValueChange={value => handleRegionSelect(value, 'district')}
-                    >
-                        <SelectTrigger
-                            value={selectedDistrict}
-                            reset={() => handleRegionReset('district')}
-                        >
-                            <SelectValue placeholder={t('select-district')} />
-                        </SelectTrigger>
-
-                        <SelectContent>
-                            {districts?.map(({ name_uk, name_en, id }) => (
-                                <SelectItem key={id} value={id}>
-                                    {locale === 'uk' ? name_uk : name_en}
-                                </SelectItem>
-                            ))}
-                        </SelectContent>
-                    </Select>
-
-                    <Select
-                        value={selectedCommunity}
-                        onValueChange={value => handleRegionSelect(value, 'community')}
-                    >
-                        <SelectTrigger
-                            value={selectedCommunity}
-                            reset={() => handleRegionReset('community')}
-                        >
-                            <SelectValue placeholder={t('select-community')} />
-                        </SelectTrigger>
-
-                        <SelectContent>
-                            {communities
-                                ?.filter(({ districtId }) =>
-                                    selectedDistrictParam
-                                        ? districtId === selectedDistrictParam
-                                        : true
-                                )
-                                ?.map(({ name_uk, name_en, id }) => (
-                                    <SelectItem key={id} value={id}>
-                                        {locale === 'uk' ? name_uk : name_en}
-                                    </SelectItem>
-                                ))}
-                        </SelectContent>
-                    </Select>
-                </div>
-            </div>
+                    })) || []
+                }
+                emptyOptionsLabel={t('category-not-found')}
+                selectedDistrictId={selectedDistrictId || ''}
+                setSelectedDistrictId={setSelectedDistrictId}
+                selectedCommunityId={selectedCommunityId || ''}
+                setSelectedCommunityId={setSelectedCommunityId}
+            />
 
             {data && data?.pages[0] && data.pages[0].data.length > 0 ? (
-                <ul className="grid gap-8 mobile:grid-cols-1 tablet:grid-cols-2 desktop:grid-cols-3">
+                <ul className="grid gap-5 mobile:grid-cols-1 tablet:grid-cols-2 desktop:grid-cols-3">
                     {data?.pages.map((group, i) => (
                         <Fragment key={i}>
                             {group?.data.map(

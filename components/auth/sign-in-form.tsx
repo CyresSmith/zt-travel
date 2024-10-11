@@ -4,7 +4,6 @@ import { useTransition } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import { SignInSchema } from '@lib/schemas';
 import { login } from 'actions/login';
 import type { z } from 'zod';
 
@@ -14,6 +13,8 @@ import { Button } from '@ui/button';
 import { Form } from '@ui/form';
 
 import FormInputField from '@components/form-input-field';
+
+import { SignInSchema } from '@schemas';
 
 import { Link } from '@i18n/routing';
 

@@ -102,7 +102,9 @@
             "start": "Event start",
             "duration": "Event duration",
             "tags": "Tags",
-            "periodic": "Periodic"
+            "periodic": "Periodic",
+            "districtId": "District",
+            "communityId": "Community"
         },
         "addNews": {
             "addImage": "Click to add or drag a file here",
@@ -116,25 +118,46 @@
             "tags": "Tags"
         }
     },
-    "places": {
-        "places-page-metadata": {
-            "title": "Interesting places of Zhytomyr region",
-            "description": "A collection of places in the Zhytomyr region that will captivate both tourists visiting this enchanting land and local residents eager to explore their native land more deeply."
+    "pages": {
+        "list-filter-panel": {
+            "districts-placeholder": "Select district",
+            "communities-placeholder": "Select community"
         },
-        "select-category": "Select place categories",
-        "category-not-found": "Categories not found",
-        "select-district": "Select district",
-        "select-community": "Select community",
-        "places-not-found": "Places not found",
-        "filter-reset": "Reset filters"
-    },
-    "events": {
-        "events-page-metadata": {
-            "title": "Interesting events of Zhytomyr region",
-            "description": "A list of interesting events that took place or will take place in the Zhytomyr region."
+        "places": {
+            "places-page-metadata": {
+                "title": "Interesting places of Zhytomyr region",
+                "description": "A collection of places in the Zhytomyr region that will captivate both tourists visiting this enchanting land and local residents eager to explore their native land more deeply."
+            },
+            "select-category": "Select place categories",
+            "category-not-found": "Categories not found",
+            "select-district": "Select district",
+            "select-community": "Select community",
+            "places-not-found": "Places not found",
+            "filter-reset": "Reset filters",
+            "about": "About place",
+            "similar": "Similar places"
         },
-        "events-not-found": "Events not found",
-        "select-tag": "Select tag",
-        "tag-not-found": "Tag not found"
+        "events": {
+            "events-page-metadata": {
+                "title": "Interesting events of Zhytomyr region",
+                "description": "A list of interesting events that took place or will take place in the Zhytomyr region."
+            },
+            "events-not-found": "Events not found",
+            "select-tag": "Select tag",
+            "tag-not-found": "Tag not found",
+            "duration": "{count} hours",
+            "about": "About event",
+            "similar": "Similar events"
+        },
+        "news": {
+            "news-page-metadata": {
+                "title": "Tourist news of Zhytomyr region",
+                "description": "News of the Zhytomyr region in the field of tourism."
+            },
+            "news-not-found": "News not found",
+            "select-tag": "Select tag",
+            "tag-not-found": "Tag not found",
+            "similar": "Similar news"
+        }
     }
 }

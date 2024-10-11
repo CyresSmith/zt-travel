@@ -1,27 +1,31 @@
-import { getLocale } from 'next-intl/server';
+import { HydrationBoundary, dehydrate } from '@tanstack/react-query';
 
 import { TagType } from '@prisma/client';
 
 import AddNewsForm from '@components/dashboard/add-news';
 
-import { getLocaleValue } from '@utils';
+import { QUERY_KEYS } from '@keys';
 
-import { getTagsByType } from '@data/tags/queries';
+import getQueryClient from '@utils/get-query-client';
+
+import getTagsByType from '@actions/tags/get-tag-by-type';
 
 const AddNewsPage = async () => {
-    const locale = await getLocale();
+    const queryClient = getQueryClient();
 
-    const tags = await getTagsByType(TagType.ARTICLE).then(data =>
-        data?.map(({ id, name }) => ({
-            label: getLocaleValue(name, locale),
-            value: id,
-        }))
-    );
+    await queryClient.prefetchQuery({
+        queryKey: [QUERY_KEYS.ARTICLE_TAGS],
+        queryFn: async () => await getTagsByType(TagType.ARTICLE),
+    });
+
+    const dehydratedState = dehydrate(queryClient);
 
     return (
-        <div className="flex w-full flex-col gap-10">
-            <AddNewsForm tags={tags} />
-        </div>
+        <HydrationBoundary state={dehydratedState}>
+            <div className="flex w-full flex-col gap-10">
+                <AddNewsForm />
+            </div>
+        </HydrationBoundary>
     );
 };
 

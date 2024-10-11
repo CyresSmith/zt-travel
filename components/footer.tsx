@@ -29,6 +29,7 @@ const socialLinks = [
     },
     { href: 'https://www.youtube.com', label: 'youtube' },
     { href: 'https://www.tiktok.com/@tic.zt', label: 'tiktok' },
+    { href: 'https://t.me/ticzt', label: 'telegram' },
 ];
 
 const Footer = async () => {

@@ -1,11 +1,13 @@
 import { Resend } from 'resend';
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+import { APP_HOST, RESEND_API_KEY } from '@config';
+
+const resend = new Resend(RESEND_API_KEY);
 
 type EmailAndTokenData = { email: string; token: string };
 
 export const sendVerificationEmail = async ({ email, token }: EmailAndTokenData) => {
-    const confirmationLink = `${process.env.APP_HOST}/new-verification?token=${token}`;
+    const confirmationLink = `${APP_HOST}/new-verification?token=${token}`;
 
     await resend.emails.send({
         from: 'onboarding@resend.dev',
@@ -16,7 +18,7 @@ export const sendVerificationEmail = async ({ email, token }: EmailAndTokenData)
 };
 
 export const sendResetPasswordEmail = async ({ email, token }: EmailAndTokenData) => {
-    const confirmationLink = `${process.env.APP_HOST}/new-password?token=${token}`;
+    const confirmationLink = `${APP_HOST}/new-password?token=${token}`;
 
     await resend.emails.send({
         from: 'onboarding@resend.dev',

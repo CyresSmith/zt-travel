@@ -1,38 +1,34 @@
-import { cache } from 'react';
-
+import { getTranslations } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 
-import clsx from 'clsx';
+import type { Event } from '@prisma/client';
+import { format } from 'date-fns';
+import { enIN, uk } from 'date-fns/locale';
 
-import Container from '@components/container';
-import HomeSection from '@components/home/home-section';
-import PlaceImage from '@components/place-page/place-image';
-import ContactItem from '@components/shared/contact-item';
-
-import { namu } from '@fonts';
+import SingleItemPage from '@components/shared/single-item-page';
 
 import type { StringWithLocales, WithLocale } from '@types';
 
+import type { IconName } from '@icon-names';
+
 import prisma from '@prisma-util';
 
-import { getLocaleValue } from '@utils';
+import { getInfo, getLocaleValue } from '@utils';
 
-import getPlaceBySlug from '@actions/places/get-place-by-slug';
+import getEventBySlug from '@actions/events/get-event-by-slug';
 
 type Props = { params: { slug: string } & WithLocale };
 
-const getPagePlace = cache(async (slug: string) => getPlaceBySlug(slug));
-
 export async function generateStaticParams() {
-    const allPlaces = await prisma.place.findMany();
-    return allPlaces.map(({ slug }) => ({ slug }));
+    const allEvents = await prisma.event.findMany();
+    return allEvents.map(({ slug }) => ({ slug }));
 }
 
 export async function generateMetadata({ params: { slug, locale } }: Props) {
-    const place = await getPagePlace(slug);
+    const event = await getEventBySlug(slug);
 
-    const title = (place?.name as StringWithLocales)[locale] || 'Some place';
-    const description = (place?.desc as StringWithLocales)[locale] || 'Some description';
+    const title = (event?.name as StringWithLocales)[locale] || 'Some event';
+    const description = (event?.desc as StringWithLocales)[locale] || 'Some description';
 
     return {
         title,
@@ -40,84 +36,45 @@ export async function generateMetadata({ params: { slug, locale } }: Props) {
     };
 }
 
-const PlacesPage = async ({ params: { slug, locale } }: Props) => {
-    const place = await getPagePlace(slug);
+const EventsPage = async ({ params: { slug, locale } }: Props) => {
+    const t = await getTranslations('pages.events');
+    const event = await getEventBySlug(slug);
 
-    if (!place) notFound();
-
-    const placeTitle = getLocaleValue(place.name, locale);
-    const placeDesc = getLocaleValue(place.desc, locale);
-    const placeAddress = getLocaleValue(place.address, locale);
-    const placePhone = getLocaleValue(place.phone, locale);
+    if (!event) notFound();
 
     return (
-        <>
-            <Container>
-                {place.image && <PlaceImage src={place.image} alt={placeTitle} />}
-
-                <h1 className={clsx(namu.className, 'mb-5 mt-10 text-4xl text-themeBg')}>
-                    {placeTitle}
-                </h1>
-            </Container>
-
-            <HomeSection>
-                <div className="relative z-10 grid grid-cols-2 gap-10 rounded-3xl bg-themeSecondary p-6 shadow-main">
-                    <ul className="flex flex-col gap-3">
-                        <li>
-                            <ContactItem icon="streets-map-point">{placeAddress}</ContactItem>
-                        </li>
-
-                        {placePhone && (
-                            <li>
-                                <ContactItem
-                                    link
-                                    icon="phone-calling"
-                                    href={`tel:${placePhone.split(' ').join('')}`}
-                                >
-                                    {placePhone}
-                                </ContactItem>
-                            </li>
-                        )}
-                    </ul>
-
-                    <ul className="flex flex-col gap-3">
-                        {place.url && (
-                            <li>
-                                <ContactItem link icon="feed" href={place.url}>
-                                    Сайт
-                                </ContactItem>
-                            </li>
-                        )}
-                        {place.gmapsUrl && (
-                            <li>
-                                <ContactItem link icon="point-on-map" href={place.gmapsUrl}>
-                                    Google
-                                </ContactItem>
-                            </li>
-                        )}
-                        {place.facebook && (
-                            <li>
-                                <ContactItem link icon="facebook" href={place.facebook}>
-                                    Facebook
-                                </ContactItem>
-                            </li>
-                        )}
-                        {place.instagram && (
-                            <li>
-                                <ContactItem link icon="instagram" href={place.instagram}>
-                                    Instagramm
-                                </ContactItem>
-                            </li>
-                        )}
-                    </ul>
-                </div>
-            </HomeSection>
-
-            <HomeSection title={'Про місце'} light>
-                <p className="relative z-10 text-justify">{placeDesc}</p>
-            </HomeSection>
-        </>
+        <SingleItemPage
+            title={getLocaleValue(event.name, locale)}
+            image={event?.image || undefined}
+            desc={getLocaleValue(event.desc, locale)}
+            descTitle={t('about')}
+            info={getInfo<Event>(event, locale)}
+            similarTitle={t('similar')}
+            similarPrefix="events"
+            similarItems={event.similar?.map(
+                ({ image, name, slug, tags, desc, address, start }) => ({
+                    image,
+                    title: getLocaleValue(name, locale),
+                    titleHref: slug,
+                    tags,
+                    locale,
+                    desc: getLocaleValue(desc, locale),
+                    links: [
+                        {
+                            icon: 'streets-map-point' as IconName,
+                            label: getLocaleValue(address, locale),
+                        },
+                        {
+                            icon: 'calendar-add' as IconName,
+                            label: format(start, 'HH:mm, PPPP', {
+                                locale: locale === 'uk' ? uk : enIN,
+                            }),
+                        },
+                    ],
+                })
+            )}
+        />
     );
 };
 
-export default PlacesPage;
+export default EventsPage;

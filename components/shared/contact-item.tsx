@@ -10,19 +10,19 @@ import type { IconName } from '@icon-names';
 
 import { THEME_TRANSITION } from '@constants';
 
-type Props = { icon: IconName; href?: string; link?: boolean } & WithChildren;
+type Props = { icon: IconName; href?: string } & WithChildren;
 
-const ContactItem = ({ href = '', icon, link, children }: Props) => {
-    const Slot = link ? Link : 'p';
+const ContactItem = ({ href, icon, children }: Props) => {
+    const Slot = href ? Link : 'p';
 
     return (
         <Slot
-            href={href}
+            href={href || ''}
             rel="noopener noreferrer nofollow"
             target="_blank"
             className={clsx(
-                `flex items-center gap-2 fill-white ${THEME_TRANSITION}`,
-                link && 'hover:fill-themeYellow hover:text-themeYellow'
+                `flex items-start gap-2 fill-white ${THEME_TRANSITION}`,
+                href && 'hover:fill-themeYellow hover:text-themeYellow'
             )}
         >
             <Icon name={icon} fill="inherit" />

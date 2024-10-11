@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 
-import type { Tag } from '@prisma/client';
+import { type Tag, TagType } from '@prisma/client';
 
 import { QUERY_KEYS } from '@keys';
 
@@ -11,7 +11,14 @@ import getTagsByType from '@actions/tags/get-tag-by-type';
 export const useEventTags = () => {
     return useQuery({
         queryKey: [QUERY_KEYS.EVENT_TAGS],
-        queryFn: () => getTagsByType('EVENT'),
+        queryFn: () => getTagsByType(TagType.EVENT),
+    });
+};
+
+export const useArticleTags = () => {
+    return useQuery({
+        queryKey: [QUERY_KEYS.ARTICLE_TAGS],
+        queryFn: () => getTagsByType(TagType.ARTICLE),
     });
 };
 

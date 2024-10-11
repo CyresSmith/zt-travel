@@ -1,47 +1,24 @@
 'use server';
 
-import { UserRole } from '@prisma/client';
-
-import type { ActionResponse } from '@types';
-
-import { ResponseStatus } from '@enums';
-
 import prisma from '@prisma-util';
 
-import { auth } from '@auth';
+import { articleBasicInfoSelector } from '@data/articles/selectors';
+import type { AddArticleDto, ArticleBasicInfo } from '@data/articles/types';
 
-import type { AddArticleDto } from '@data/articles/types';
+const addArticle = async (dto: AddArticleDto): Promise<ArticleBasicInfo> => {
+    const { tags, ...data } = dto;
 
-const addArticle = async (dto: AddArticleDto): Promise<ActionResponse> => {
-    try {
-        const session = await auth();
-        const user = session?.user;
-        const role = user?.role;
-
-        if (!user || !role || role !== UserRole.ADMIN) {
-            return { status: ResponseStatus.ERROR, message: 'Forbidden' };
-        }
-
-        const { tags, ...data } = dto;
-
-        const result = await prisma.article.create({
-            data: {
-                ...data,
-                tags: {
-                    create: tags.map(id => ({ createdAt: new Date(), tag: { connect: { id } } })),
-                },
+    const article = await prisma.article.create({
+        data: {
+            ...data,
+            tags: {
+                create: tags.map(id => ({ createdAt: new Date(), tag: { connect: { id } } })),
             },
-        });
+        },
+        select: articleBasicInfoSelector,
+    });
 
-        if (result) {
-            return { status: ResponseStatus.SUCCESS, message: 'Created', data: { id: result.id } };
-        } else {
-            return { status: ResponseStatus.ERROR, message: 'Failed' };
-        }
-    } catch (error) {
-        console.error('🚀 ~ addArticle ~ error:', error);
-        return { status: ResponseStatus.ERROR, message: 'Something went wrong!' };
-    }
+    return article as unknown as ArticleBasicInfo;
 };
 
 export default addArticle;

@@ -12,7 +12,7 @@ const Container = ({ className, children }: Props) => {
                 'mobile:w-[320px] mobile:px-3',
                 'tablet:w-[768px] tablet:px-4',
                 'desktop:w-[1280px] desktop:px-6',
-                'flex-1',
+                // 'flex-1',
                 className && className
             )}
         >

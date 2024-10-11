@@ -1,6 +1,6 @@
 import Image from 'next/image';
 
-import { JsonValue } from '@prisma/client/runtime/library';
+import type { JsonValue } from '@prisma/client/runtime/library';
 import clsx from 'clsx';
 
 import CardLink from './card-link';
@@ -18,17 +18,25 @@ import type { TagBasicInfo } from '@data/tags/types';
 import type { LocaleType } from '@i18n/routing';
 import { Link } from '@i18n/routing';
 
-type Props = {
-    image: string;
+export type SectionCardProps = {
+    image: string | null;
     title: string;
     titleHref: string;
     tags?: Partial<TagBasicInfo>[];
-    links: { label: string; href?: string; icon: IconName }[];
+    links?: { label: string; href?: string; icon: IconName }[];
     locale: LocaleType;
     desc?: string;
 };
 
-const SectionCard = ({ image, title, titleHref, tags = [], links, locale, desc }: Props) => {
+const SectionCard = ({
+    image,
+    title,
+    titleHref,
+    tags = [],
+    links,
+    locale,
+    desc,
+}: SectionCardProps) => {
     return (
         <li
             className={clsx(

@@ -157,8 +157,6 @@ const AddLocationForm = () => {
     };
 
     const handleSubmit = async (values: AddPlaceValues) => {
-        console.log('🚀 ~ handleSubmit ~ values:', values);
-        console.log('🚀 ~ handleSubmit ~ userId:', userId);
         if (!userId) return;
 
         const {

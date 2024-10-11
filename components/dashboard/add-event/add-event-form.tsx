@@ -5,7 +5,7 @@ import type { ChangeEventHandler } from 'react';
 import { useEffect, useState, useTransition } from 'react';
 import { useForm, useWatch } from 'react-hook-form';
 
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { hoursToMilliseconds, minutesToMilliseconds } from 'date-fns';
@@ -17,7 +17,6 @@ import { Button } from '@ui/button';
 import { Form, FormLabel } from '@ui/form';
 import { Input } from '@ui/input';
 
-import type { SelectItemType } from '@components/form-input-field';
 import FormInputField from '@components/form-input-field';
 
 import { AddEventSchema } from '@schemas';
@@ -31,10 +30,14 @@ import {
     getDateWithTime,
     getFileUri,
     getHoursAndMinutesFromString,
+    getLocaleValue,
     getSlug,
 } from '@utils';
 
+import { useCommunities } from '@data/community/queries';
+import { useDistricts } from '@data/district/queries';
 import { useEventAdd, useEventUpdate } from '@data/events/mutations';
+import { useEventTags } from '@data/tags/queries';
 
 import uploadToCloudinary from '@actions/cloudinary/upload-image';
 import getEventBySlug from '@actions/events/get-event-by-slug';
@@ -53,15 +56,17 @@ const inputsWithLang = [
 const inputsInfo = [
     { name: 'phone', type: 'phone' },
     { name: 'email', type: 'email' },
-    { name: 'url', type: 'text' },
     // { name: 'categoryId', type: 'select' },
+    { name: 'districtId', type: 'select' },
+    { name: 'communityId', type: 'select' },
+    { name: 'url', type: 'text' },
     { name: 'tags', type: 'multi' },
     { name: 'start', type: 'date' },
     { name: 'duration', type: 'time' },
     { name: 'periodic', type: 'check' },
 ];
 
-const requiredInfo = ['phone', 'start', 'duration'];
+const requiredInfo = ['phone', 'start', 'duration', 'districtId', 'communityId'];
 
 const defaultValues = {
     nameUk: '',
@@ -79,14 +84,12 @@ const defaultValues = {
     duration: '01:00',
     periodic: false,
     placeId: '',
+    districtId: '',
+    communityId: '',
 };
 
-type Props = {
-    categories: SelectItemType[];
-    tags: SelectItemType[];
-};
-
-const AddEventForm = ({ categories, tags }: Props) => {
+const AddEventForm = () => {
+    const locale = useLocale();
     const { data: session } = useSession();
     const t = useTranslations('dashboard.addEvent');
     const { toast } = useToast();
@@ -94,7 +97,38 @@ const AddEventForm = ({ categories, tags }: Props) => {
     const [isPending, startTransition] = useTransition();
     const [timeValue, setTimeValue] = useState<string>('12:00');
 
+    const { data: tagsData } = useEventTags();
+
+    const tags =
+        tagsData?.map(({ name, id }) => {
+            const value = getLocaleValue(name, locale);
+
+            return {
+                id,
+                value,
+                label: value,
+            };
+        }) || [];
+
+    const { data: districtsData } = useDistricts();
+
+    const districts =
+        districtsData?.map(({ id, name_uk, name_en = '' }) => ({
+            label: (locale === 'uk' ? name_uk : name_en) || name_uk,
+            value: id,
+        })) || [];
+
+    const { data: communitiesData } = useCommunities();
+
+    const communities =
+        communitiesData?.map(({ id, name_uk, name_en = '', districtId }) => ({
+            label: (locale === 'uk' ? name_uk : name_en) || name_uk,
+            value: id,
+            districtId,
+        })) || [];
+
     const { mutateAsync: addEvent, isError: isEventAddError, error: eventAddError } = useEventAdd();
+
     const {
         mutateAsync: updateEvent,
         isError: isEventUpdateError,
@@ -111,12 +145,38 @@ const AddEventForm = ({ categories, tags }: Props) => {
         shouldUseNativeValidation: false,
     });
 
+    const districtIdState = useWatch({
+        control: form.control,
+        name: 'districtId',
+    });
+
+    const communitiesForSelect =
+        communities
+            ?.filter(({ districtId }) => districtId === districtIdState)
+            .map(({ label, value }) => ({ label, value })) || [];
+
     const start = useWatch({
         control: form.control,
         name: 'start',
     });
 
     const { isValid, errors } = form.formState;
+
+    const getSelectItemTypes = (name: string) => {
+        switch (name) {
+            case 'communityId':
+                return communitiesForSelect;
+
+            case 'districtId':
+                return districts;
+
+            case 'tags':
+                return tags;
+
+            default:
+                return undefined;
+        }
+    };
 
     const handleTimeChange: ChangeEventHandler<HTMLInputElement> = e => {
         const time = e.target.value;
@@ -138,6 +198,8 @@ const AddEventForm = ({ categories, tags }: Props) => {
             start,
             duration,
             periodic,
+            districtId,
+            communityId,
             tags: tagsValues,
             ...rest
         } = values;
@@ -168,7 +230,7 @@ const AddEventForm = ({ categories, tags }: Props) => {
 
             const tagsData = tagsValues.reduce((acc: string[], { value }) => {
                 const exist = tags.find(tag => tag.label === value);
-                if (exist) acc.push(exist.value);
+                if (exist) acc.push(exist.id);
                 return acc;
             }, []);
 
@@ -183,6 +245,8 @@ const AddEventForm = ({ categories, tags }: Props) => {
                 duration: durationInMs,
                 periodic,
                 tags: tagsData,
+                districtId,
+                communityId,
                 ...filterUndefinedValues(rest),
             };
 
@@ -260,6 +324,11 @@ const AddEventForm = ({ categories, tags }: Props) => {
         });
     }, [eventUpdateError, isEventUpdateError, toast]);
 
+    useEffect(() => {
+        if (!districtIdState) return;
+        form.trigger('districtId');
+    }, [districtIdState]);
+
     return (
         <div>
             <MainImageLoad
@@ -318,23 +387,13 @@ const AddEventForm = ({ categories, tags }: Props) => {
                                 <FormInputField<AddEventValues>
                                     {...item}
                                     label={t(item.name)}
-                                    key={item.name}
+                                    key={t(item.name)}
                                     control={form.control}
                                     disabled={isPending}
                                     error={!!errors[item.name as keyof AddEventValues]}
                                     name={item.name as keyof AddEventValues}
                                     required={requiredInfo.includes(item.name)}
-                                    {...(item.name === 'categoryId' || item.name === 'tags'
-                                        ? {
-                                              selectItems:
-                                                  item.name === 'categoryId'
-                                                      ? categories
-                                                      : tags.map(({ label }) => ({
-                                                            value: label,
-                                                            label,
-                                                        })),
-                                          }
-                                        : {})}
+                                    selectItems={getSelectItemTypes(item.name)}
                                 />
                             );
                         })}

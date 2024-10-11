@@ -16,10 +16,12 @@ export type AddEventDto = Partial<Pick<Event, 'url'>> & {
     phone: string;
     userId: string;
     placeId?: string;
+    communityId: string;
+    districtId: string;
     slug: string;
     duration: number;
     periodic: boolean;
-    tags: TagBasicInfo[];
+    tags: string[];
     start: Date;
 };
 
