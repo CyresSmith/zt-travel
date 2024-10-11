@@ -5,7 +5,8 @@ export const INPUT_STYLES =
 
 export const THEME_BORDER = 'border-2 border-themePrimary/30';
 
-export const NAV_KEYS = ['about', 'news', 'events', 'places', 'routes', 'guides'] as const;
+// export const NAV_KEYS = ['about', 'news', 'events', 'places', 'routes', 'guides'] as const;
+export const NAV_KEYS = ['about', 'news', 'events', 'places'] as const;
 
 export const EMAIL = 'ztreg.tic@gmail.com';
 

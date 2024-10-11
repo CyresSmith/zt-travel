@@ -18,7 +18,7 @@ const HomeSection = ({ title, children }: Props) => {
                 'relative flex max-h-full flex-1 flex-col bg-gradient-to-b from-transparent via-themePrimary to-transparent pb-10 pt-5'
             )}
         >
-            <Container className="flex flex-col">
+            <Container className="flex flex-1 flex-col">
                 {title && (
                     <h2 className={clsx(namu.className, 'mb-10 text-3xl text-themeYellow')}>
                         {title}
