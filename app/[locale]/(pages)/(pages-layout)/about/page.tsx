@@ -9,6 +9,8 @@ import Icon from '@components/icon';
 
 import { namu } from '@fonts';
 
+import { THEME_TRANSITION } from '@constants';
+
 export async function generateMetadata() {
     const t = await getTranslations('pages.about.metadata');
 
@@ -117,14 +119,42 @@ const AboutPage = async () => {
                                                             <p className="mb-1 text-l font-semibold">
                                                                 {t(`${key}.text.${name}.name`)}
                                                             </p>
-                                                            <p>
-                                                                <b>{t(`${key}.address`)}:</b>{' '}
-                                                                {t(`${key}.text.${name}.address`)}
-                                                            </p>
-                                                            <p>
-                                                                <b>{t(`${key}.phone`)}:</b>{' '}
-                                                                {t(`${key}.text.${name}.phone`)}
-                                                            </p>
+                                                            <ul>
+                                                                <li>
+                                                                    <a
+                                                                        className={clsx(
+                                                                            'hover:text-themeYellow',
+                                                                            THEME_TRANSITION
+                                                                        )}
+                                                                        rel="nofollow noopener noreferrer"
+                                                                        target="_blank"
+                                                                        href={t(
+                                                                            `${key}.text.${name}.href`
+                                                                        )}
+                                                                    >
+                                                                        <b>
+                                                                            {t(`${key}.address`)}:
+                                                                        </b>{' '}
+                                                                        {t(
+                                                                            `${key}.text.${name}.address`
+                                                                        )}
+                                                                    </a>
+                                                                </li>
+                                                                <li>
+                                                                    <a
+                                                                        href={`tel:${t(`${key}.text.${name}.phone`)}`}
+                                                                        className={clsx(
+                                                                            'hover:text-themeYellow',
+                                                                            THEME_TRANSITION
+                                                                        )}
+                                                                    >
+                                                                        <b>{t(`${key}.phone`)}:</b>{' '}
+                                                                        {t(
+                                                                            `${key}.text.${name}.phone`
+                                                                        )}
+                                                                    </a>
+                                                                </li>
+                                                            </ul>
                                                         </div>
                                                     </li>
                                                 ))}

@@ -243,16 +243,19 @@
                     "georgia": {
                         "name": "Consulate General of Georgia",
                         "address": "str. Pushkinska, 31",
+                        "href": "https://maps.app.goo.gl/yyRcyH2tFyfAjE6b9",
                         "phone": "+380 (412) 220 633"
                     },
                     "lithuania": {
                         "name": "Honorary Consulate of Lithuania",
                         "address": "square Peremohy, 10, BC",
-                        "phone": "+380 (50) 463-72-26, +380 (542) 48-71-01"
+                        "href": "https://maps.app.goo.gl/MANXfoZC7s12J8dQ6",
+                        "phone": "+380 (542) 48-71-01"
                     },
                     "poland": {
                         "name": "Polish house",
                         "address": "str. Chudnivska, 34b",
+                        "href": "https://maps.app.goo.gl/ZVMQFAEumiuLEUn68",
                         "phone": "+380 (412) 24-34-22"
                     }
                 }

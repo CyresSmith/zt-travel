@@ -244,16 +244,19 @@
                     "georgia": {
                         "name": "Генеральне консульство Грузії",
                         "address": "вул. Пушкінська, 31",
+                        "href": "https://maps.app.goo.gl/yyRcyH2tFyfAjE6b9",
                         "phone": "+380 (412) 220 633"
                     },
                     "lithuania": {
                         "name": "Почесне Консульство Литви",
                         "address": "пл. Перемоги, 10, БЦ",
-                        "phone": "+380 (50) 463-72-26, +380 (542) 48-71-01"
+                        "href": "https://maps.app.goo.gl/MANXfoZC7s12J8dQ6",
+                        "phone": "+380 (542) 48-71-01"
                     },
                     "poland": {
                         "name": "Польский дім",
                         "address": "вул. Чуднівська, 34б",
+                        "href": "https://maps.app.goo.gl/ZVMQFAEumiuLEUn68",
                         "phone": "+380 (412) 24-34-22"
                     }
                 }
