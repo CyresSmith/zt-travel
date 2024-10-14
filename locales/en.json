@@ -158,6 +158,105 @@
             "select-tag": "Select tag",
             "tag-not-found": "Tag not found",
             "similar": "Similar news"
+        },
+        "about": {
+            "metadata": {
+                "title": "Interesting facts about the Zhytomyr region",
+                "description": "The page contains interesting facts about the Zhytomyr region"
+            },
+            "title": "Zhytomyr region is touristic",
+            "knowing": {
+                "title": "Worth knowing",
+                "text": "Zhytomyr Oblast is a region in northern Ukraine, located within the Polesian Lowland and partially within the Dnipro Upland to the south. It borders Gomel Oblast in Belarus to the north, Kyiv Oblast to the east, Vinnytsia Oblast to the south, and Khmelnytskyi and Rivne Oblasts of Ukraine to the west. The administrative center is the city of Zhytomyr. Zhytomyr Oblast ranks among the top five largest regions of Ukraine by area. The region covers 29.9 thousand square kilometers, which accounts for 4.9% of Ukraine's total area. In terms of size, it is only smaller than Odesa, Dnipro, Chernihiv, and Kharkiv Oblasts. At the same time, Zhytomyr Oblast is larger than countries such as Armenia, Albania, Israel, Cyprus, or Lebanon. The region extends 170 kilometers from west to east and 230 kilometers from north to south. It consists of 23 districts, and includes 5 cities of regional significance (Berdychiv, Zhytomyr, Korosten, Malyn, and Novohrad-Volynskyi), 7 cities of district significance (Andrushivka, Baranivka, Korostyshiv, Ovruch, Olevsk, Radomyshl, Chudniv), 43 urban-type settlements, and 1,619 rural settlements. Due to its favorable geographical location and a developed network of roads and railways, the region enjoys convenient transportation connections with Kyiv, Lviv, Uzhhorod, Kharkiv, Odesa, Minsk, Moscow, Saint Petersburg, as well as the countries of Eastern and Central Europe. Zhytomyr Oblast has a strong resource potential for tourism development, with natural landmarks unparalleled in Ukraine and globally (the geological reserve \"Stone Village,\" over 500-year-old oaks in the \"Tryhirya Tract,\" unique pines in the \"Modryna Tract,\" the relic Pontic Azalea in the \"Polissya Nature Reserve\"), as well as modern industrial enterprises that warmly welcome visitors and offer tours of their facilities (such as PJSC Zhytomyr Dairy Plant – Rud Company, LLC Organic Milk, and PrJSC Maryaniv Glass Factory)."
+            },
+            "history": {
+                "title": "History",
+                "text": "In the 5th to 7th centuries CE, the territory of Zhytomyr Oblast was inhabited by Eastern Slavic tribes: the northern part by the Drevlians, and the central and southern parts by the Polans, who engaged in agriculture and livestock farming. The Drevlians were also involved in hunting, beekeeping, jewelry production, and trade. In the 9th century, cities began to emerge, becoming centers of crafts and trade, such as Vručiy (Ovruch) and Iskorost (Korosten).In the 11th and early 12th centuries, the present territory of Zhytomyr Oblast was part of Kievan Rus. According to the renowned historian Ivan Krypiakevych, Volhynia and Polissia were part of the ancient homeland of the Slavs and served as the cradle of the Ukrainian people.Zhytomyr Oblast ranks among the top five largest regions of Ukraine by area, covering 29.9 thousand square kilometers, which is 4.9% of Ukraine's territory. It is surpassed in size only by Odesa, Dnipro, Chernihiv, and Kharkiv Oblasts. At the same time, Zhytomyr Oblast is larger than countries like Armenia, Albania, Israel, Cyprus, or Lebanon. As a result of the three partitions of Poland (1772, 1793, 1795), Volhynia, along with Kyiv and Podillia, became part of the Russian Empire. The region was incorporated into Volhynia and partially into Kyiv Governorates, established by a royal decree in 1797. From 1804, the center of Volhynia Governorate became Zhytomyr."
+            },
+            "born": {
+                "title": "They were born in Zhytomyr Oblast",
+                "Conrad": {
+                    "name": "Joseph Conrad (Józef Teodor Konrad Korzeniowski) (Berdychiv, 1857–1924)",
+                    "text": "an English writer of Polish descent, a classic of English literature."
+                },
+                "Korolenko": {
+                    "name": "Vladimir Korolenko (Zhytomyr, 1853–1921)",
+                    "text": "a prominent Russian writer of Ukrainian origin."
+                },
+                "Korolev": {
+                    "name": "Sergei Korolev (Zhytomyr, 1906–1966)",
+                    "text": "a Soviet scientist of Ukrainian descent, and a rocket engineer. Under his leadership, the first intercontinental ballistic missile, the first artificial Earth satellite, the first human spaceflight, and the first human spacewalk were accomplished."
+                },
+                "Ukrainka": {
+                    "name": "Lesya Ukrainka (Larysa Kosach-Kvitka) (Novohrad-Volynskyi, 1871–1913)",
+                    "text": "a distinguished Ukrainian poetess."
+                },
+                "Lyatoshynsky": {
+                    "name": "Borys Lyatoshynsky (Zhytomyr, 1895–1968)",
+                    "text": "a Ukrainian composer, considered one of the founders of the modernist direction in Ukrainian music."
+                },
+                "Nestayko": {
+                    "name": "Vsevolod Nestayko (Berdychiv, 1930–2014)",
+                    "text": "a Ukrainian writer, a classic of children's literature, and the author of the beloved children's book The Toreadors from Vasyukivka among many others."
+                },
+                "Perelman": {
+                    "name": "Natan Perelman (Zhytomyr, 1906–2002)",
+                    "text": "a renowned Soviet pianist."
+                },
+                "Richter": {
+                    "name": "Sviatoslav Richter (Zhytomyr, 1915–1997)",
+                    "text": "an outstanding Soviet pianist."
+                },
+                "Ohienko": {
+                    "name": "Ivan Ohienko (Ilarion) (Brusyliv, 1882–1972)",
+                    "text": "a Ukrainian scholar, political, and religious figure."
+                }
+            },
+            "transport": {
+                "title": "Transport connection",
+                "auto": {
+                    "title": "The road transport infrastructure",
+                    "text": "The road transport infrastructure of Zhytomyr Oblast situated at the crossroads of ancient trade routes, forms a fairly dense network of highways. These roads provide travelers access to the region's tourist attractions. Most of the most visited tourist sites are located near major highways. Three international highways pass through Zhytomyr Oblast. ",
+                    "m06": {
+                        "name": "Highway M06",
+                        "text": "863.8 km long, linking Kyiv and Chop (Hungarian border). It passes through Kyiv, Zhytomyr, Rivne, and Zakarpattia Oblasts. In Zhytomyr Oblast, it crosses Brusyliv, Radomyshl, Korostyshiv, Zhytomyr, Pulyny, and Novohrad-Volynskyi districts, covering 190 km in the region."
+                    },
+                    "m07": {
+                        "name": "Highway M07 (\"Warszawka\")",
+                        "text": "487 km long, connecting Kyiv – Kovel – the \"Yahodyn\" border checkpoint (Polish border; direction to Lublin). Within Zhytomyr Oblast, the route crosses Malyn, Korosten, Luhyny, and Olevsk districts, stretching 166.3 km within the region."
+                    },
+                    "m21": {
+                        "name": "Highway M21",
+                        "text": "384.2 km long, connecting the Vystupovychi border checkpoint (Belarus) with Mohyliv-Podilskyi (border checkpoint with Moldova). It passes through Zhytomyr and Vinnytsia Oblasts, starting from Vystupovychi and passing through Ovruch, Korosten, Cherniakhiv, Zhytomyr, Berdychiv, Kalynivka, Vinnytsia, and Zhmerinka, ending at the Mohyliv-Podilskyi checkpoint leading to Bălți in Moldova. The total length is 243.9 km."
+                    }
+                },
+                "railway": {
+                    "title": "The railway infrastructure",
+                    "text": "The railway infrastructure of Zhytomyr Oblast includes 67 railway stations providing both freight and passenger transportation. Operations are managed by Ukrzaliznytsia, specifically the Southwestern Regional Railway. The operational length of the railways in the region is 1,017 km, with a network density of 34 km per 1,000 square kilometers. The region has six key railway junctions: Korosten, Zhytomyr, Berdychiv, Novohrad-Volynskyi-1, Ovruch, and Bilokorovychi. From Zhytomyr and Korosten, railways diverge in five directions.Electrified double-track railway lines with heavy traffic run through the region, particularly the Kyiv – Korosten – Novohrad-Volynskyi – Shepetivka – Zdolbuniv – Lviv line. The Zdolbuniv – Koziatyn – Fastiv – Kyiv segment operates at near capacity. An electrified railway line also connects Korosten – Kyiv (a journey of about 3 hours).Single-track lines, such as Korosten – Ovruch – Kalinkavichy, Korosten – Olevsk – Sarny, Korosten – Novohrad-Volynskyi – Shepetivka, Korosten – Zhytomyr – Berdychiv, Novohrad-Volynskyi – Zhytomyr – Fastiv, Zhytomyr – Korostyshiv, and Bilokorovychi – Ovruch – Vilcha, primarily connect Zhytomyr Oblast with neighboring regions. The Korosten – Ovruch – Kalinkavichy line crosses the Ukrainian-Belarusian border.Thus, the railway network contributes to forming tourist flows from cities like Kyiv and Lviv. The most advantageous railway connections are found in Korosten (the largest railway hub), Berdychiv, and Zhytomyr."
+                }
+            },
+            "embassies": {
+                "title": "Representations of foreign countries",
+                "address": "Address",
+                "phone": "Phone",
+                "text": {
+                    "georgia": {
+                        "name": "Consulate General of Georgia",
+                        "address": "str. Pushkinska, 31",
+                        "phone": "+380 (412) 220 633"
+                    },
+                    "lithuania": {
+                        "name": "Honorary Consulate of Lithuania",
+                        "address": "square Peremohy, 10, BC",
+                        "phone": "+380 (50) 463-72-26, +380 (542) 48-71-01"
+                    },
+                    "poland": {
+                        "name": "Polish house",
+                        "address": "str. Chudnivska, 34b",
+                        "phone": "+380 (412) 24-34-22"
+                    }
+                }
+            }
         }
     }
 }
