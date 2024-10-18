@@ -9,17 +9,18 @@ import { useSearchParams } from 'next/navigation';
 import clsx from 'clsx';
 
 import type { Option } from '@ui/multiple-select';
-import MultipleSelector from '@ui/multiple-select';
 
 import Icon from '@components/icon';
 import SectionCard from '@components/section-card/section-card';
+import ListFilterPanel from '@components/shared/list-filter-panel';
 
-import { getLocaleValue } from '@utils';
+import { buildUrl, getLocaleDate, getLocaleValue, stringifyQueryParams } from '@utils';
 
 import { useArticlesList } from '@data/articles/queries';
 import { useArticleTags } from '@data/tags/queries';
 
-import { type LocaleType, usePathname, useRouter } from '@i18n/routing';
+import type { LocaleType } from '@i18n/routing';
+import { usePathname, useRouter } from '@i18n/routing';
 
 const NewsList = () => {
     const { ref, inView } = useInView();
@@ -30,6 +31,7 @@ const NewsList = () => {
     const t = useTranslations('pages.news');
 
     const selectedTagsParam = searchParams.get('tags');
+
     const selectedTagsSlugs = selectedTagsParam?.split(',');
 
     const { data: tags } = useArticleTags();
@@ -38,8 +40,10 @@ const NewsList = () => {
 
     const selectedTags = tags?.filter(({ slug }) => selectedTagsSlugs?.includes(slug));
 
+    const tagsIdArray = selectedTags?.map(({ id }) => id) || [];
+
     const { data, fetchNextPage, isFetching, isFetchingNextPage, hasNextPage } = useArticlesList({
-        tags: selectedTags?.map(({ id }) => id),
+        tags: tagsIdArray,
     });
 
     const isDataLoading = isFetching || isFetchingNextPage;
@@ -101,39 +105,40 @@ const NewsList = () => {
 
     return (
         <>
-            <div className="mb-10">
-                <MultipleSelector
-                    placeholder={t('select-tag')}
-                    value={selectedOptions}
-                    onChange={handleTagSelect}
-                    defaultOptions={tags?.map(({ name }) => {
-                        const value = getLocaleValue(name, locale);
-
-                        return { value, label: value };
-                    })}
-                    emptyIndicator={
-                        <p className="text-center text-lg leading-10 text-gray-600 dark:text-gray-400">
-                            {t('tag-not-found')}
-                        </p>
-                    }
-                />
-            </div>
+            <ListFilterPanel
+                optionsPlaceholder={t('select-tag')}
+                selectedOptions={selectedOptions}
+                onOptionChange={handleTagSelect}
+                options={
+                    tags?.map(({ name }) => ({
+                        label: getLocaleValue(name, locale),
+                        value: getLocaleValue(name, locale),
+                    })) || []
+                }
+                emptyOptionsLabel={t('tag-not-found')}
+            />
 
             {data && data?.pages[0] && data.pages[0].data.length > 0 ? (
                 <ul className="grid gap-8 mobile:grid-cols-1 tablet:grid-cols-2 desktop:grid-cols-3">
                     {data?.pages.map((group, i) => (
                         <Fragment key={i}>
-                            {group?.data.map(({ name, image, slug, id, desc, tags }) => (
+                            {group?.data.map(({ name, image, slug, id, desc, createdAt, tags }) => (
                                 <SectionCard
                                     key={id}
                                     image={image || ''}
                                     title={getLocaleValue(name, locale)}
-                                    titleHref={`news/${slug}`}
+                                    titleHref={buildUrl('news', slug)}
                                     locale={locale as LocaleType}
+                                    links={[
+                                        {
+                                            label: getLocaleDate(createdAt, locale as LocaleType),
+                                            icon: 'calendar-add',
+                                        },
+                                    ]}
                                     desc={getLocaleValue(desc, locale)}
                                     tags={tags.map(({ slug, ...tag }) => ({
                                         ...tag,
-                                        slug: `news?tags=${slug}`,
+                                        slug: `${buildUrl('news', slug)}?${stringifyQueryParams({ tags: slug })}`,
                                     }))}
                                 />
                             ))}

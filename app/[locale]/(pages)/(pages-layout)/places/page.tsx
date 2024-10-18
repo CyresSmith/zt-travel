@@ -2,14 +2,14 @@ import { HydrationBoundary, dehydrate } from '@tanstack/react-query';
 
 import { getTranslations } from 'next-intl/server';
 
-import { PlaceCategory } from '@prisma/client';
+import type { PlaceCategory } from '@prisma/client';
 
 import HomeSection from '@components/home/home-section';
 import PlacesList from '@components/places/places-list';
 
 import { QUERY_KEYS } from '@keys';
 
-import { WithSearchParams } from '@types';
+import type { WithSearchParams } from '@types';
 
 import getQueryClient from '@utils/get-query-client';
 

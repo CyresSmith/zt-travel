@@ -20,10 +20,10 @@ type Props = {
     options: Option[];
     onOptionChange: (options: Option[]) => void;
 
-    selectedCommunityId: string;
-    setSelectedCommunityId: Dispatch<SetStateAction<string | undefined>>;
-    selectedDistrictId: string;
-    setSelectedDistrictId: Dispatch<SetStateAction<string | undefined>>;
+    selectedCommunityId?: string;
+    setSelectedCommunityId?: Dispatch<SetStateAction<string | undefined>>;
+    selectedDistrictId?: string;
+    setSelectedDistrictId?: Dispatch<SetStateAction<string | undefined>>;
 } & PropsWithChildren;
 
 const ListFilterPanel = ({
@@ -50,70 +50,72 @@ const ListFilterPanel = ({
 
     const handleRegionSelect = (region: string, type: 'district' | 'community') => {
         if (type === 'district') {
-            setSelectedCommunityId('');
-            setSelectedDistrictId(region);
+            setSelectedCommunityId && setSelectedCommunityId('');
+            setSelectedDistrictId && setSelectedDistrictId(region);
         }
 
         if (type === 'community') {
             const selected = communities?.find(({ id }) => id === region);
 
-            setSelectedDistrictId(selected?.districtId);
-            setSelectedCommunityId(region);
+            setSelectedDistrictId && setSelectedDistrictId(selected?.districtId);
+            setSelectedCommunityId && setSelectedCommunityId(region);
         }
     };
 
     const handleRegionReset = (type: 'district' | 'community') => {
-        setSelectedCommunityId('');
-        if (type === 'district') setSelectedDistrictId('');
+        setSelectedCommunityId && setSelectedCommunityId('');
+        if (type === 'district' && setSelectedDistrictId) setSelectedDistrictId('');
     };
 
     return (
         <div className="mb-10 flex flex-col gap-5">
-            <div className="grid grid-cols-2 gap-5">
-                <Select
-                    value={selectedDistrictId}
-                    onValueChange={(value: string) => handleRegionSelect(value, 'district')}
-                >
-                    <SelectTrigger
+            {setSelectedDistrictId && setSelectedCommunityId && (
+                <div className="grid grid-cols-2 gap-5">
+                    <Select
                         value={selectedDistrictId}
-                        reset={() => handleRegionReset('district')}
+                        onValueChange={(value: string) => handleRegionSelect(value, 'district')}
                     >
-                        <SelectValue placeholder={t('districts-placeholder')} />
-                    </SelectTrigger>
+                        <SelectTrigger
+                            value={selectedDistrictId}
+                            reset={() => handleRegionReset('district')}
+                        >
+                            <SelectValue placeholder={t('districts-placeholder')} />
+                        </SelectTrigger>
 
-                    <SelectContent>
-                        {districts?.map(({ id, name_en, name_uk }) => {
-                            return (
-                                <SelectItem key={id} value={id}>
-                                    {locale === 'uk' ? name_uk : name_en}
-                                </SelectItem>
-                            );
-                        }) || []}
-                    </SelectContent>
-                </Select>
+                        <SelectContent>
+                            {districts?.map(({ id, name_en, name_uk }) => {
+                                return (
+                                    <SelectItem key={id} value={id}>
+                                        {locale === 'uk' ? name_uk : name_en}
+                                    </SelectItem>
+                                );
+                            }) || []}
+                        </SelectContent>
+                    </Select>
 
-                <Select
-                    value={selectedCommunityId}
-                    onValueChange={(value: string) => handleRegionSelect(value, 'community')}
-                >
-                    <SelectTrigger
+                    <Select
                         value={selectedCommunityId}
-                        reset={() => handleRegionReset('community')}
+                        onValueChange={(value: string) => handleRegionSelect(value, 'community')}
                     >
-                        <SelectValue placeholder={t('communities-placeholder')} />
-                    </SelectTrigger>
+                        <SelectTrigger
+                            value={selectedCommunityId}
+                            reset={() => handleRegionReset('community')}
+                        >
+                            <SelectValue placeholder={t('communities-placeholder')} />
+                        </SelectTrigger>
 
-                    <SelectContent>
-                        {communitiesForSelect?.map(({ id, name_en, name_uk }) => {
-                            return (
-                                <SelectItem key={id} value={id}>
-                                    {locale === 'uk' ? name_uk : name_en}
-                                </SelectItem>
-                            );
-                        }) || []}
-                    </SelectContent>
-                </Select>
-            </div>
+                        <SelectContent>
+                            {communitiesForSelect?.map(({ id, name_en, name_uk }) => {
+                                return (
+                                    <SelectItem key={id} value={id}>
+                                        {locale === 'uk' ? name_uk : name_en}
+                                    </SelectItem>
+                                );
+                            }) || []}
+                        </SelectContent>
+                    </Select>
+                </div>
+            )}
 
             {children}
 

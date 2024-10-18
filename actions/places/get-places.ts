@@ -46,7 +46,7 @@ const getPlacesList = async (dto?: GetPlacesDto): Promise<PlacesListRes> => {
     const count = await prisma.place.count();
     const page = dto?.pagination.page || 1;
     const take = dto?.pagination.take || DEFAULT_TAKE;
-    const pagesCount = Math.max(count / take);
+    const pagesCount = Math.ceil(count / take);
 
     return {
         data: places,

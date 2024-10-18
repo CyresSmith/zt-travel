@@ -9,7 +9,11 @@ import NewsList from '@components/news/news-list';
 
 import { QUERY_KEYS } from '@keys';
 
+import { WithSearchParams } from '@types';
+
 import getQueryClient from '@utils/get-query-client';
+
+import { TagBasicInfo } from '@data/tags/types';
 
 import getArticles from '@actions/articles/get-articles';
 import getTagsByType from '@actions/tags/get-tag-by-type';
@@ -29,12 +33,32 @@ export async function generateMetadata() {
     };
 }
 
-const NewsPage = async () => {
+const NewsPage = async ({ searchParams }: WithSearchParams) => {
+    let queryKey: string[] = [QUERY_KEYS.ARTICLES];
+    let selectedTag: TagBasicInfo | undefined = undefined;
+
+    if (searchParams.tags) {
+        const articleTags = await getTagsByType(TagType.ARTICLE);
+        selectedTag = articleTags?.find(({ slug }) => slug === searchParams.tags);
+
+        if (selectedTag) {
+            queryKey = [...queryKey, selectedTag.id];
+        }
+    }
+
+    const getDto = (pageParam: number) => {
+        const dto = {
+            pagination: { page: pageParam },
+        };
+
+        return selectedTag ? Object.assign(dto, { tags: [selectedTag.id] }) : dto;
+    };
+
     const queryClient = getQueryClient();
 
     await queryClient.prefetchInfiniteQuery({
-        queryKey: [QUERY_KEYS.ARTICLES, { tags: [] }],
-        queryFn: async ({ pageParam }) => await getArticles({ pagination: { page: pageParam } }),
+        queryKey,
+        queryFn: async ({ pageParam }) => await getArticles(getDto(pageParam)),
         initialPageParam: 1,
         getNextPageParam: ({ page }) => page + 1,
         pages: 1,

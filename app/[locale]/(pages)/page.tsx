@@ -9,7 +9,7 @@ import { QUERY_KEYS } from '@keys';
 
 import getQueryClient from '@utils/get-query-client';
 
-import getArticles from '@actions/articles/get-articles';
+import getNewestArticles from '@actions/articles/get-newest-articles';
 import getUpcomingEvents from '@actions/events/get-upcoming-events';
 import getPopularPlaces from '@actions/places/get-popular-places';
 
@@ -27,8 +27,8 @@ export default async function Home() {
     });
 
     await queryClient.prefetchQuery({
-        queryKey: [QUERY_KEYS.ARTICLES],
-        queryFn: async () => await getArticles(),
+        queryKey: [QUERY_KEYS.NEWEST_ARTICLES],
+        queryFn: async () => await getNewestArticles(),
     });
 
     const dehydratedState = dehydrate(queryClient);

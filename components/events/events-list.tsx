@@ -14,7 +14,7 @@ import Icon from '@components/icon';
 import SectionCard from '@components/section-card/section-card';
 import ListFilterPanel from '@components/shared/list-filter-panel';
 
-import { getLocaleDate, getLocaleValue } from '@utils';
+import { buildUrl, getLocaleDate, getLocaleValue, stringifyQueryParams } from '@utils';
 
 import { useEventsList } from '@data/events/queries';
 import { useEventTags } from '@data/tags/queries';
@@ -168,7 +168,7 @@ const EventsList = () => {
                                         key={id}
                                         image={image || ''}
                                         title={getLocaleValue(name, locale)}
-                                        titleHref={`events/${slug}`}
+                                        titleHref={buildUrl('events', slug)}
                                         locale={locale as LocaleType}
                                         links={[
                                             {
@@ -183,7 +183,7 @@ const EventsList = () => {
                                         desc={getLocaleValue(desc, locale)}
                                         tags={tags.map(({ slug, ...tag }) => ({
                                             ...tag,
-                                            slug: `events?tags=${slug}`,
+                                            slug: `${buildUrl('events')}?${stringifyQueryParams({ tags: slug })} `,
                                         }))}
                                     />
                                 )

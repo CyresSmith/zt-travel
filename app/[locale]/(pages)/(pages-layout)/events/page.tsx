@@ -49,15 +49,11 @@ const EventsPage = async ({ searchParams }: WithSearchParams) => {
     }
 
     const getDto = (pageParam: number) => {
-        let dto = {
+        const dto = {
             pagination: { page: pageParam },
         };
 
-        if (selectedTag) {
-            dto = Object.assign(dto, { tags: [selectedTag.id] });
-        }
-
-        return dto;
+        return selectedTag ? Object.assign(dto, { tags: [selectedTag.id] }) : dto;
     };
 
     const queryClient = getQueryClient();

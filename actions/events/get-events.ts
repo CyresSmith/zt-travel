@@ -46,7 +46,7 @@ const getEvents = async (dto?: GetEventsDto): Promise<EventsListRes> => {
     const count = await prisma.event.count();
     const page = dto?.pagination.page || 1;
     const take = dto?.pagination.take || DEFAULT_TAKE;
-    const pagesCount = Math.max(count / take);
+    const pagesCount = Math.ceil(count / take);
 
     const events = eventsData.map(event => ({
         ...event,

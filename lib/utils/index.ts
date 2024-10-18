@@ -41,7 +41,7 @@ export function getLocaleValue(value: JsonValue, locale: string): string {
     return value ? ((value as JsonObject)[locale] as string) : '';
 }
 
-export function getLocaleDate(date: Date, locale: LocaleType): string {
+export function getLocaleDate(date: Date | string, locale: LocaleType): string {
     return format(date, 'HH:mm PPPP', {
         locale: locale === 'uk' ? uk : enIN,
     });

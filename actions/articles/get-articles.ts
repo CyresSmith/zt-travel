@@ -34,21 +34,22 @@ const getArticles = async (dto?: GetArticlesDto): Promise<ArticlesListRes> => {
     });
 
     const count = await prisma.article.count();
-
     const page = dto?.pagination.page || 1;
     const take = dto?.pagination.take || DEFAULT_TAKE;
-    const pagesCount = Math.max(count / take);
+    const pagesCount = Math.ceil(count / take);
 
-    const articles = articlesData.map(event => ({
-        ...event,
-        tags: (event.tags as unknown as { tag: TagBasicInfo }[]).map(({ tag }) => tag),
+    const articles = articlesData.map(article => ({
+        ...article,
+        tags: (article.tags as unknown as { tag: TagBasicInfo }[]).map(({ tag }) => tag),
     }));
 
-    return {
+    const data = {
         data: articles,
         page,
         pagesCount,
     };
+
+    return data;
 };
 
 export default getArticles;

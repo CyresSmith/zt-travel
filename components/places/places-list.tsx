@@ -14,7 +14,7 @@ import Icon from '@components/icon';
 import SectionCard from '@components/section-card/section-card';
 import ListFilterPanel from '@components/shared/list-filter-panel';
 
-import { getLocaleValue } from '@utils';
+import { buildUrl, getLocaleValue, stringifyQueryParams } from '@utils';
 
 import { usePlaceCategories } from '@data/place-categories/queries';
 import { usePlacesList } from '@data/places/queries';
@@ -172,7 +172,7 @@ const PlacesList = () => {
                                         key={id}
                                         image={image || ''}
                                         title={getLocaleValue(name, locale)}
-                                        titleHref={`places/${slug}`}
+                                        titleHref={buildUrl('places', slug)}
                                         locale={locale as LocaleType}
                                         links={[
                                             {
@@ -186,7 +186,7 @@ const PlacesList = () => {
                                             {
                                                 id: category.id,
                                                 name: category.name,
-                                                slug: `places?category=${category.slug}`,
+                                                slug: `${buildUrl('places')}?${stringifyQueryParams({ category: category.slug })}`,
                                             },
                                         ]}
                                     />
