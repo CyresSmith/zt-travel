@@ -45,14 +45,8 @@ const DistrictsMap = ({ activeRegionSlug, setRegion }: Props) => {
     };
 
     useEffect(() => {
-        if (!activeRegionSlug) return;
-
-        if (activeDistrict) setHoveredRegion(activeDistrict.id);
+        setHoveredRegion(activeDistrict?.id || null);
     }, [activeRegionSlug]);
-
-    useEffect(() => {
-        if (!hoveredRegion && activeDistrict) setHoveredRegion(activeDistrict.id);
-    }, [hoveredRegion]);
 
     return (
         <div className="flex items-center justify-end">
