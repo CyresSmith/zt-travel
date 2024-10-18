@@ -43,8 +43,10 @@ const EventsList = () => {
 
     const selectedTags = tags?.filter(({ slug }) => selectedTagsSlugs?.includes(slug));
 
+    const tagsIdArray = selectedTags?.map(({ id }) => id) || [];
+
     const { data, fetchNextPage, isFetching, isFetchingNextPage, hasNextPage } = useEventsList({
-        tags: selectedTags?.map(({ id }) => id),
+        tags: tagsIdArray,
         districtId: selectedDistrictId,
         communityId: selectedCommunityId,
     });

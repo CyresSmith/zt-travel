@@ -1,3 +1,5 @@
+'use server';
+
 import prisma from '@prisma-util';
 
 import { DistrictBasicInfoSelector } from '@data/district/selectors';

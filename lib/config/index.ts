@@ -1,6 +1,6 @@
 const {
     NODE_ENV,
-    APP_HOST,
+    NEXT_PUBLIC_APP_HOST,
     AUTH_SECRET,
     AUTH_FACEBOOK_ID,
     AUTH_FACEBOOK_SECRET,
@@ -13,7 +13,6 @@ const {
 } = process.env;
 
 export {
-    APP_HOST,
     AUTH_FACEBOOK_ID,
     AUTH_FACEBOOK_SECRET,
     AUTH_SECRET,
@@ -22,6 +21,7 @@ export {
     CLOUDINARY_NAME,
     GOOGLE_CLIENT_ID,
     GOOGLE_CLIENT_SECRET,
+    NEXT_PUBLIC_APP_HOST,
     NODE_ENV,
     RESEND_API_KEY,
 };

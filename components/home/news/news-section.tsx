@@ -7,6 +7,8 @@ import NewsItem from './news-item';
 import HomeSection from '../home-section';
 import SectionCarousel from '../section-carousel';
 
+import { buildUrl } from '@utils';
+
 import { useNewestArticles } from '@data/articles/queries';
 
 const NewsSection = () => {
@@ -18,7 +20,7 @@ const NewsSection = () => {
         <HomeSection title={t('news-title')}>
             <SectionCarousel
                 items={articles?.map((article, i) => <NewsItem key={i} article={article} />)}
-                href={`news`}
+                href={buildUrl(`news`)}
                 linkLabel={t('news-link-label')}
             />
         </HomeSection>

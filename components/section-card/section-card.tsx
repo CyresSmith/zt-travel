@@ -69,11 +69,7 @@ const SectionCard = ({
                                     key={id}
                                     className={`rounded-full bg-themeYellow/80 px-2 py-1 text-m text-themeFg hover:bg-themeYellow ${THEME_TRANSITION}`}
                                 >
-                                    {slug ? (
-                                        <Link href={String(slug)}>{label}</Link>
-                                    ) : (
-                                        <p>{label}</p>
-                                    )}
+                                    {slug ? <Link href={slug}>{label}</Link> : <p>{label}</p>}
                                 </li>
                             );
                         })}

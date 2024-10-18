@@ -2,7 +2,7 @@ import { useLocale } from 'next-intl';
 
 import SectionCard from '../../section-card/section-card';
 
-import { getLocaleValue } from '@utils';
+import { buildUrl, getLocaleValue, stringifyQueryParams } from '@utils';
 
 import type { PlaceBasicInfo } from '@data/places/types';
 
@@ -19,10 +19,21 @@ const PlaceItem = ({ place }: Props) => {
         <SectionCard
             image={place.image || ''}
             title={name}
-            titleHref={`places/${place.slug}`}
-            links={[{ href: place.gmapsUrl || '', icon: 'map-point', label: address }]}
+            titleHref={buildUrl('places', place.slug)}
+            links={[
+                {
+                    href: place.gmapsUrl || undefined,
+                    icon: 'map-point',
+                    label: address,
+                },
+            ]}
             locale={locale as LocaleType}
-            tags={[{ ...place.category, slug: `places?category=${place.category.slug}` }]}
+            tags={[
+                {
+                    ...place.category,
+                    slug: `${buildUrl('places')}?${stringifyQueryParams({ category: place.category.slug })}`,
+                },
+            ]}
         />
     );
 };

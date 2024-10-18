@@ -11,7 +11,7 @@ import {
 import { enIN, uk } from 'date-fns/locale';
 import { twMerge } from 'tailwind-merge';
 
-import { InfoItem } from '@components/shared/single-item-page';
+import type { InfoItem } from '@components/shared/single-item-page';
 
 import { INFO_KEYS } from '@keys';
 
@@ -219,3 +219,9 @@ export const getInfo = <T extends PrismaModel>(object: T, locale: LocaleType) =>
         return acc;
     }, []);
 };
+
+export const buildUrl = (...paths: string[]) =>
+    `${process.env.NEXT_PUBLIC_APP_HOST}/${paths.join('/')}`;
+
+export const stringifyQueryParams = (params: Record<string, string>) =>
+    new URLSearchParams(params).toString();

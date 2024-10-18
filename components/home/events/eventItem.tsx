@@ -9,7 +9,7 @@ import SectionCard from '../../section-card/section-card';
 
 import type { IconName } from '@icon-names';
 
-import { getLocaleValue } from '@utils';
+import { buildUrl, getLocaleValue, stringifyQueryParams } from '@utils';
 
 import type { EventBasicInfo } from '@data/events/types';
 
@@ -22,19 +22,21 @@ const EventItem = ({ event: { address, image, name, start, tags, slug } }: Props
 
     const links = [
         {
-            href: '',
             icon: 'calendar-add' as IconName,
             label: format(start, 'HH:mm, PPPP', { locale: locale === 'uk' ? uk : enIN }),
         },
-        { href: '', icon: 'map-point' as IconName, label: getLocaleValue(address, locale) },
+        { icon: 'map-point' as IconName, label: getLocaleValue(address, locale) },
     ];
 
     return (
         <SectionCard
             image={image || ''}
             title={getLocaleValue(name, locale)}
-            titleHref={`events/${slug}`}
-            tags={tags.map(tag => ({ ...tag, slug: `events?tags=${tag.slug}` }))}
+            titleHref={buildUrl('events', slug)}
+            tags={tags.map(tag => ({
+                ...tag,
+                slug: `${buildUrl('events')}?${stringifyQueryParams({ tags: tag.slug })}`,
+            }))}
             links={links}
             locale={locale as LocaleType}
         />

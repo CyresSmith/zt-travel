@@ -7,6 +7,8 @@ import PlaceItem from './place-item';
 import HomeSection from '../home-section';
 import SectionCarousel from '../section-carousel';
 
+import { buildUrl } from '@utils';
+
 import { usePopularPlaces } from '@data/places/queries';
 
 const PlacesSection = () => {
@@ -18,7 +20,7 @@ const PlacesSection = () => {
         <HomeSection title={t('places-title')}>
             <SectionCarousel
                 items={places?.map(place => <PlaceItem key={place.id} place={place} />)}
-                href={`places`}
+                href={buildUrl('places')}
                 linkLabel={t('places-link-label')}
             />
         </HomeSection>

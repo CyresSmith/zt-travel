@@ -20,6 +20,10 @@ export type WithChildren = {
     children: ReactNode;
 };
 
+export type WithSearchParams = {
+    searchParams: { [key: string]: string | string[] | undefined };
+};
+
 export type WithSession = {
     session: Session;
 };

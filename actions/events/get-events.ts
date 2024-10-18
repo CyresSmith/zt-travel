@@ -53,11 +53,13 @@ const getEvents = async (dto?: GetEventsDto): Promise<EventsListRes> => {
         tags: (event.tags as unknown as { tag: TagBasicInfo }[]).map(({ tag }) => tag),
     }));
 
-    return {
+    const data = {
         data: events,
         page,
         pagesCount,
     };
+
+    return data;
 };
 
 export default getEvents;

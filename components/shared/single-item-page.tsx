@@ -10,7 +10,7 @@ import ContactItem from '@components/shared/contact-item';
 
 import { namu } from '@fonts';
 
-import { APP_HOST } from '@config';
+import { NEXT_PUBLIC_APP_HOST } from '@config';
 
 import type { IconName } from '@icon-names';
 
@@ -78,7 +78,7 @@ const SingleItemPage = async ({
                                     similarPrefix
                                         ? item.tags?.map(tag => ({
                                               ...tag,
-                                              slug: `${APP_HOST}/${similarPrefix}?${similarPrefix === 'places' ? 'category' : 'tags'}=${tag.slug}`,
+                                              slug: `${NEXT_PUBLIC_APP_HOST}/${similarPrefix}?${similarPrefix === 'places' ? 'category' : 'tags'}=${tag.slug}`,
                                           }))
                                         : []
                                 }

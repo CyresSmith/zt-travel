@@ -2,11 +2,11 @@ import { useLocale } from 'next-intl';
 import type { StaticImageData } from 'next/image';
 import Image from 'next/image';
 
-import type { StringWithLocales } from '@lib/types';
-
 import { buttonVariants } from '@ui/button';
 
 import Container from '@components/container';
+
+import type { StringWithLocales } from '@types';
 
 import type { LocaleType } from '@i18n/routing';
 import { Link } from '@i18n/routing';

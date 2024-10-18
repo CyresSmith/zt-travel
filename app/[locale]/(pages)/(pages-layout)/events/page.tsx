@@ -9,7 +9,11 @@ import HomeSection from '@components/home/home-section';
 
 import { QUERY_KEYS } from '@keys';
 
+import type { WithSearchParams } from '@types';
+
 import getQueryClient from '@utils/get-query-client';
+
+import { TagBasicInfo } from '@data/tags/types';
 
 import getCommunities from '@actions/communities/get-communities';
 import getDistricts from '@actions/districts/get-districts';
@@ -31,12 +35,36 @@ export async function generateMetadata() {
     };
 }
 
-const EventsPage = async () => {
+const EventsPage = async ({ searchParams }: WithSearchParams) => {
+    let queryKey: string[] = [QUERY_KEYS.EVENTS];
+    let selectedTag: TagBasicInfo | undefined = undefined;
+
+    if (searchParams.tags) {
+        const eventTags = await getTagsByType(TagType.EVENT);
+        selectedTag = eventTags?.find(({ slug }) => slug === searchParams.tags);
+
+        if (selectedTag) {
+            queryKey = [...queryKey, selectedTag.id];
+        }
+    }
+
+    const getDto = (pageParam: number) => {
+        let dto = {
+            pagination: { page: pageParam },
+        };
+
+        if (selectedTag) {
+            dto = Object.assign(dto, { tags: [selectedTag.id] });
+        }
+
+        return dto;
+    };
+
     const queryClient = getQueryClient();
 
     await queryClient.prefetchInfiniteQuery({
-        queryKey: [QUERY_KEYS.EVENTS, { tags: [] }],
-        queryFn: async ({ pageParam }) => await getEvents({ pagination: { page: pageParam } }),
+        queryKey,
+        queryFn: async ({ pageParam }) => await getEvents(getDto(pageParam)),
         initialPageParam: 1,
         getNextPageParam: ({ page }) => page + 1,
         pages: 1,

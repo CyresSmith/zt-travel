@@ -243,9 +243,10 @@ model TagsOnArticles {
 model District {
   id          String      @id @default(uuid())
   name_uk     String
+  name_en     String?
+  slug        String
   geometry    String
   createdAt   DateTime    @default(now()) @map("created_at")
-  name_en     String?
   communities Community[]
   Place       Place[]
   Event       Event[]

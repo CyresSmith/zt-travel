@@ -8,11 +8,17 @@ import { EventBasicInfoSelector } from '@data/events/selectors';
 import type { EventBasicInfo } from '@data/events/types';
 import type { TagBasicInfo } from '@data/tags/types';
 
-const getUpcomingEvents = async (): Promise<EventBasicInfo[]> => {
+const getUpcomingEvents = async (districtId?: string): Promise<EventBasicInfo[]> => {
+    let where = { start: { gte: new Date() } };
+
+    if (districtId) {
+        where = Object.assign(where, { districtId });
+    }
+
     const eventsData = await prisma.event.findMany({
         select: EventBasicInfoSelector,
         take: DEFAULT_TAKE,
-        where: { start: { gte: new Date() } },
+        where,
         orderBy: { start: 'asc' },
     });
 

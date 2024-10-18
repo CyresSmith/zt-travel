@@ -46,9 +46,9 @@ const PlacesList = () => {
     );
 
     const { data, fetchNextPage, isFetching, isFetchingNextPage, hasNextPage } = usePlacesList({
-        categories: selectedCategories?.map(({ id }) => id),
-        districtId: selectedDistrictIdParam || undefined,
-        communityId: selectedCommunityIdParam || undefined,
+        categories: selectedCategories?.map(({ id }) => id) || [],
+        districtId: selectedDistrictId,
+        communityId: selectedCommunityId,
     });
 
     const isDataLoading = isFetching || isFetchingNextPage;

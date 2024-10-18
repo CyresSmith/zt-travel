@@ -2,10 +2,14 @@ import { HydrationBoundary, dehydrate } from '@tanstack/react-query';
 
 import { getTranslations } from 'next-intl/server';
 
+import { PlaceCategory } from '@prisma/client';
+
 import HomeSection from '@components/home/home-section';
 import PlacesList from '@components/places/places-list';
 
 import { QUERY_KEYS } from '@keys';
+
+import { WithSearchParams } from '@types';
 
 import getQueryClient from '@utils/get-query-client';
 
@@ -29,12 +33,32 @@ export async function generateMetadata() {
     };
 }
 
-const PlacesPage = async () => {
+const PlacesPage = async ({ searchParams }: WithSearchParams) => {
+    let queryKey: string[] = [QUERY_KEYS.PLACES];
+    let selectedCategory: PlaceCategory | undefined = undefined;
+
+    if (searchParams.category) {
+        const placeCategories = await getPlaceCategories();
+        selectedCategory = placeCategories?.find(({ slug }) => slug === searchParams.category);
+
+        if (selectedCategory) {
+            queryKey = [...queryKey, selectedCategory.id];
+        }
+    }
+
+    const getDto = (pageParam: number) => {
+        const dto = {
+            pagination: { page: pageParam },
+        };
+
+        return selectedCategory ? Object.assign(dto, { categories: [selectedCategory.id] }) : dto;
+    };
+
     const queryClient = getQueryClient();
 
     await queryClient.prefetchInfiniteQuery({
-        queryKey: [QUERY_KEYS.PLACES, { categories: [] }],
-        queryFn: async ({ pageParam }) => await getPlacesList({ pagination: { page: pageParam } }),
+        queryKey,
+        queryFn: async ({ pageParam }) => await getPlacesList(getDto(pageParam)),
         initialPageParam: 1,
         getNextPageParam: ({ page }) => page + 1,
         pages: 1,

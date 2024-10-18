@@ -15,3 +15,8 @@ export const PHONE = '+38 066 747 3755';
 export const DEFAULT_TAKE = 6;
 
 export const DEFAULT_STALE_TIME = 10 * 1000;
+
+export const zvyagelDistrictId = 'ce12dbd5-0716-427b-b90b-a8dde26c5b31';
+export const zhytomyrDistrictId = '1e53c1d6-a247-474e-9f7e-1ac98df51fd6';
+export const korostenDistrictId = 'd7a49a2d-f7ae-453d-8ea1-380ff427af87';
+export const berdychivDistrictId = 'e9f2c8b7-9e47-4abf-9d2b-03a2395f71c9';

@@ -48,11 +48,13 @@ export default {
 
                     const user = await getUserByEmail(email);
 
-                    if (!user || !user?.password) return null;
+                    if (!user || !user?.password) throw new Error('User not found!');
 
                     const passwordMatch = await bcrypt.compare(password, user.password);
 
-                    if (passwordMatch) return { ...user, isOAuth: false };
+                    if (passwordMatch) throw new Error('Wrong credentials!');
+
+                    return { ...user, isOAuth: false };
                 }
 
                 return null;
