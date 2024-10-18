@@ -17,7 +17,7 @@ export const useNewestArticles = () =>
     });
 
 export const useArticlesList = (dto: { tags?: string[] }) => {
-    let queryKey: string[] = [QUERY_KEYS.EVENTS];
+    let queryKey: string[] = [QUERY_KEYS.ARTICLES];
 
     if (dto.tags && dto.tags.length > 0) {
         queryKey = [...queryKey, ...dto.tags];

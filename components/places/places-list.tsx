@@ -45,13 +45,14 @@ const PlacesList = () => {
         selectedCategoriesSlugs.includes(slug)
     );
 
-    const { data, fetchNextPage, isFetching, isFetchingNextPage, hasNextPage } = usePlacesList({
-        categories: selectedCategories?.map(({ id }) => id) || [],
-        districtId: selectedDistrictId,
-        communityId: selectedCommunityId,
-    });
+    const { data, fetchNextPage, isFetching, isFetchingNextPage, hasNextPage, isLoading } =
+        usePlacesList({
+            categories: selectedCategories?.map(({ id }) => id) || [],
+            districtId: selectedDistrictId,
+            communityId: selectedCommunityId,
+        });
 
-    const isDataLoading = isFetching || isFetchingNextPage;
+    const isDataLoading = isFetching || isFetchingNextPage || isLoading;
 
     const createQueryString = useCallback(
         (name: string, value: string) => {

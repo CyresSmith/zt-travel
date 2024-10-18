@@ -45,13 +45,14 @@ const EventsList = () => {
 
     const tagsIdArray = selectedTags?.map(({ id }) => id) || [];
 
-    const { data, fetchNextPage, isFetching, isFetchingNextPage, hasNextPage } = useEventsList({
-        tags: tagsIdArray,
-        districtId: selectedDistrictId,
-        communityId: selectedCommunityId,
-    });
+    const { data, fetchNextPage, isFetching, isFetchingNextPage, hasNextPage, isLoading } =
+        useEventsList({
+            tags: tagsIdArray,
+            districtId: selectedDistrictId,
+            communityId: selectedCommunityId,
+        });
 
-    const isDataLoading = isFetching || isFetchingNextPage;
+    const isDataLoading = isFetching || isFetchingNextPage || isLoading;
 
     const createQueryString = useCallback(
         (name: string, value: string) => {

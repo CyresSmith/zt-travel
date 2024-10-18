@@ -9,11 +9,11 @@ import NewsList from '@components/news/news-list';
 
 import { QUERY_KEYS } from '@keys';
 
-import { WithSearchParams } from '@types';
+import type { WithSearchParams } from '@types';
 
 import getQueryClient from '@utils/get-query-client';
 
-import { TagBasicInfo } from '@data/tags/types';
+import type { TagBasicInfo } from '@data/tags/types';
 
 import getArticles from '@actions/articles/get-articles';
 import getTagsByType from '@actions/tags/get-tag-by-type';

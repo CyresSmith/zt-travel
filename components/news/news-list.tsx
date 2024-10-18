@@ -42,11 +42,12 @@ const NewsList = () => {
 
     const tagsIdArray = selectedTags?.map(({ id }) => id) || [];
 
-    const { data, fetchNextPage, isFetching, isFetchingNextPage, hasNextPage } = useArticlesList({
-        tags: tagsIdArray,
-    });
+    const { data, fetchNextPage, isFetching, isFetchingNextPage, hasNextPage, isLoading } =
+        useArticlesList({
+            tags: tagsIdArray,
+        });
 
-    const isDataLoading = isFetching || isFetchingNextPage;
+    const isDataLoading = isFetching || isFetchingNextPage || isLoading;
 
     const createQueryString = useCallback(
         (name: string, value: string) => {
@@ -122,26 +123,31 @@ const NewsList = () => {
                 <ul className="grid gap-8 mobile:grid-cols-1 tablet:grid-cols-2 desktop:grid-cols-3">
                     {data?.pages.map((group, i) => (
                         <Fragment key={i}>
-                            {group?.data.map(({ name, image, slug, id, desc, createdAt, tags }) => (
-                                <SectionCard
-                                    key={id}
-                                    image={image || ''}
-                                    title={getLocaleValue(name, locale)}
-                                    titleHref={buildUrl('news', slug)}
-                                    locale={locale as LocaleType}
-                                    links={[
-                                        {
-                                            label: getLocaleDate(createdAt, locale as LocaleType),
-                                            icon: 'calendar-add',
-                                        },
-                                    ]}
-                                    desc={getLocaleValue(desc, locale)}
-                                    tags={tags.map(({ slug, ...tag }) => ({
-                                        ...tag,
-                                        slug: `${buildUrl('news', slug)}?${stringifyQueryParams({ tags: slug })}`,
-                                    }))}
-                                />
-                            ))}
+                            {group?.data.map(({ name, image, slug, id, desc, createdAt, tags }) => {
+                                return (
+                                    <SectionCard
+                                        key={id}
+                                        image={image || ''}
+                                        title={getLocaleValue(name, locale)}
+                                        titleHref={buildUrl('news', slug)}
+                                        locale={locale as LocaleType}
+                                        links={[
+                                            {
+                                                label: getLocaleDate(
+                                                    createdAt,
+                                                    locale as LocaleType
+                                                ),
+                                                icon: 'calendar-add',
+                                            },
+                                        ]}
+                                        desc={getLocaleValue(desc, locale)}
+                                        tags={tags.map(({ slug, ...tag }) => ({
+                                            ...tag,
+                                            slug: `${buildUrl('news', slug)}?${stringifyQueryParams({ tags: slug })}`,
+                                        }))}
+                                    />
+                                );
+                            })}
                         </Fragment>
                     ))}
                 </ul>
