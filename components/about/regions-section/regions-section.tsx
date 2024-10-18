@@ -11,18 +11,10 @@ import AboutPageSection from '../about-page-section';
 
 import { namu } from '@fonts';
 
-import { useDistricts } from '@data/district/queries';
-
 type Props = { title: string };
 
 const RegionsSection = ({ title }: Props) => {
-    const { data: districts } = useDistricts();
-
     const [hoveredRegion, setHoveredRegion] = useState<string | null>(null);
-
-    const slug = hoveredRegion
-        ? districts?.find(({ id }) => id === hoveredRegion)?.slug
-        : undefined;
 
     return (
         <AboutPageSection>
@@ -30,7 +22,7 @@ const RegionsSection = ({ title }: Props) => {
 
             <div className="grid grid-cols-2">
                 <RegionsList hoveredRegion={hoveredRegion} setHoveredRegion={setHoveredRegion} />
-                <DistrictsMap activeRegionSlug={slug} setRegion={setHoveredRegion} />
+                <DistrictsMap hovered={hoveredRegion} setRegion={setHoveredRegion} />
             </div>
         </AboutPageSection>
     );

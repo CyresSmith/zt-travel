@@ -17,18 +17,19 @@ import { useDistricts } from '@data/district/queries';
 import { usePathname, useRouter } from '@i18n/routing';
 
 type Props = {
+    hovered?: string | null;
     activeRegionSlug?: string;
     setRegion?: Dispatch<SetStateAction<string | null>>;
 };
 
-const DistrictsMap = ({ activeRegionSlug, setRegion }: Props) => {
+const DistrictsMap = ({ hovered, activeRegionSlug, setRegion }: Props) => {
     const router = useRouter();
     const pathname = usePathname();
     const { data: districts } = useDistricts();
 
     const activeDistrict = districts?.find(({ slug }) => slug === activeRegionSlug);
 
-    const [hoveredRegion, setHoveredRegion] = useState<string | null>(null);
+    const [hoveredRegion, setHoveredRegion] = useState<string | null>(hovered || null);
 
     const slug = districts?.find(({ id }) => id === hoveredRegion)?.slug;
 
@@ -45,8 +46,15 @@ const DistrictsMap = ({ activeRegionSlug, setRegion }: Props) => {
     };
 
     useEffect(() => {
-        setHoveredRegion(activeDistrict?.id || null);
-    }, [activeRegionSlug]);
+        if (!hoveredRegion && activeDistrict) {
+            setHoveredRegion(activeDistrict?.id || null);
+        }
+    }, [activeDistrict, hoveredRegion]);
+
+    useEffect(() => {
+        if (hovered === undefined) return;
+        setHoveredRegion(hovered);
+    }, [hovered]);
 
     return (
         <div className="flex items-center justify-end">
